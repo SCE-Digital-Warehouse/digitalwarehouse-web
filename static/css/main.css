@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+:root {
+  --color-main: #f7f2f0;
+  --color-bg: #f7f2f0;
+  --color-text: #4d0702;
+}
+
+body {
+    background-color: var(--color-bg);
+    min-height: 100vh;
+    font-family: 'Varela Round', sans-serif;
+    color: var(--color-text);
+}
+
+/*==================
+Login Page
+==================*/
+
+.login {
+    width: 60em;
+    height: 30em;
+
+}
+
+.login-logo {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 35px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40em;
+    height: 20em;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+    text-align: right;
+    background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
+    color: #fff;
+}
+
+.login-form form{
+    padding: 30px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.login-form input[type="submit"] {
+    display: block;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 20px;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 20%;
+}
+
+.login-form input[type="submit"]:hover {
+    background-color: #3e8e41;
+}
