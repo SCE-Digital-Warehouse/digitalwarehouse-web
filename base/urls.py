@@ -1,7 +1,8 @@
 from django.urls import path
-from . import views
+from .views import *
 
 urlpatterns = [
-    path("", views.login, name="login"),
-    path("home/", views.index, name="index"),
+    path("", login, name="login"), # http://127.0.0.1:8000/
+    path("home/", index, name="index"), # http://127.0.0.1:8000/home/
+    path("about/", about, name="about"), # http://127.0.0.1:8000/about/
 ]
