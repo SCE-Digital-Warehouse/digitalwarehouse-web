@@ -6,3 +6,6 @@ def login(request):
 
 def index(request: HttpRequest) -> HttpResponse:
     return render(request, "base/index.html")
+
+def about(request: HttpRequest):
+    return HttpResponse("About Us")
