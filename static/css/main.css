@@ -19,7 +19,8 @@ footer {
     margin-top: 0px;
     position: absolute;
     bottom: 0;
-    transform: translateX(-50%);
+    width: 100%;
+    line-height: 25px;
 }
 
 
