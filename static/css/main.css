@@ -185,7 +185,7 @@ HOME PAGE
     grid-template-columns: repeat(2, 1fr);
     column-gap: 5px;
     row-gap: 1px;
-    height: 30em;
+    height: 35em;
     margin: 15px;
 }
 
