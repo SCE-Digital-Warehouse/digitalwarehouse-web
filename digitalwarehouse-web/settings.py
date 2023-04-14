@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.conf import settings
+from datetime import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+PROJECT_NAME = "DHT – SCE Digital Warehouse"
+CURRENT_YEAR = datetime.now().year
 
 # Application definition
 
@@ -68,6 +72,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'base.context_processors.project_name',
+                'base.context_processors.current_year',
             ],
         },
     },
