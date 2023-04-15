@@ -9,14 +9,17 @@
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
         <title>Document</title>
     </head>
+
     <body>
         {% include "navbar.html" %}
+        {% include "sidebar.html" %}
         {% block content %}
         {% endblock content %}
 
+        <footer>
+            {% include 'footer.html' %}
+        </footer>
     </body>
 
-    <footer>
-        {% include 'footer.html' %}
-    </footer>
+
 </html>

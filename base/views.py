@@ -1,8 +1,31 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 def login(request):
-    return render(request, "base/login.html")
+    mail = 'pashnikitenko@gmail.com'
+    password = '123456'
+    if request.method == 'POST':
+        m = request.POST.get('email')
+        p = request.POST.get('password')
+        if m == mail and password == p:
+            return redirect('index')
+        else:
+            messages.error(request, 'Username or password are incorrect!')
+    data = {"mail": mail, "password": password}
+    return render(request, "base/login.html", data)
 
-def index(request: HttpRequest) -> HttpResponse:
-    return render(request, "base/index.html")
+def asks(request):
+    data = {}
+    return render(request, "base/asks.html", data)
+
+def users(request):
+    data = {}
+    return render(request, "base/users.html", data)
+
+def menu(request):
+    data = {}
+    return render(request, "base/menu.html", data)
+
+def index(request):
+    data = {}
+    return render(request, "base/index.html", data)
