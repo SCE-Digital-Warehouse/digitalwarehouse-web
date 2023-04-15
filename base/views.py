@@ -22,6 +22,10 @@ def users(request):
     data = {}
     return render(request, "base/users.html", data)
 
+def menu(request):
+    data = {}
+    return render(request, "base/menu.html", data)
+
 def index(request):
     data = {}
     return render(request, "base/index.html", data)
