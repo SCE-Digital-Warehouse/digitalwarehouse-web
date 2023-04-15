@@ -14,6 +14,14 @@ def login(request):
     data = {"mail": mail, "password": password}
     return render(request, "base/login.html", data)
 
+def asks(request):
+    data = {}
+    return render(request, "base/asks.html", data)
+
+def users(request):
+    data = {}
+    return render(request, "base/users.html", data)
+
 def index(request):
     data = {}
     return render(request, "base/index.html", data)
