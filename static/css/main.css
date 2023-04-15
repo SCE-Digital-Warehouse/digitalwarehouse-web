@@ -6,6 +6,11 @@
   --color-text: #4d0702;
 }
 
+html{
+    min-height: 100%;
+    height: 100%;
+}
+
 body {
     background-color: var(--color-bg);
     min-height: 100vh;
@@ -154,7 +159,8 @@ SIDE BAR
     margin: 0;
     padding: 0;
     width: 12rem;
-    height: 100vh;
+    min-height: 100%;
+    height: 100%;
     background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
     float: right;
 }
