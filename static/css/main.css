@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 :root {
-  --color-main: #f7f2f0;
-  --color-bg: #f7f2f0;
-  --color-text: #4d0702;
+    --color-main: #f7f2f0;
+    --color-bg: #f7f2f0;
+    --color-text: #4d0702;
 }
 
 body {
@@ -15,7 +15,7 @@ body {
 
 footer {
     width: 50%;
-    float:left;
+    float: left;
     text-align: center;
     font-size: 1.2em;
     margin-top: 0px;
@@ -26,7 +26,6 @@ footer {
 }
 
 
-
 /*==================
 Login Page
 ==================*/
@@ -34,16 +33,15 @@ Login Page
 .login {
     width: 60em;
     height: 30em;
-
 }
 
-.login-logo {
+.login-title {
     position: absolute;
-    top: 30%;
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 35px;
-    font-weight: 700;
+    font-size: 45px;
+    font-weight: 900;
     margin: 0 0 5px 0;
     background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
     -webkit-background-clip: text;
@@ -56,7 +54,7 @@ Login Page
     left: 50%;
     transform: translate(-50%, -50%);
     width: 40em;
-    height: 20em;
+    height: 22em;
     border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
     text-align: right;
@@ -64,24 +62,26 @@ Login Page
     color: #fff;
 }
 
-.login-form form{
-    padding: 30px;
+.login-form form {
+    padding: 50px;
     font-weight: 700;
     font-size: 20px;
 }
 
 .login-form label {
     display: block;
+    margin-right: 90px;
     margin-bottom: 10px;
 }
 
-.login-form input[type="email"],
+.login-form input[type="text"],
 .login-form input[type="password"] {
     width: 60%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 20px;
+    margin-right: 90px;
 }
 
 .login-form input[type="submit"] {
@@ -90,16 +90,42 @@ Login Page
     color: var(--color-text);
     font-size: 20px;
     padding: 10px;
-    margin: 10px;
+    margin-left: 340px;
+    margin-top: 20px;
     border-radius: 5px;
     cursor: pointer;
     width: 20%;
+}
+
+.login-form button {
+    display: block;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 19px;
+    padding: 10px;
+    margin-left: 105px;
+    margin-top: -46px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
 }
 
 .login-form input[type="submit"]:hover {
     background-color: #33ccff;
 }
 
+.login-form button:hover {
+     background-color: #33ccff;
+ }
 
-
-
+.error {
+    position: absolute;
+    list-style: none;
+    background-color: #f8d7da;
+    color: #58151c;
+    box-shadow: 5px 5px 5px #58151c;
+    text-align: center;
+    width: 15%;
+    margin: 302px;
+    margin-left: 40%;
+}
