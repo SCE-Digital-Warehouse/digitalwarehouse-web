@@ -7,4 +7,6 @@ urlpatterns = [
     path("asks/", views.asks, name="asks"),
     path("users/", views.users, name="users"),
     path("menu/", views.menu, name="menu"),
+    path("settings/", views.settings, name="settings"),
+    path("settings/personal_det/", views.personal_det, name="personal_det"),
 ]
