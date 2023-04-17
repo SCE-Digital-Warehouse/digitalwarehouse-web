@@ -60,7 +60,7 @@ caption {
 
 h1 {
     float: right;
-    margin: 20px;
+    margin: 20px 40px 20px 20px;
 }
 
 
@@ -306,7 +306,7 @@ PERSONAL INFO PAGE
     color: var(--color-text);
     font-size: 20px;
     padding: 10px;
-    margin: 10px;
+    margin: 40px;
     border-radius: 5px;
     cursor: pointer;
     width: 15%;
