@@ -36,6 +36,28 @@ svg {
     margin: 0 15px 0 0;
 }
 
+table {
+    float: right;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+th, td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #fff;
+
+}
+th {
+    background-color: lightgray;
+}
+
+caption {
+    font-size: 25px;
+    font-weight: 700;
+    margin: 10px;
+}
+
 
 
 /*==================
@@ -216,3 +238,24 @@ HOME PAGE
     height: 100%;
     color: var(--color-text);
 }
+
+/*==================
+ASKS PAGE
+==================*/
+
+.asks-page-admin {
+    width: 100em;
+    height: 50em;
+    float: right;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 40px 40px 0 0;
+    box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+}
+
+
+
+/*.table-header {*/
+/*    margin: 10px;*/
+/*}*/
+
