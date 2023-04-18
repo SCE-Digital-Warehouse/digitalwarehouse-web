@@ -58,6 +58,11 @@ caption {
     margin: 10px;
 }
 
+h1 {
+    float: right;
+    margin: 20px 40px 20px 20px;
+}
+
 
 
 /*==================
@@ -253,9 +258,61 @@ ASKS PAGE
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 
+/*==================
+PERSONAL INFO PAGE
+==================*/
 
+.personal-info {
+    width: 80em;
+    height: 45em;
+    margin: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    float: right;
+}
 
-/*.table-header {*/
-/*    margin: 10px;*/
-/*}*/
+.personal-info-form{
+    margin: 10px;
+}
+
+.personal-info-form label {
+    display: block;
+    float: right;
+    font-size: 2em;
+    margin: 20px 20px 20px 10px;
+    width: 170px;
+}
+
+#name-personal,
+#email-personal,
+#telephone-personal,
+#dob-personal,
+#sex-personal,
+#address-personal{
+    margin: 10px 40px 20px 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 70%;
+    float: right;
+    font-size: 20px;
+}
+
+#submit-personal {
+    display: block;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 20px;
+    padding: 10px;
+    margin: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 15%;
+}
+
+#submit-personal:hover {
+    background-color: #33ccff;
+}
 

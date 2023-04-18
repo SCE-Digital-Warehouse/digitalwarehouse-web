@@ -29,3 +29,6 @@ def menu(request):
 def index(request):
     data = {}
     return render(request, "base/index.html", data)
+
+def personal_det(request):
+    return render(request, "base/personal_det.html")
