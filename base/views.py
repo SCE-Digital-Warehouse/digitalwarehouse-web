@@ -30,8 +30,5 @@ def index(request):
     data = {}
     return render(request, "base/index.html", data)
 
-def settings(request):
-    return render(request, "base/settings_profil.html")
-
 def personal_det(request):
     return render(request, "base/personal_det.html")
