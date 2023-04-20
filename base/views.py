@@ -36,3 +36,6 @@ def personal_det(request):
 def special_asks(request):
     data = {}
     return render(request, "base/special_asks.html", data)
+def queues(requset):
+    data = {}
+    return render(requset, "base/queues.html", data)
