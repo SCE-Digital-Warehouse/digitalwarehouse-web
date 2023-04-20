@@ -32,3 +32,7 @@ def index(request):
 
 def personal_det(request):
     return render(request, "base/personal_det.html")
+
+def special_asks(request):
+    data = {}
+    return render(request, "base/special_asks.html", data)

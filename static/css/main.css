@@ -248,7 +248,7 @@ HOME PAGE
 ASKS PAGE
 ==================*/
 
-.asks-page-admin {
+.asks-page-admin, .specialAsks-page-admin {
     width: 100em;
     height: 50em;
     float: right;
