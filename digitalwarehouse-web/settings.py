@@ -30,8 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-PROJECT_NAME = "DHT – SCE Digital Warehouse"
-CURRENT_YEAR = datetime.now().year
+AUTH_USER_MODEL = "base.User"
 
 # Application definition
 

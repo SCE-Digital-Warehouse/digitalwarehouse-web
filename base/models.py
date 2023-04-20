@@ -1,3 +1,26 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 
-# Create your models here.
+
+class User(AbstractUser):
+    ROLES = (
+        ("student", "סטודנט"),
+        ("practitioner", "מתרגל"),
+        ("admin", "מנהל מחסן")
+    )
+
+    identity_num = models.CharField(max_length=9, unique=True, validators=[
+        RegexValidator(
+            regex=r"[0-9]{9}",
+            message="תעודת זהות לא תקינה"
+        )
+    ])
+    role = models.CharField(max_length=15, choices=ROLES)
+    mobile_num = models.CharField(max_length=10, unique=True, validators=[
+        RegexValidator(
+            regex=r"[05][0-9]{8}",
+            message="מספר נייד לא חוקי"
+        )])
+    is_admin = models.BooleanField(default=False)
+    is_mod = models.BooleanField(default=False)
