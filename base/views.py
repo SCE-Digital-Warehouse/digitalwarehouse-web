@@ -31,4 +31,9 @@ def index(request):
     return render(request, "base/index.html", data)
 
 def personal_det(request):
-    return render(request, "base/personal_det.html")
+    data = {}
+    return render(request, "base/personal_det.html", data)
+
+def queues(requset):
+    data = {}
+    return render(requset, "base/queues.html", data)
