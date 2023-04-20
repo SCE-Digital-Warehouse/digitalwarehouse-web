@@ -115,8 +115,8 @@ Login Page
 }
 
 .login-form button:hover {
-     background-color: #33ccff;
- }
+    background-color: #33ccff;
+}
 
 .error {
     position: absolute;
