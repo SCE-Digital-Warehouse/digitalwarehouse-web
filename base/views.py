@@ -48,9 +48,38 @@ def set_password(request: HttpRequest):
     return render(request, "base/login/set_password.html", context)
 
 
-def change_password():
+def change_password(request):
     pass
 
 
 def restore_password(request):
     pass
+
+
+def asks(request):
+    context = {}
+    return render(request, "base/asks.html", context)
+
+
+def users(request):
+    context = {}
+    return render(request, "base/users.html", context)
+
+
+def menu(request):
+    context = {}
+    return render(request, "base/menu.html", context)
+
+
+def personal_det(request):
+    return render(request, "base/personal_det.html")
+
+
+def special_asks(request):
+    context = {}
+    return render(request, "base/special_asks.html", context)
+
+
+def queues(requset):
+    context = {}
+    return render(requset, "base/queues.html", context)
