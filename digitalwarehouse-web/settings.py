@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "he"
 
 TIME_ZONE = "UTC"
 
@@ -142,3 +142,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+PROJECT_NAME = "DHT – SCE Digital Warehouse"
+
+CURRENT_YEAR = datetime.now().year
