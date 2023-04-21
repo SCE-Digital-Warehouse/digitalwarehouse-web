@@ -1,9 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from .forms import LoginUserForm
+from .forms import *
 
 
 @login_required(login_url="/login")
@@ -16,9 +16,10 @@ def login_user(request):
     if request.method == "POST":
         form = LoginUserForm(request, data=request.POST)
         if form.is_valid():
-            # TODO: check if it is the 1st time the user logs in, if so -> redirect(change_pw)
             user = form.get_user()
             login(request, user)
+            if form.change_password_is_required():
+                return redirect("set_password")
             return redirect("home")
         else:
             messages.error(request, "שם משתמש/ת ו/או סיסמה לא נכונים")
@@ -29,8 +30,27 @@ def login_user(request):
     return render(request, "base/login/login.html", context)
 
 
-def restore_password(request):
+@login_required
+def set_password(request: HttpRequest):
+    user = request.user
+    if request.method == "POST":
+        form = PasswordSetForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect("login")
+        else:
+            messages.error(request, "סיסמאות לא תואמות")
+    else:
+        form = PasswordSetForm(user)
+
+    context = {"form": form}
+    return render(request, "base/login/set_password.html", context)
+
+
+def change_password():
     pass
 
-def change_password(request: HttpRequest):
-    return HttpResponse("change-password")
+
+def restore_password(request):
+    pass
