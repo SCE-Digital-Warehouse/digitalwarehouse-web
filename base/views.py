@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def index(request):
     context = {}
     if request.session["authenticated"] == True:
@@ -34,7 +34,13 @@ def login_user(request):
     return render(request, "base/login/login.html", context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
+def logout_user(request):
+    logout(request)
+    return redirect("login")
+
+
+@login_required(login_url="login/")
 def set_password(request: HttpRequest):
     user = request.user
     if request.method == "POST":
@@ -64,36 +70,36 @@ def restore_password(request):
     pass
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def asks(request):
     context = {}
     return render(request, "base/asks.html", context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def users(request):
     context = {}
     return render(request, "base/users.html", context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def menu(request):
     context = {}
     return render(request, "base/menu.html", context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def personal_det(request):
     return render(request, "base/personal_det.html")
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def special_asks(request):
     context = {}
     return render(request, "base/special_asks.html", context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url="login/")
 def queues(requset):
     context = {}
     return render(requset, "base/queues.html", context)
