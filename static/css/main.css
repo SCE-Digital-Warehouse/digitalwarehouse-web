@@ -20,7 +20,6 @@ body {
 }
 
 footer {
-    width: 50%;
     float: left;
     text-align: center;
     font-size: 1.2em;
@@ -30,6 +29,7 @@ footer {
     left: 50%;
     transform: translateX(-50%);
     clear: both;
+    line-height: 30px;
 }
 
 svg {
