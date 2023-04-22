@@ -37,3 +37,10 @@ class Borrow():
     date_borrowed = models.DateTimeField(auto_now_add=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField()
+
+
+class Request():
+    date_requested = models.DateTimeField(auto_now_add=True)
+    exp_date_to_borrow = models.DateTimeField()
+    exp_date_to_return = models.DateTimeField()
+    
