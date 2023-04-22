@@ -1,41 +1,99 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from .forms import *
 
-def login(request):
-    mail = 'pashnikitenko@gmail.com'
-    password = '123456'
-    if request.method == 'POST':
-        m = request.POST.get('email')
-        p = request.POST.get('password')
-        if m == mail and password == p:
-            return redirect('index')
-        else:
-            messages.error(request, 'Username or password are incorrect!')
-    data = {"mail": mail, "password": password}
-    return render(request, "base/login.html", data)
 
-def asks(request):
-    data = {}
-    return render(request, "base/asks.html", data)
-
-def users(request):
-    data = {}
-    return render(request, "base/users.html", data)
-
-def menu(request):
-    data = {}
-    return render(request, "base/menu.html", data)
-
+@login_required(login_url="/login")
 def index(request):
-    data = {}
-    return render(request, "base/index.html", data)
+    context = {}
+    if request.session["authenticated"] == True:
+        return render(request, "base/index.html", context)
+    return redirect("login")
 
+
+def login_user(request):
+    if request.method == "POST":
+        form = LoginUserForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            request.session["authenticated"] = True
+            if form.change_password_is_required():
+                request.session["authenticated"] = False
+                return redirect("set_password")
+            return redirect("home")
+        else:
+            messages.error(request, "שם משתמש/ת ו/או סיסמה לא נכונים")
+    else:
+        form = LoginUserForm(request)
+
+    context = {"form": form}
+    return render(request, "base/login/login.html", context)
+
+
+@login_required(login_url="/login")
+def set_password(request: HttpRequest):
+    user = request.user
+    if request.method == "POST":
+        form = PasswordSetForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            request.session["authenticated"] = True
+            logout(request)
+            return redirect("login")
+        else:
+            messages.error(request, "סיסמאות לא תואמות")
+    else:
+        form = PasswordSetForm(user)
+
+    context = {"form": form}
+    if request.session["authenticated"] == False:
+        return render(request, "base/login/set_password.html", context)
+    return redirect("/")
+
+
+def change_password(request):
+    pass
+
+
+def restore_password(request):
+    pass
+
+
+@login_required(login_url="/login")
+def asks(request):
+    context = {}
+    return render(request, "base/asks.html", context)
+
+
+@login_required(login_url="/login")
+def users(request):
+    context = {}
+    return render(request, "base/users.html", context)
+
+
+@login_required(login_url="/login")
+def menu(request):
+    context = {}
+    return render(request, "base/menu.html", context)
+
+
+@login_required(login_url="/login")
 def personal_det(request):
     return render(request, "base/personal_det.html")
 
+
+@login_required(login_url="/login")
 def special_asks(request):
-    data = {}
-    return render(request, "base/special_asks.html", data)
+    context = {}
+    return render(request, "base/special_asks.html", context)
+
+
+@login_required(login_url="/login")
 def queues(requset):
-    data = {}
-    return render(requset, "base/queues.html", data)
+    context = {}
+    return render(requset, "base/queues.html", context)

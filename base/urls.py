@@ -1,13 +1,15 @@
 from django.urls import path
-from . import views
+from .views import *
 
 urlpatterns = [
-    path("", views.login, name="login"),
-    path("home/", views.index, name="index"),
-    path("asks/", views.asks, name="asks"),
-    path("users/", views.users, name="users"),
-    path("menu/", views.menu, name="menu"),
-    path("personal_det/", views.personal_det, name="personal_det"),
-    path("special_asks/", views.special_asks, name="special_asks"),
-    path("queues/", views.queues, name="queues"),
+    path("", index, name="home"),
+    path("login/", login_user, name="login"),
+    path("set-password/", set_password, name="set_password"),
+    path("change-password/", change_password, name="change_password"),
+    path("asks/", asks, name="asks"),
+    path("users/", users, name="users"),
+    path("menu/", menu, name="menu"),
+    path("personal-det/", personal_det, name="personal_det"),
+    path("special-asks/", special_asks, name="special_asks"),
+    path("queues/", queues, name="queues"),
 ]
