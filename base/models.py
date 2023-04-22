@@ -24,3 +24,10 @@ class User(AbstractUser):
         )])
     is_admin = models.BooleanField(default=False)
     is_mod = models.BooleanField(default=False)
+
+
+class Product():
+    stock_num = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20)
+    in_stock = models.BooleanField(default=True)
+    comments = models.TextField(max_length=100)
