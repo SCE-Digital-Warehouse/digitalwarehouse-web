@@ -9,7 +9,7 @@ from .forms import *
 @login_required(login_url="login/")
 def index(request):
     context = {}
-    if request.session["authenticated"] == True:
+    if request.session["init_pw_changed"] == True:
         return render(request, "base/index.html", context)
     return redirect("login")
 
@@ -20,9 +20,9 @@ def login_user(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            request.session["authenticated"] = True
+            request.session["init_pw_changed"] = True
             if form.change_password_is_required():
-                request.session["authenticated"] = False
+                request.session["init_pw_changed"] = False
                 return redirect("set_password")
             return redirect("home")
         else:
@@ -48,7 +48,7 @@ def set_password(request: HttpRequest):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            request.session["authenticated"] = True
+            request.session["init_pw_changed"] = True
             logout(request)
             return redirect("login")
         else:
@@ -57,7 +57,7 @@ def set_password(request: HttpRequest):
         form = PasswordSetForm(user)
 
     context = {"form": form}
-    if request.session["authenticated"] == False:
+    if request.session["init_pw_changed"] == False:
         return render(request, "base/login/set_password.html", context)
     return redirect("/")
 
