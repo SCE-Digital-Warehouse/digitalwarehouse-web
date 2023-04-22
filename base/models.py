@@ -31,3 +31,9 @@ class Product():
     name = models.CharField(max_length=20)
     in_stock = models.BooleanField(default=True)
     comments = models.TextField(max_length=100)
+
+
+class Borrow():
+    date_borrowed = models.DateTimeField(auto_now_add=True)
+    date_to_return = models.DateTimeField()
+    returned_at = models.DateTimeField()
