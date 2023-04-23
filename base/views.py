@@ -64,8 +64,10 @@ def change_password(request):
     pass
 
 
-def restore_password(request):
-    pass
+def reset_password(request):
+    form = ResetPasswordFrom()
+    context = {"form": form}
+    return render(request, "base/reset_password/reset_password.html", context)
 
 
 @login_required(login_url="login/")
