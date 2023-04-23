@@ -108,3 +108,8 @@ def queues(requset):
 def statistics(requset):
     context = {}
     return render(requset, "base/statistika.html", context)
+
+@login_required(login_url="login/")
+def connections(requset):
+    context = {}
+    return render(requset, "base/connections.html", context)
