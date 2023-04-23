@@ -4,10 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm: [$class: 'GitSCM', 
-    branches: [[name: '*/main']], 
-    userRemoteConfigs: [[credentialsId: 'PUBLIC_KEY', 
-    url: 'https://github.com/BS-PMC-2023/BS-PMC-2023-Team8']]`
+                git branch: 'main', url: 'https://github.com/BS-PMC-2023/BS-PMC-2023-Team8'
             }
         }
         
