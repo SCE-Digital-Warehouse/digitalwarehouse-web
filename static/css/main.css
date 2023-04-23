@@ -116,6 +116,7 @@ Login Page
 }
 
 .login-form input[type="text"],
+.login-form input[type="email"],
 .login-form input[type="password"] {
     width: 60%;
     padding: 10px;
@@ -169,6 +170,14 @@ Login Page
     width: 15%;
     margin: 302px;
     margin-left: 40%;
+}
+
+.login-form p {
+    margin: 30px 0 -15px 50px;
+    align-items: center;
+    width: 80%;
+    font-size:20px;
+    font-weight: 700;
 }
 
 
