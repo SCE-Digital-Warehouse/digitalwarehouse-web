@@ -355,3 +355,24 @@ PERSONAL INFO PAGE
 #submit-personal:hover {
     background-color: #33ccff;
 }
+
+/*==================
+STATISTICS PAGE
+==================*/
+.statistic-page {
+    justify-content: center;
+    display: grid;
+    margin: 50px;
+    grid: repeat(2, 250px) / auto-flow 400px;
+    height: 100vh;
+}
+
+.statistic-card {
+    background-color: #fff;
+    margin: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--color-text);
+}
