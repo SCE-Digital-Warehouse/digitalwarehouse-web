@@ -6,7 +6,7 @@ pipeline {
             steps {
 //                 sh 'pip install -r requirements.txt'
 //                 sh 'python setup.py build'
-                   sh 'python manage.py runserver'
+                   echo 'python manage.py runserver'
             }
         }
         stage('Test') {
