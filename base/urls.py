@@ -14,5 +14,5 @@ urlpatterns = [
     path("special-asks/", special_asks, name="special_asks"),
     path("queues/", queues, name="queues"),
     path("statistic/", statistics, name="stat"),
-
+    path("connections/", connections, name="connections"),
 ]
