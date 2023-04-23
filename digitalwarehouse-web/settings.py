@@ -143,6 +143,16 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+# SMTP Configuration
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.mail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "fortherealgang@mail.com"
+EMAIL_HOST_PASSWORD = "c`jw`jP$Nr@qCav&aQ5hLExxvjAh@4eYxwVoLsaW"
+
+
 PROJECT_NAME = "DHT – SCE Digital Warehouse"
 
 CURRENT_YEAR = datetime.now().year
