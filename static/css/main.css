@@ -297,7 +297,8 @@ ASKS PAGE
 .asks-page-admin,
 .queues-page-admin,
 .user-list,
-.specialAsks-page-admin {
+.specialAsks-page-admin,
+.connections-page{
     width: 100em;
     height: 50em;
     float: right;
@@ -373,8 +374,8 @@ STATISTICS PAGE
     display: grid;
     margin: 50px;
     grid: repeat(2, 250px) / auto-flow 400px;
-    height: 100vh;
 }
+
 
 .statistic-card {
     background-color: #fff;
@@ -384,4 +385,32 @@ STATISTICS PAGE
     font-weight: 700;
     font-size: 20px;
     color: var(--color-text);
+}
+
+/*==================
+CONNECTIONS PAGE
+==================*/
+.connections-page h2 {
+    direction: rtl;
+    text-align: center;
+}
+.connections-card {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 80px;
+    direction: rtl;
+}
+
+.connections-card a {
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    color: var(--color-text);
+}
+
+.connections-card a:hover {
+    background-color: #33ccff;
+    color: #fff;
+    border-radius: 10px;
 }
