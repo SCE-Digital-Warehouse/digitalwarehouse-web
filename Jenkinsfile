@@ -8,5 +8,9 @@ pipeline{
                 }
              }
 
+             steps {
+                sh 'python -m py compile hello.py'
+             }
+
       }
 }
