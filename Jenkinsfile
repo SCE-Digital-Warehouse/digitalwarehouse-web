@@ -1,17 +1,11 @@
 pipeline {
-    agent any
-
+    agent {
+        label 'python'
+    }
     stages {
-        stage('Build') {
+        stage('Run Python Script') {
             steps {
-//                 sh 'pip install -r requirements.txt'
-//                 sh 'python setup.py build'
-                   echo 'python manage.py runserver'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'python -m unittest discover tests'
+                sh 'python3 script.py'
             }
         }
     }
