@@ -1,5 +1,5 @@
 node{
-        stage('hello'){
-            echo 'Hello World'
+        stage('build'){
+            python manage.py runserver
         }
 }
