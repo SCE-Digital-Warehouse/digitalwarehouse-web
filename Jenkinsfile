@@ -4,7 +4,13 @@ pipeline{
        stage('Build') {
              agent{
                 docker{
-                    image 'test:ver1'
+                     script {
+                        withCredentials([DockerCred]) {
+                            docker.withRegistry(pavelni/test:ver1, 'docker') {
+                                image 'test:ver1'
+                            }
+                        }
+                     }
                 }
              }
 
