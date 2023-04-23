@@ -8,7 +8,7 @@ pipeline{
                 }
              }
              steps {
-                sh 'python hello.py'
+                sh 'python -m py_compile BS-PMC-2023-Team8/hello.py'
              }
 
        }
