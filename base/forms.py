@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm, PasswordResetForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm, PasswordResetForm, PasswordChangeForm
 
 User = get_user_model()
 
@@ -41,3 +41,11 @@ class PasswordSetForm(SetPasswordForm):
         label="אמת/י את הסיסמה",
         strip=False,
         widget=forms.PasswordInput())
+
+
+class ResetPasswordFrom(PasswordResetForm):
+    email = forms.EmailField(
+        label=("מייל"),
+        max_length=254,
+        widget=forms.EmailInput(attrs={"autofocus": True}),
+    )
