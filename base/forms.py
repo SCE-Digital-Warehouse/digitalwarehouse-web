@@ -41,11 +41,3 @@ class PasswordSetForm(SetPasswordForm):
         label="אמת/י את הסיסמה",
         strip=False,
         widget=forms.PasswordInput())
-
-
-class ResetPasswordFrom(PasswordResetForm):
-    email = forms.EmailField(
-        label=("מייל"),
-        max_length=254,
-        widget=forms.EmailInput(attrs={"autofocus": True}),
-    )
