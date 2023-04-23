@@ -103,3 +103,8 @@ def special_asks(request):
 def queues(requset):
     context = {}
     return render(requset, "base/queues.html", context)
+
+@login_required(login_url="login/")
+def statistics(requset):
+    context = {}
+    return render(requset, "base/statistika.html", context)
