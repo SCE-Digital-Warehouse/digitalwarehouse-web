@@ -1,4 +1,5 @@
 from re import template
+from urllib import request
 from django.urls import path
 from django.contrib.auth import views
 from .views import *
@@ -31,12 +32,12 @@ urlpatterns = [
         name="password_reset_complete"),
 
     path("change-password/", change_password, name="change_password"),
-    path("asks/", asks, name="asks"),
+    path("borrowings/", borrowings, name="borrowings"),
     path("users/", users, name="users"),
-    path("menu/", menu, name="menu"),
-    path("personal-det/", personal_det, name="personal_det"),
-    path("special-asks/", special_asks, name="special_asks"),
-    path("queues/", queues, name="queues"),
-    path("statistic/", statistics, name="stat"),
-    path("connections/", connections, name="connections"),
+    path("catalog/", catalog, name="catalog"),
+    path("personal_det/", personal_det, name="personal_det"),
+    path("special_requests/", special_requests, name="special_requests"),
+    path("requests/", requests, name="requests"),
+    path("statistics/", statistics, name="statistics"),
+    path("contact_us/", contact_us, name="contact_us"),
 ]
