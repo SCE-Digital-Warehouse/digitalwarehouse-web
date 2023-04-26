@@ -6,8 +6,8 @@ from django.core.validators import RegexValidator
 class User(AbstractUser):
     ROLES = (
         ("student", "סטודנט"),
-        ("practitioner", "מתרגל"),
-        ("admin", "מנהל מחסן")
+        ("lecturer", "מרצה"),
+        ("manager", "מנהל מחסן")
     )
 
     identity_num = models.CharField(max_length=9, unique=True, validators=[

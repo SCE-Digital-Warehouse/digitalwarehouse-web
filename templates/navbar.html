@@ -9,14 +9,16 @@
         </div>
 
         <ul class="navigation">
-            {% include "base/navbar/contact_us_section.html" %}
-            {% include "base/navbar/statistics_section.html" %}
-            {% include "base/navbar/special_requests_section.html" %}
-            {% include "base/navbar/requests_section.html" %}
-            {% include "base/navbar/users_section.html" %}
-            {% include "base/navbar/catalog_section.html" %}
-            {% include "base/navbar/borrowings_section.html" %}
-            {% include "base/navbar/home_section.html" %}
+            {% include "base/navbar_buttons/contact_us_button.html" %}
+            {% include "base/navbar_buttons/statistics_button.html" %}
+            {% include "base/navbar_buttons/special_requests_button.html" %}
+            {% include "base/navbar_buttons/requests_button.html" %}
+            {% if user_type == "admin" %}
+                {% include "base/navbar_buttons/users_button.html" %}
+            {% endif %}
+            {% include "base/navbar_buttons/catalog_button.html" %}
+            {% include "base/navbar_buttons/borrowings_button.html" %}
+            {% include "base/navbar_buttons/home_button.html" %}
         </ul>
     </div>
 </header>

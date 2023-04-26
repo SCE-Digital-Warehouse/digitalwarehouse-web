@@ -3,19 +3,22 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from .utils import get_user_type
 from .forms import *
 
 
 @login_required(login_url="login/")
 def index(request):
-    context = {}
-    user = request.user
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
     if request.session.get("init_pw_changed") == True:
-        if (user.role == "student"):
-            return render(request, "base/student_panel.html", context)
-        if (user.role == "practitioner"):
-            return render(request, "base/practitioner_panel.html", context)
-        if (user.role == "admin"):
+        if (user_type == "user"):
+            return HttpResponse("User Panel is base/user_panel.html")
+            # return render(request, "base/user_panel.html", context)
+        if (user_type == "moderator"):
+            return HttpResponse("Moderator Panel is base/moderator_panel.html")
+            # return render(request, "base/moderator_panel.html", context)
+        if (user_type == "admin"):
             return render(request, "base/admin_panel.html", context)
     return redirect("login")
 
@@ -72,58 +75,63 @@ def change_password(request):
 
 @login_required(login_url="login/")
 def borrowings(request):
-    context = {}
-    user = request.user
-    if user.role is not "admin":
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
+    if user_type is not "admin":
         return render(request, "base/borrowings.html", context)
     return redirect("/")
 
 
 @login_required(login_url="login/")
 def users(request):
-    context = {}
-    user = request.user
-    if user.role == "admin":
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
+    if user_type == "admin":
         return render(request, "base/users.html", context)
     return redirect("/")
 
 
 @login_required(login_url="login/")
 def catalog(request):
-    context = {}
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
     return render(request, "base/catalog.html", context)
 
 
 @login_required(login_url="login/")
 def personal_det(request):
-    return render(request, "base/personal_det.html")
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
+    return render(request, "base/personal_det.html", context)
 
 
 @login_required(login_url="login/")
 def special_requests(request):
-    context = {}
-    user = request.user
-    if user.role == "admin":
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
+    if user_type == "admin":
         return render(request, "base/special_requests.html", context)
     return redirect("/")
 
 
 @login_required(login_url="login/")
 def requests(request):
-    context = {}
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
     return render(request, "base/requests.html", context)
 
 
 @login_required(login_url="login/")
 def statistics(request):
-    context = {}
-    user = request.user
-    if user.role == "admin":
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
+    if user_type == "admin":
         return render(request, "base/statistics.html", context)
     return redirect("/")
 
 
 @login_required(login_url="login/")
 def contact_us(request):
-    context = {}
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
     return render(request, "base/contact_us.html", context)
