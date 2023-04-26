@@ -9,8 +9,14 @@ from .forms import *
 @login_required(login_url="login/")
 def index(request):
     context = {}
+    user = request.user
     if request.session.get("init_pw_changed") == True:
-        return render(request, "base/index.html", context)
+        if (user.role == "student"):
+            return render(request, "base/student_panel.html", context)
+        if (user.role == "practitioner"):
+            return render(request, "base/practitioner_panel.html", context)
+        if (user.role == "admin"):
+            return render(request, "base/admin_panel.html", context)
     return redirect("login")
 
 
@@ -65,21 +71,27 @@ def change_password(request):
 
 
 @login_required(login_url="login/")
-def asks(request):
+def borrowings(request):
     context = {}
-    return render(request, "base/asks.html", context)
+    user = request.user
+    if user.role is not "admin":
+        return render(request, "base/borrowings.html", context)
+    return redirect("/")
 
 
 @login_required(login_url="login/")
 def users(request):
     context = {}
-    return render(request, "base/users.html", context)
+    user = request.user
+    if user.role == "admin":
+        return render(request, "base/users.html", context)
+    return redirect("/")
 
 
 @login_required(login_url="login/")
-def menu(request):
+def catalog(request):
     context = {}
-    return render(request, "base/menu.html", context)
+    return render(request, "base/catalog.html", context)
 
 
 @login_required(login_url="login/")
@@ -88,24 +100,30 @@ def personal_det(request):
 
 
 @login_required(login_url="login/")
-def special_asks(request):
+def special_requests(request):
     context = {}
-    return render(request, "base/special_asks.html", context)
+    user = request.user
+    if user.role == "admin":
+        return render(request, "base/special_requests.html", context)
+    return redirect("/")
 
 
 @login_required(login_url="login/")
-def queues(requset):
+def requests(request):
     context = {}
-    return render(requset, "base/queues.html", context)
+    return render(request, "base/requests.html", context)
 
 
 @login_required(login_url="login/")
-def statistics(requset):
+def statistics(request):
     context = {}
-    return render(requset, "base/statistika.html", context)
+    user = request.user
+    if user.role == "admin":
+        return render(request, "base/statistics.html", context)
+    return redirect("/")
 
 
 @login_required(login_url="login/")
-def connections(requset):
+def contact_us(request):
     context = {}
-    return render(requset, "base/connections.html", context)
+    return render(request, "base/contact_us.html", context)
