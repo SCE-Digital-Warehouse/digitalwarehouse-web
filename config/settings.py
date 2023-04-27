@@ -56,7 +56,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = "digitalwarehouse-web.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "digitalwarehouse-web.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
