@@ -155,6 +155,9 @@ EMAIL_HOST_PASSWORD = "um%uvgaZDydNL7tCwehWiAsbZLQ`5g#pm#VhExwQKt`bUEmwXDXFKFScd
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
+LOGIN_URL = "/login/"
+
+
 PROJECT_NAME = "DHT – SCE Digital Warehouse"
 
 CURRENT_YEAR = datetime.now().year
