@@ -94,6 +94,21 @@ def users(request):
 
 
 @login_required(login_url=LOGIN_URL)
+def show_user(request, user_id):
+    user_type = get_user_type(request)
+    context = {"user_type": user_type}
+    if user_type == "admin":
+        # -------------------- TESTING URL ADDRESSES --------------------
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception:
+            return redirect("home", permanent=True)
+        return HttpResponse(f"User's id is {user_id} User's info: {user}")
+        # -------------------- TESTING URL ADDRESSES --------------------
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def catalog(request):
     user_type = get_user_type(request)
     context = {"user_type": user_type}
