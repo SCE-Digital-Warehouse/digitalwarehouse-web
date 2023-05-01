@@ -1,9 +1,12 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+import logging
+
 from base.models import *
 
 User = get_user_model()
+logger = logging.getLogger()
 
 
 class Command(BaseCommand):
@@ -13,7 +16,16 @@ class Command(BaseCommand):
         try:
             self.stdout.write(self.style.WARNING("Trying to seed data..."))
             User.objects.all().delete()
-            seed()
+            Category.objects.all().delete()
+            # Product.objects.all().delete()
+            Camera.objects.all().delete()
+            Rec.objects.all().delete()
+            Apple.objects.all().delete()
+            Tripod.objects.all().delete()
+            Light.objects.all().delete()
+            Cable.objects.all().delete()
+            Convertor.objects.all().delete()
+            seed(self)
         except Exception as e:
             self.stderr.write(f"Failure while trying to seed data: {str(e)}")
             return
@@ -21,7 +33,8 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Done, data seeded successfully"))
 
 
-def seed():
+def create_users(self):
+    self.stdout.write(self.style.HTTP_INFO("1/4 Creating superuser..."))
     """
     Creating superuser
     """
@@ -33,6 +46,7 @@ def seed():
         is_admin=True,
     ).save()
 
+    self.stdout.write(self.style.HTTP_INFO("2/4 Creating manager..."))
     """
     Creating manager (מנהל מחסן)
     """
@@ -47,10 +61,11 @@ def seed():
         is_admin=True
     ).save()
 
+    self.stdout.write(self.style.HTTP_INFO("3/4 Creating moderator..."))
     """
     Creating moderator
     """
-    User.objects.create_user(
+    regular_user_that_will_be_promoted = User.objects.create_user(
         username="moderator",
         password="111111111",
         first_name="Lol",
@@ -58,10 +73,12 @@ def seed():
         email="mod_dht@mail.com",
         identity_num="111111111",
         role="student",
-        mobile_num="0511111111",
-        is_mod=True
-    ).save()
+        mobile_num="0511111111"
+    )
+    regular_user_that_will_be_promoted.save()
+    regular_user_that_will_be_promoted.promote()
 
+    self.stdout.write(self.style.HTTP_INFO("4/4 Creating regular user..."))
     """
     Creating regular user
     """
@@ -75,3 +92,69 @@ def seed():
         role="student",
         mobile_num="0523456789"
     ).save()
+
+    self.stdout.write(self.style.HTTP_NOT_MODIFIED("Users created"))
+
+
+def create_categories(self):
+    self.stdout.write(self.style.HTTP_INFO("Creating categories..."))
+
+    cat_names = ["Camera", "Rec", "Apple", "Tripod",
+                 "Light", "Cable", "Convertor", "Projector"]
+    rec_subcat_names = ["Mic", "PodCast",
+                        "Recordings", "Rec Monitor", "Wireless"]
+
+    categories = [Category(name=name) for name in cat_names if name != "Rec"]
+    Category.objects.bulk_create(categories)
+
+    rec_category = Category.objects.create(name="Rec")
+    rec_subcategories = [Category(name=name, parent=rec_category)
+                         for name in rec_subcat_names]
+    Category.objects.bulk_create(rec_subcategories)
+
+    self.stdout.write(self.style.HTTP_NOT_MODIFIED("Categories created"))
+
+
+def create_products(self):
+    def stock_num():
+        from random import randint
+        return randint(1000000000, 9999999999)
+
+    self.stdout.write(self.style.HTTP_INFO("Creating products..."))
+
+    categories = {
+        "Camera": Camera,
+        "Apple": Apple,
+        "Tripod": Tripod,
+        "Projector": Projector,
+        "Cable": Cable,
+        "Light": Light,
+        "Convertor": Convertor,
+    }
+
+    for category_name, model in categories.items():
+        category = Category.objects.get(name=category_name)
+        for i in range(10):
+            name = f"{category.name} – Item {i}"
+            model.objects.create(
+                category=category,
+                stock_num=stock_num(),
+                name=name
+            )
+
+    for category in Category.objects.get(name="Rec").children.all():
+        for i in range(10):
+            name = f"{category.name} – Item {i}"
+            Rec.objects.create(
+                category=category,
+                stock_num=stock_num(),
+                name=name
+            )
+
+    self.stdout.write(self.style.HTTP_NOT_MODIFIED("Products created"))
+
+
+def seed(self):
+    create_users(self)
+    create_categories(self)
+    create_products(self)
