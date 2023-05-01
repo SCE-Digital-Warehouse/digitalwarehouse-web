@@ -30,7 +30,7 @@ class User(AbstractUser):
                 regex=r"[05][0-9]{8}",
                 message="מספר נייד לא חוקי"
             )])
-    email = models.EmailField()
+    email = models.EmailField()  # TODO: закончить
     role = models.CharField(
         max_length=10,
         choices=Roles.choices,
@@ -40,7 +40,7 @@ class User(AbstractUser):
     is_mod = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["last_name"]
+        ordering = ["-last_name"]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}, {self.identity_num}"
@@ -48,14 +48,14 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse("user", kwargs={"user_id": self.pk})
 
-    def promote(self, **kwargs):
+    def promote(self):
         """Promotes a user to the moderator."""
         try:
             moderator = self.moderator
         except Moderator.DoesNotExist:
             moderator = None
-        if not moderator:
-            moderator = Moderator(user=self, **kwargs)
+        if not moderator and not self.is_admin:
+            moderator = Moderator(user=self)
             moderator.save()
             self.is_mod = True
             self.save(update_fields=["is_mod"])
@@ -70,6 +70,7 @@ class User(AbstractUser):
         else:
             moderator.delete()
             self.is_mod = False
+            self.save(update_fields=["is_mod"])
 
 
 class Moderator(models.Model):
@@ -87,10 +88,10 @@ class Moderator(models.Model):
     date_promoted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.user.__str__(self)
+        return str(self.user)
 
     def get_absolute_url(self):
-        return self.user.get_absolute_url(self)
+        return self.user.get_absolute_url()
 
 
 class Category(models.Model):
