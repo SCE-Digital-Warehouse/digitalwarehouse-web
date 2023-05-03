@@ -30,7 +30,7 @@ class User(AbstractUser):
                 regex=r"[05][0-9]{8}",
                 message="מספר נייד לא חוקי"
             )])
-    email = models.EmailField()  # TODO: закончить
+    email = models.EmailField(blank=False)
     role = models.CharField(
         max_length=10,
         choices=Roles.choices,
@@ -40,7 +40,7 @@ class User(AbstractUser):
     is_mod = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["-last_name"]
+        ordering = ["first_name", "last_name"]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}, {self.identity_num}"
@@ -109,6 +109,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "categories"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -164,6 +165,7 @@ class Product(models.Model):
 
 class Request(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
+    # product = models.ForeignKey(Product, on_delete=models.PROTECT)
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
     rec = models.ForeignKey("Rec", on_delete=models.PROTECT)
     apple = models.ForeignKey("Apple", on_delete=models.PROTECT)
@@ -177,6 +179,7 @@ class Request(models.Model):
     exp_date_to_return = models.DateTimeField()
 
     class Meta:
+        # unique_together = ("user", "product")
         unique_together = [
             ["user", "camera"],
             ["user", "rec"],
@@ -187,8 +190,8 @@ class Request(models.Model):
             ["user", "convertor"],
             ["user", "projector"],
         ]
-        ordering = ["date_requested"]
-        # Request.objects.latest() -> the earliest date of date_requested
+        ordering = ["date_requested", "user"]
+        # usage: Request.objects.latest() -> the earliest date of date_requested
         get_latest_by = ["date_requested"]
 
     def save(self, *args, **kwargs):
@@ -209,7 +212,6 @@ class Request(models.Model):
 
 class Borrowing(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    # product = models.ForeignKey(Product, on_delete=models.PROTECT)
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
     rec = models.ForeignKey("Rec", on_delete=models.PROTECT)
     apple = models.ForeignKey("Apple", on_delete=models.PROTECT)
@@ -223,7 +225,6 @@ class Borrowing(models.Model):
     returned_at = models.DateTimeField()
 
     class Meta:
-        # unique_together = ("user", "product")
         unique_together = [
             ["user", "camera"],
             ["user", "rec"],
@@ -234,12 +235,11 @@ class Borrowing(models.Model):
             ["user", "convertor"],
             ["user", "projector"],
         ]
-        ordering = ["date_borrowed"]
+        ordering = ["date_borrowed", "user"]
         get_latest_by = ["date_to_return"]
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            # self.product.increase_times_borrowed()
             for field_name in [
                 "camera", "rec", "apple", "tripod",
                 "light", "cable", "convertor", "projector"
@@ -256,7 +256,6 @@ class Borrowing(models.Model):
 
 class Repair(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    # product = models.ForeignKey(Product, on_delete=models.PROTECT)
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
     rec = models.ForeignKey("Rec", on_delete=models.PROTECT)
     apple = models.ForeignKey("Apple", on_delete=models.PROTECT)
@@ -279,11 +278,10 @@ class Repair(models.Model):
             ["user", "convertor"],
             ["user", "projector"],
         ]
-        ordering = ["broke_at"]
+        ordering = ["broke_at", "user"]
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            # self.product.increase_times_broken()
             for field_name in [
                 "camera", "rec", "apple", "tripod",
                 "light", "cable", "convertor", "projector"
