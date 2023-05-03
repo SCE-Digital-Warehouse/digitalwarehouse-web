@@ -36,6 +36,7 @@ class User(AbstractUser):
         choices=Roles.choices,
         blank=True
     )
+    is_first_login = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_mod = models.BooleanField(default=False)
 

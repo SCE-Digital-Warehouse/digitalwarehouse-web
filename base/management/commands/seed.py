@@ -44,6 +44,7 @@ def create_users(self):
         is_superuser=True,
         is_staff=True,
         is_admin=True,
+        is_first_login=False,
     ).save()
 
     self.stdout.write(self.style.HTTP_INFO("2/4 Creating manager..."))
