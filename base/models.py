@@ -167,15 +167,23 @@ class Product(models.Model):
 class Request(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     # product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
-    rec = models.ForeignKey("Rec", on_delete=models.PROTECT)
-    apple = models.ForeignKey("Apple", on_delete=models.PROTECT)
-    tripod = models.ForeignKey("Tripod", on_delete=models.PROTECT)
-    light = models.ForeignKey("Light", on_delete=models.PROTECT)
-    cable = models.ForeignKey("Cable", on_delete=models.PROTECT)
-    convertor = models.ForeignKey("Convertor", on_delete=models.PROTECT)
-    projector = models.ForeignKey("Projector", on_delete=models.PROTECT)
-    date_requested = models.DateTimeField(auto_now_add=True)
+    camera = models.ForeignKey(
+        "Camera", on_delete=models.PROTECT, null=True, blank=True)
+    rec = models.ForeignKey(
+        "Rec", on_delete=models.PROTECT, null=True, blank=True)
+    apple = models.ForeignKey(
+        "Apple", on_delete=models.PROTECT, null=True, blank=True)
+    tripod = models.ForeignKey(
+        "Tripod", on_delete=models.PROTECT, null=True, blank=True)
+    light = models.ForeignKey(
+        "Light", on_delete=models.PROTECT, null=True, blank=True)
+    cable = models.ForeignKey(
+        "Cable", on_delete=models.PROTECT, null=True, blank=True)
+    convertor = models.ForeignKey(
+        "Convertor", on_delete=models.PROTECT, null=True, blank=True)
+    projector = models.ForeignKey(
+        "Projector", on_delete=models.PROTECT, null=True, blank=True)
+    date_requested = models.DateTimeField(auto_now_add=True, blank=True)
     exp_date_to_borrow = models.DateTimeField()
     exp_date_to_return = models.DateTimeField()
 
@@ -212,16 +220,26 @@ class Request(models.Model):
 
 
 class Borrowing(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
-    camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
-    rec = models.ForeignKey("Rec", on_delete=models.PROTECT)
-    apple = models.ForeignKey("Apple", on_delete=models.PROTECT)
-    tripod = models.ForeignKey("Tripod", on_delete=models.PROTECT)
-    light = models.ForeignKey("Light", on_delete=models.PROTECT)
-    cable = models.ForeignKey("Cable", on_delete=models.PROTECT)
-    convertor = models.ForeignKey("Convertor", on_delete=models.PROTECT)
-    projector = models.ForeignKey("Projector", on_delete=models.PROTECT)
-    date_borrowed = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        "User", on_delete=models.CASCADE, null=True, blank=True)
+    camera = models.ForeignKey(
+        "Camera", on_delete=models.PROTECT, null=True, blank=True)
+    rec = models.ForeignKey(
+        "Rec", on_delete=models.PROTECT, null=True, blank=True)
+    apple = models.ForeignKey(
+        "Apple", on_delete=models.PROTECT, null=True, blank=True)
+    tripod = models.ForeignKey(
+        "Tripod", on_delete=models.PROTECT, null=True, blank=True)
+    light = models.ForeignKey(
+        "Light", on_delete=models.PROTECT, null=True, blank=True)
+    cable = models.ForeignKey(
+        "Cable", on_delete=models.PROTECT, null=True, blank=True)
+    convertor = models.ForeignKey(
+        "Convertor", on_delete=models.PROTECT, null=True, blank=True)
+    projector = models.ForeignKey(
+        "Projector", on_delete=models.PROTECT, null=True, blank=True)
+    date_borrowed = models.DateTimeField(
+        auto_now_add=True, null=True, blank=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField()
 
@@ -257,14 +275,22 @@ class Borrowing(models.Model):
 
 class Repair(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
-    rec = models.ForeignKey("Rec", on_delete=models.PROTECT)
-    apple = models.ForeignKey("Apple", on_delete=models.PROTECT)
-    tripod = models.ForeignKey("Tripod", on_delete=models.PROTECT)
-    light = models.ForeignKey("Light", on_delete=models.PROTECT)
-    cable = models.ForeignKey("Cable", on_delete=models.PROTECT)
-    projector = models.ForeignKey("Projector", on_delete=models.PROTECT)
-    convertor = models.ForeignKey("Convertor", on_delete=models.PROTECT)
+    camera = models.ForeignKey(
+        "Camera", on_delete=models.PROTECT, null=True, blank=True)
+    rec = models.ForeignKey(
+        "Rec", on_delete=models.PROTECT, null=True, blank=True)
+    apple = models.ForeignKey(
+        "Apple", on_delete=models.PROTECT, null=True, blank=True)
+    tripod = models.ForeignKey(
+        "Tripod", on_delete=models.PROTECT, null=True, blank=True)
+    light = models.ForeignKey(
+        "Light", on_delete=models.PROTECT, null=True, blank=True)
+    cable = models.ForeignKey(
+        "Cable", on_delete=models.PROTECT, null=True, blank=True)
+    projector = models.ForeignKey(
+        "Projector", on_delete=models.PROTECT, null=True, blank=True)
+    convertor = models.ForeignKey(
+        "Convertor", on_delete=models.PROTECT, null=True, blank=True)
     broke_at = models.DateTimeField(auto_now_add=True)
     repaired_at = models.DateTimeField()
 
