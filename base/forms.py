@@ -21,6 +21,7 @@ class LoginUserForm(AuthenticationForm):
         self.error_messages["invalid_login"] = (
             "שם משתמש/ת ו/או סיסמה לא נכונים")
 
+    # @deprecated(reason="This function is no longer used.")
     def change_password_is_required(self):
         username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
