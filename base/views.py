@@ -16,7 +16,7 @@ def index(request):
     context = {"user_type": user_type}
     if not user.is_first_login:
         if (user_type == "user"):
-            return HttpResponse("User Panel is base/user_panel.html")
+            return render(request,"base/user_panel.html",context)
         if (user_type == "moderator"):
             return HttpResponse("Moderator Panel is base/moderator_panel.html")
         if (user_type == "admin"):
@@ -78,9 +78,8 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     context = {"user_type": user_type}
-    if user_type != "admin":
-        return render(request, "base/borrowings.html", context)
-    return redirect("home")
+    return render(request, "base/borrowings.html", context)
+
 
 
 @login_required(login_url=LOGIN_URL)
