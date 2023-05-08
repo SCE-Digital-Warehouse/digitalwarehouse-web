@@ -14,7 +14,8 @@ from .models import *
 def index(request):
     user = request.user
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     if not user.is_first_login:
         if (user_type == "user"):
             return HttpResponse("User Panel is base/user_panel.html")
@@ -78,14 +79,16 @@ def change_password(request):
 @login_required(login_url=LOGIN_URL)
 def borrowings(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     return render(request, "base/borrowings.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
 def users(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     if user_type == "admin":
         return render(request, "base/users.html", context)
     return redirect("home")
@@ -94,7 +97,8 @@ def users(request):
 @login_required(login_url=LOGIN_URL)
 def show_user(request, user_id):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     if user_type == "admin":
         # -------------------- TESTING URL ADDRESSES --------------------
         try:
@@ -109,21 +113,24 @@ def show_user(request, user_id):
 @login_required(login_url=LOGIN_URL)
 def catalog(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     return render(request, "base/catalog.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
 def personal_det(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     return render(request, "base/personal_det.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
 def special_requests(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     if user_type == "admin":
         return render(request, "base/special_requests.html", context)
     return redirect("home")
@@ -132,14 +139,16 @@ def special_requests(request):
 @login_required(login_url=LOGIN_URL)
 def requests(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     return render(request, "base/requests.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
 def statistics(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     if user_type == "admin":
         return render(request, "base/statistics.html", context)
     return redirect("home")
@@ -148,24 +157,30 @@ def statistics(request):
 @login_required(login_url=LOGIN_URL)
 def contact_us(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    categories = Category.objects.all()
+    context = {"user_type": user_type, "categories": categories}
     return render(request, "base/contact_us.html", context)
 
 @login_required(login_url=LOGIN_URL)
 def add_category(request):
     categories = Category.objects.all()
-    if request.method == 'POST':
-        cat_parent = request.POST.get('cat_parent')
-        if cat_parent == 'ללא קטגוריה אב':
-            category = Category.objects.create(
-                name=request.POST.get('cat_name'),
-                parent=Category.objects.get(name=cat_parent),
-                image_url=request.POST.get('cat_image')
-            )
-        else:
-            category = Category.objects.create(
-                name=request.POST.get('cat_name'),
-                image_url=request.POST.get('cat_image')
-            )
-    context = {"categories": categories}
-    return render(request, "base/add_category.html", context)
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        if request.method == 'POST':
+            cat_parent = request.POST.get('cat_parent')
+            if cat_parent != 'ללא קטגוריה אב':
+                category = Category.objects.create(
+                    name=request.POST.get('cat_name'),
+                    parent=Category.objects.get(name=cat_parent),
+                    image_url=request.POST.get('cat_image')
+                )
+            else:
+                category = Category.objects.create(
+                    name=request.POST.get('cat_name'),
+                    image_url=request.POST.get('cat_image')
+                )
+        context = {"categories": categories, "user_type": user_type}
+        return render(request, "base/add_category.html", context)
+    else:
+        return redirect('home')
+

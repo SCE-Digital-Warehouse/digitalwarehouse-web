@@ -1,30 +1,24 @@
-<ul class="side-bar">
-    <li class="side-bar-link">
-        <a href="">מצלמות</a>
-    </li>
-    <li class="side-bar-link">
-        <a href=""> מוצרי הקלטות</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">מוצרי אפאל</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">טריפוד</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">פרויקטורים</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">כבלים</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">מנורות</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">מתאמים</a>
-    </li>
+<div class="side-bar">
+    <div class="menu">
+        <div class="item">
+            {% for category in categories %}
+                {% if category.children.count != 0 %}
+                    <a class="sub-btn">{{ category }}<i class="fas fa-angle-right dropdown"></i></a>
+                    <div class="sub-menu">
+                        {% for sub_cat in category.children.all %}
+                            <a href="#" class="sub-item">{{ sub_cat }}</a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <a class="sub-btn">{{ category }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if user_type == "admin" %}
+            <div class="item">
+                <a class="new-cat" href="{% url "add_category" %}">קטגוריה חדשה</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
 
-    <li class="new-cat">
-        <a href="{% url "add_category" %}">קטגוריה חדשה</a>
-    </li>
-</ul>

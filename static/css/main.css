@@ -11,6 +11,12 @@ html {
     height: 100%;
 }
 
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent; /* make scrollbar transparent */
+}
+
+
 body {
     background-color: var(--color-bg);
     min-height: 100vh;
@@ -186,8 +192,10 @@ NAVBAR
 ==================*/
 
 .header {
+    position: fixed;
+    top: 0;
     height: 80px;
-    /*margin-inline-start: 135px;*/
+    width: 94.8%;
     background: #fff;
     border: 1px solid #efefef;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
@@ -226,36 +234,68 @@ NAVBAR
 SIDE BAR
 ==================*/
 .side-bar {
+    position: fixed;
+    top: 7.2em;
+    right: 0;
     list-style-type: none;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
     margin: 0;
     padding: 0;
-    width: 12rem;
-    height: 100%;
+    width: 13rem;
+    height: 100vh;
     background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
-    float: right;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-.side-bar a {
+.side-bar .menu{
+    width: 100%;
+    margin: 10px 0 50px 0;
+}
+
+.side-bar .menu .item{
+    position: relative;
+    cursor: pointer;
+}
+
+
+.side-bar .menu .item a {
     display: block;
     padding: 8px 16px;
     text-decoration: none;
-    height: 4rem;
     font-size: 1.5em;
     font-weight: 700;
     color: #fff;
-    float: right;
+    float: left;
+    height: 4rem;
+    width: 100%;
 }
 
-.side-bar a:hover {
+.side-bar a .dropdown {
+    position: absolute;
+    right: 20px;
+    margin: 5px;
+    transition: 0.3s ease;
+}
+
+.side-bar .menu .item a:hover {
     background-color: #ff3399;
     width: 100%;
-    float: right;
+    transition: 0.3s ease;
 }
 
-.new-cat {
+.side-bar .menu .item .sub-menu{
+    display: none;
+}
+
+.side-bar .menu .item .sub-menu a{
+    padding-left: 30px;
+}
+
+.side-bar .menu .new-cat {
     position: fixed;
     bottom: 0;
+    background-color: #33ccff;
 }
 
 
@@ -270,7 +310,7 @@ HOME PAGE
     column-gap: 5px;
     row-gap: 1px;
     height: 50em;
-    margin: 15px;
+    margin: 150px;
 }
 
 .home-card {
@@ -311,7 +351,7 @@ REQUESTS PAGE | BORROWINGS PAGE | SPECIAL REQUESTS PAGE
     float: right;
     background-color: #fff;
     border-radius: 10px;
-    margin: 40px 40px 0 0;
+    margin: 170px 230px 200px 200px;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 
@@ -322,12 +362,13 @@ PERSONAL INFO PAGE
 .personal-info {
     width: 80em;
     height: 45em;
-    margin: 50px;
+    margin: 150px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     float: right;
+
 }
 
 .personal-info-form {
@@ -379,7 +420,7 @@ STATISTICS PAGE
 .statistics-page {
     justify-content: center;
     display: grid;
-    margin: 50px;
+    margin: 150px;
     grid: repeat(2, 250px) / auto-flow 400px;
 }
 
@@ -431,7 +472,7 @@ ADD CATEGORY PAGE
     height: 30em;
     background-color: #fff;
     border-radius: 10px;
-    margin: auto;
+    margin: 200px 100px 200px 600px;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 

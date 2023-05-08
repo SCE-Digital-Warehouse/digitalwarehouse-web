@@ -42,5 +42,5 @@ urlpatterns = [
     path("statistics/", statistics, name="statistics"),
     path("contact_us/", contact_us, name="contact_us"),
 
-    path("add_category/", add_category, name="add_category"),
+    path("add-category/", add_category, name="add_category"),
 ]
