@@ -137,13 +137,10 @@ class Product(models.Model):
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     stock_num = models.CharField(max_length=30, unique=True)
     name = models.CharField(max_length=20)
-    comments = models.TextField(max_length=200)
+    comments = models.TextField(max_length=200, null=True, blank=True)
     times_borrowed = models.IntegerField(default=0)
     times_broken = models.IntegerField(default=0)
     is_available = models.BooleanField(default=True)
-
-    class Meta:
-        abstract = True
 
     def __str__(self):
         return f"{self.stock_num} {self.name}"
@@ -166,45 +163,20 @@ class Product(models.Model):
 
 class Request(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    # product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    camera = models.ForeignKey(
-        "Camera", on_delete=models.PROTECT, null=True, blank=True)
-    rec = models.ForeignKey(
-        "Rec", on_delete=models.PROTECT, null=True, blank=True)
-    apple = models.ForeignKey(
-        "Apple", on_delete=models.PROTECT, null=True, blank=True)
-    tripod = models.ForeignKey(
-        "Tripod", on_delete=models.PROTECT, null=True, blank=True)
-    light = models.ForeignKey(
-        "Light", on_delete=models.PROTECT, null=True, blank=True)
-    cable = models.ForeignKey(
-        "Cable", on_delete=models.PROTECT, null=True, blank=True)
-    convertor = models.ForeignKey(
-        "Convertor", on_delete=models.PROTECT, null=True, blank=True)
-    projector = models.ForeignKey(
-        "Projector", on_delete=models.PROTECT, null=True, blank=True)
-    comments = models.TextField(max_length=200)
+    product = models.ForeignKey(
+        "Product", on_delete=models.PROTECT)
+    comments = models.TextField(max_length=200, null=True, blank=True)
     date_requested = models.DateTimeField(auto_now_add=True, blank=True)
     exp_date_to_borrow = models.DateTimeField()
     exp_date_to_return = models.DateTimeField()
 
     class Meta:
-        # unique_together = ("user", "product")
-        unique_together = [
-            ["user", "camera"],
-            ["user", "rec"],
-            ["user", "apple"],
-            ["user", "tripod"],
-            ["user", "light"],
-            ["user", "cable"],
-            ["user", "convertor"],
-            ["user", "projector"],
-        ]
+        unique_together = ("user", "product")
         ordering = ["date_requested", "user"]
         # usage: Request.objects.latest() -> the earliest date of date_requested
         get_latest_by = ["date_requested"]
 
-    def save(self, *args, **kwargs):
+    """ def save(self, *args, **kwargs):
         if self.pk is None:  # determines whether the instance is new
             for field_name in [
                 "camera", "rec", "apple", "tripod",
@@ -217,141 +189,51 @@ class Request(models.Model):
                 else:
                     product.is_available = False
                     break
-        super(Product, self).save(*args, **kwargs)
+        super(Product, self).save(*args, **kwargs) """
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:  # determines whether the instance is new
+            self.product.is_available = False
+            self.product.save()
+        super(Request, self).save(*args, **kwargs)
 
 
 class Borrowing(models.Model):
     user = models.ForeignKey(
         "User", on_delete=models.CASCADE, null=True, blank=True)
-    camera = models.ForeignKey(
-        "Camera", on_delete=models.PROTECT, null=True, blank=True)
-    rec = models.ForeignKey(
-        "Rec", on_delete=models.PROTECT, null=True, blank=True)
-    apple = models.ForeignKey(
-        "Apple", on_delete=models.PROTECT, null=True, blank=True)
-    tripod = models.ForeignKey(
-        "Tripod", on_delete=models.PROTECT, null=True, blank=True)
-    light = models.ForeignKey(
-        "Light", on_delete=models.PROTECT, null=True, blank=True)
-    cable = models.ForeignKey(
-        "Cable", on_delete=models.PROTECT, null=True, blank=True)
-    convertor = models.ForeignKey(
-        "Convertor", on_delete=models.PROTECT, null=True, blank=True)
-    projector = models.ForeignKey(
-        "Projector", on_delete=models.PROTECT, null=True, blank=True)
+    product = models.ForeignKey(
+        "Product", on_delete=models.PROTECT)
     date_borrowed = models.DateTimeField(
         auto_now_add=True, null=True, blank=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField()
 
     class Meta:
-        unique_together = [
-            ["user", "camera"],
-            ["user", "rec"],
-            ["user", "apple"],
-            ["user", "tripod"],
-            ["user", "light"],
-            ["user", "cable"],
-            ["user", "convertor"],
-            ["user", "projector"],
-        ]
+        unique_together = ("user", "product")
         ordering = ["date_borrowed", "user"]
         get_latest_by = ["date_to_return"]
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            for field_name in [
-                "camera", "rec", "apple", "tripod",
-                "light", "cable", "convertor", "projector"
-            ]:
-                try:
-                    product = getattr(self, field_name)
-                except AttributeError:
-                    pass
-                else:
-                    product.increase_times_borrowed()
-                    break
-        super(Product, self).save(*args, **kwargs)
+            self.increase_times_borrowed()
+            self.product.save()
+        super(Borrowing, self).save(*args, **kwargs)
 
 
 class Repair(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    camera = models.ForeignKey(
-        "Camera", on_delete=models.PROTECT, null=True, blank=True)
-    rec = models.ForeignKey(
-        "Rec", on_delete=models.PROTECT, null=True, blank=True)
-    apple = models.ForeignKey(
-        "Apple", on_delete=models.PROTECT, null=True, blank=True)
-    tripod = models.ForeignKey(
-        "Tripod", on_delete=models.PROTECT, null=True, blank=True)
-    light = models.ForeignKey(
-        "Light", on_delete=models.PROTECT, null=True, blank=True)
-    cable = models.ForeignKey(
-        "Cable", on_delete=models.PROTECT, null=True, blank=True)
-    projector = models.ForeignKey(
-        "Projector", on_delete=models.PROTECT, null=True, blank=True)
-    convertor = models.ForeignKey(
-        "Convertor", on_delete=models.PROTECT, null=True, blank=True)
-    comments = models.TextField(max_length=200)
+    product = models.ForeignKey(
+        "Product", on_delete=models.PROTECT)
+    comments = models.TextField(max_length=200, null=True, blank=True)
     broke_at = models.DateTimeField(auto_now_add=True)
     repaired_at = models.DateTimeField()
 
     class Meta:
-        unique_together = [
-            ["user", "camera"],
-            ["user", "rec"],
-            ["user", "apple"],
-            ["user", "tripod"],
-            ["user", "light"],
-            ["user", "cable"],
-            ["user", "convertor"],
-            ["user", "projector"],
-        ]
+        unique_together = ("user", "product")
         ordering = ["broke_at", "user"]
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            for field_name in [
-                "camera", "rec", "apple", "tripod",
-                "light", "cable", "convertor", "projector"
-            ]:
-                try:
-                    product = getattr(self, field_name)
-                except AttributeError:
-                    pass
-                else:
-                    product.increase_times_broken()
-                    break
-        super(Product, self).save(*args, **kwargs)
-
-
-class Camera(Product):
-    pass
-
-
-class Rec(Product):
-    pass
-
-
-class Apple(Product):
-    pass
-
-
-class Tripod(Product):
-    pass
-
-
-class Light(Product):
-    pass
-
-
-class Cable(Product):
-    pass
-
-
-class Convertor(Product):
-    pass
-
-
-class Projector(Product):
-    pass
+            self.increase_times_borrowed()
+            self.product.save()
+        super(Repair, self).save(*args, **kwargs)
