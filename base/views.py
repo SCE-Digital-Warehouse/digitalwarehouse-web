@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from base.models import Borrowing, Moderator, Repair, Request
+from base.models import Borrowing, Moderator, Product, Repair, Request
 
 from config.settings import LOGIN_URL
-from .utils import get_categories, get_user_type
+from .utils import get_user_type
 from .forms import *
 
 
@@ -144,8 +144,7 @@ def statistics(request):
     total_requests = Request.objects.count()
     total_borrowings = Borrowing.objects.count()
     total_in_repair = Repair.objects.count()
-    total_products = sum(category.objects.count()
-                         for category in get_categories())
+    total_products = Product.objects.count()
     context = {
         "user_type": user_type,
         "total_users": total_users,

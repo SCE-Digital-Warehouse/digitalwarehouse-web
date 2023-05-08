@@ -18,17 +18,3 @@ def upload_to_path(instance, filename):
     random_str = "".join(random.choice(string.ascii_lowercase)
                          for _ in range(5))
     return f"images/{instance._meta.verbose_name_plural}/{filename}/{random_str}.{extension}"
-
-
-def get_categories():
-    from base.models import Camera, Apple, Tripod, Projector, Cable, Light, Convertor, Rec
-    return [
-        Camera,
-        Apple,
-        Tripod,
-        Projector,
-        Cable,
-        Light,
-        Convertor,
-        Rec,
-    ]
