@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from config.settings import LOGIN_URL
 from .utils import get_user_type
 from .forms import *
+from .models import *
 
 
 @login_required(login_url=LOGIN_URL)
@@ -78,9 +79,7 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     context = {"user_type": user_type}
-    if user_type != "admin":
-        return render(request, "base/borrowings.html", context)
-    return redirect("home")
+    return render(request, "base/borrowings.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -151,3 +150,22 @@ def contact_us(request):
     user_type = get_user_type(request)
     context = {"user_type": user_type}
     return render(request, "base/contact_us.html", context)
+
+@login_required(login_url=LOGIN_URL)
+def add_category(request):
+    categories = Category.objects.all()
+    if request.method == 'POST':
+        cat_parent = request.POST.get('cat_parent')
+        if cat_parent == 'ללא קטגוריה אב':
+            category = Category.objects.create(
+                name=request.POST.get('cat_name'),
+                parent=Category.objects.get(name=cat_parent),
+                image_url=request.POST.get('cat_image')
+            )
+        else:
+            category = Category.objects.create(
+                name=request.POST.get('cat_name'),
+                image_url=request.POST.get('cat_image')
+            )
+    context = {"categories": categories}
+    return render(request, "base/add_category.html", context)

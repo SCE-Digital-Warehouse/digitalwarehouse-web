@@ -253,6 +253,13 @@ SIDE BAR
     float: right;
 }
 
+.new-cat {
+    position: fixed;
+    bottom: 0;
+}
+
+
+
 /*==================
 HOME PAGE
 ==================*/
@@ -413,4 +420,58 @@ CONTACT_US PAGE
     background-color: #33ccff;
     color: #fff;
     border-radius: 10px;
+}
+
+/*==================
+ADD CATEGORY PAGE
+==================*/
+
+.add_category {
+    width: 35%;
+    height: 30em;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: auto;
+    box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+}
+
+.add_category form{
+    margin: 40px;
+    direction: rtl;
+    font-size: 30px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-category-form label{
+    display: block;
+    margin-bottom: 10px;
+    padding-top: 20px;
+}
+
+.add-category-form input[type="text"],
+.add-category-form select {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+.add-category-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.add-category-form input[type="file"] {
+    font-size: 20px;
 }
