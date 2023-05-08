@@ -16,7 +16,7 @@ def index(request):
     context = {"user_type": user_type}
     if not user.is_first_login:
         if (user_type == "user"):
-            return render(request,"base/user_panel.html",context)
+            return render(request, "base/user_panel.html", context)
         if (user_type == "moderator"):
             return HttpResponse("Moderator Panel is base/moderator_panel.html")
         if (user_type == "admin"):
@@ -79,7 +79,6 @@ def borrowings(request):
     user_type = get_user_type(request)
     context = {"user_type": user_type}
     return render(request, "base/borrowings.html", context)
-
 
 
 @login_required(login_url=LOGIN_URL)
