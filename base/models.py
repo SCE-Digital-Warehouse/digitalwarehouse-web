@@ -30,7 +30,7 @@ class User(AbstractUser):
                 regex=r"[05][0-9]{8}",
                 message="מספר נייד לא חוקי"
             )])
-    email = models.EmailField(blank=False)
+    email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=10,
         choices=Roles.choices,
@@ -183,6 +183,7 @@ class Request(models.Model):
         "Convertor", on_delete=models.PROTECT, null=True, blank=True)
     projector = models.ForeignKey(
         "Projector", on_delete=models.PROTECT, null=True, blank=True)
+    comments = models.TextField(max_length=200)
     date_requested = models.DateTimeField(auto_now_add=True, blank=True)
     exp_date_to_borrow = models.DateTimeField()
     exp_date_to_return = models.DateTimeField()
@@ -291,6 +292,7 @@ class Repair(models.Model):
         "Projector", on_delete=models.PROTECT, null=True, blank=True)
     convertor = models.ForeignKey(
         "Convertor", on_delete=models.PROTECT, null=True, blank=True)
+    comments = models.TextField(max_length=200)
     broke_at = models.DateTimeField(auto_now_add=True)
     repaired_at = models.DateTimeField()
 
