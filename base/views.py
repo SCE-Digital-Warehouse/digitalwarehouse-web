@@ -3,9 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from base.models import Borrowing, Moderator, Repair, Request
 
 from config.settings import LOGIN_URL
-from .utils import get_user_type
+from .utils import get_categories, get_user_type
 from .forms import *
 
 
@@ -138,7 +139,22 @@ def requests(request):
 @login_required(login_url=LOGIN_URL)
 def statistics(request):
     user_type = get_user_type(request)
-    context = {"user_type": user_type}
+    total_users = User.objects.count()
+    total_mods = Moderator.objects.count()
+    total_requests = Request.objects.count()
+    total_borrowings = Borrowing.objects.count()
+    total_in_repair = Repair.objects.count()
+    total_products = sum(category.objects.count()
+                         for category in get_categories())
+    context = {
+        "user_type": user_type,
+        "total_users": total_users,
+        "total_mods": total_mods,
+        "total_requests": total_requests,
+        "total_borrowings": total_borrowings,
+        "total_products": total_products,
+        "total_in_repair": total_in_repair,
+    }
     if user_type == "admin":
         return render(request, "base/statistics.html", context)
     return redirect("home")
