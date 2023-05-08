@@ -17,14 +17,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING("Trying to seed data..."))
             User.objects.all().delete()
             Category.objects.all().delete()
-            # Product.objects.all().delete()
-            Camera.objects.all().delete()
-            Rec.objects.all().delete()
-            Apple.objects.all().delete()
-            Tripod.objects.all().delete()
-            Light.objects.all().delete()
-            Cable.objects.all().delete()
-            Convertor.objects.all().delete()
+            Product.objects.all().delete()
             seed(self)
         except Exception as e:
             self.stderr.write(f"Failure while trying to seed data: {str(e)}")
@@ -123,7 +116,7 @@ def create_products(self):
 
     self.stdout.write(self.style.HTTP_INFO("Creating products..."))
 
-    categories = {
+    """ categories = {
         "Camera": Camera,
         "Apple": Apple,
         "Tripod": Tripod,
@@ -131,13 +124,14 @@ def create_products(self):
         "Cable": Cable,
         "Light": Light,
         "Convertor": Convertor,
-    }
+    } """
 
-    for category_name, model in categories.items():
-        category = Category.objects.get(name=category_name)
+    categories = Category.objects.all()
+
+    for category in categories:
         for i in range(10):
-            name = f"{category.name} – Item {i}"
-            model.objects.create(
+            name = f"{category} – Item {i + 1}"
+            Product.objects.create(
                 category=category,
                 stock_num=stock_num(),
                 name=name
@@ -145,8 +139,8 @@ def create_products(self):
 
     for category in Category.objects.get(name="Rec").children.all():
         for i in range(10):
-            name = f"{category.name} – Item {i}"
-            Rec.objects.create(
+            name = f"{category.name} – Item {i + 1}"
+            Product.objects.create(
                 category=category,
                 stock_num=stock_num(),
                 name=name
