@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="borrowings-page-admin">
+        <table>
+            <caption>
+                {{ category.name }}
+            </caption>
+            <colgroup>
+                <col span="8">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>כמות אנשים בתור</th>
+                    <th>בהשאלה</th>
+                    <th>שפ המוצר</th>
+                    <th> מקט</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1, Column 1</td>
+                    <td>Row 1, Column 2</td>
+                    <td>Row 1, Column 3</td>
+                    <td>Row 1, Column 4</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

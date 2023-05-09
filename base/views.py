@@ -168,19 +168,36 @@ def add_category(request):
     if user_type == "admin":
         if request.method == 'POST':
             cat_parent = request.POST.get('cat_parent')
-            if cat_parent != 'ללא קטגוריה אב':
-                category = Category.objects.create(
-                    name=request.POST.get('cat_name'),
-                    parent=Category.objects.get(name=cat_parent),
-                    image_url=request.POST.get('cat_image')
-                )
-            else:
-                category = Category.objects.create(
-                    name=request.POST.get('cat_name'),
-                    image_url=request.POST.get('cat_image')
-                )
+            try:
+                if cat_parent != 'ללא קטגוריה אב':
+                    category = Category.objects.create(
+                        name=request.POST.get('cat_name'),
+                        parent=Category.objects.get(name=cat_parent),
+                        image_url=request.POST.get('cat_image')
+                    )
+                else:
+                    category = Category.objects.create(
+                        name=request.POST.get('cat_name'),
+                        image_url=request.POST.get('cat_image')
+                    )
+            except Exception:
+                return redirect('add_category')
         context = {"categories": categories, "user_type": user_type}
         return render(request, "base/add_category.html", context)
     else:
         return redirect('home')
+
+@login_required(login_url=LOGIN_URL)
+def show_category(request, cat_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+
+    try:
+        category = Category.objects.get(pk=cat_id)
+    except Exception:
+        return redirect("home", permanent=True)
+
+    context = {"categories": categories, "user_type": user_type, "category": category}
+    return render(request, "base/category_products.html", context)
+
 

@@ -3,20 +3,21 @@
         <div class="item">
             {% for category in categories %}
                 {% if category.children.count != 0 %}
-                    <a class="sub-btn">{{ category }}<i class="fas fa-angle-right dropdown"></i></a>
+                    <a class="cat-link" href="{% url "show_category" category.id %}">{{ category.name }}</a>
+                    <a class="sub-btn"><i class="fas fa-angle-right dropdown"></i></a>
                     <div class="sub-menu">
                         {% for sub_cat in category.children.all %}
-                            <a href="#" class="sub-item">{{ sub_cat }}</a>
+                            <a class="cat-link" href="{% url 'show_category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
                         {% endfor %}
                     </div>
                 {% else %}
-                    <a class="sub-btn">{{ category }}</a>
+                    <a class="cat-link" href="{% url "show_category" category.id %}">{{ category.name }}</a>
                 {% endif %}
             {% endfor %}
         </div>
         {% if user_type == "admin" %}
             <div class="item">
-                <a class="new-cat" href="{% url "add_category" %}">קטגוריה חדשה</a>
+                <a class="cat-link new-cat" href="{% url "add_category" %}">קטגוריה חדשה</a>
             </div>
         {% endif %}
     </div>

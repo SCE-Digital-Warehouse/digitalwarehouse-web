@@ -259,7 +259,7 @@ SIDE BAR
 }
 
 
-.side-bar .menu .item a {
+.side-bar .menu .item .cat-link {
     display: block;
     padding: 8px 16px;
     text-decoration: none;
@@ -278,10 +278,8 @@ SIDE BAR
     transition: 0.3s ease;
 }
 
-.side-bar .menu .item a:hover {
+.side-bar .menu .item .cat-link:hover {
     background-color: #ff3399;
-    width: 100%;
-    transition: 0.3s ease;
 }
 
 .side-bar .menu .item .sub-menu{
@@ -290,6 +288,21 @@ SIDE BAR
 
 .side-bar .menu .item .sub-menu a{
     padding-left: 30px;
+}
+
+.sub-btn{
+    position: relative;
+    top: -70px;
+    left: -20px;
+    height: 10px;
+    float: right;
+    width: 20px;
+    margin: 0;
+    font-size: 25px;
+}
+
+.sub-btn:hover {
+    color: white;
 }
 
 .side-bar .menu .new-cat {

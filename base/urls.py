@@ -43,4 +43,5 @@ urlpatterns = [
     path("contact_us/", contact_us, name="contact_us"),
 
     path("add-category/", add_category, name="add_category"),
+    path("category/<int:cat_id>/", show_category, name="show_category")
 ]
