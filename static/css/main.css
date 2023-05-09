@@ -242,7 +242,7 @@ SIDE BAR
     margin: 0;
     padding: 0;
     width: 13rem;
-    height: 100vh;
+    height: 80vh;
     background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
     overflow-y: scroll;
     overflow-x: hidden;
@@ -358,7 +358,8 @@ REQUESTS PAGE | BORROWINGS PAGE | SPECIAL REQUESTS PAGE
 .requests-page-admin,
 .user-list,
 .special_requests-page-admin,
-.contact_us-page{
+.contact_us-page,
+.product-page{
     width: 100em;
     height: 50em;
     float: right;
@@ -480,7 +481,8 @@ CONTACT_US PAGE
 ADD CATEGORY PAGE
 ==================*/
 
-.add_category {
+.add_category,
+.add_product {
     width: 35%;
     height: 30em;
     background-color: #fff;
@@ -489,7 +491,8 @@ ADD CATEGORY PAGE
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 
-.add_category form{
+.add_category form,
+.add_product form{
     margin: 40px;
     direction: rtl;
     font-size: 30px;
@@ -498,14 +501,16 @@ ADD CATEGORY PAGE
     justify-content: center;
 }
 
-.add-category-form label{
+.add-category-form label,
+.add-product-form label{
     display: block;
     margin-bottom: 10px;
     padding-top: 20px;
 }
 
 .add-category-form input[type="text"],
-.add-category-form select {
+.add-category-form select,
+.add-product-form input[type="text"]{
     width: 60%;
     padding: 12px 20px;
     margin: 20px 0;
@@ -516,7 +521,8 @@ ADD CATEGORY PAGE
     font-size: 20px;
 }
 
-.add-category-form input[type="submit"] {
+.add-category-form input[type="submit"],
+.add-product-form input[type="submit"] {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -528,4 +534,57 @@ ADD CATEGORY PAGE
 
 .add-category-form input[type="file"] {
     font-size: 20px;
+}
+
+/*==================
+PRODUCTS PAGE
+==================*/
+.prod-buttons {
+    display: flex;
+    direction: rtl;
+}
+
+.edit-btn {
+    align-items: center;
+    appearance: none;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+    border: 0;
+    border-radius: 6px;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s,transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow,transform;
+    margin: 10px;
+    font-size: 25px;
+}
+
+.edit-btn:focus {
+    box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
+
+.edit-btn:hover {
+    box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+.edit-btn:active {
+    box-shadow: #3c4fe0 0 3px 7px inset;
+    transform: translateY(2px);
 }

@@ -10,7 +10,7 @@
                             <a class="cat-link" href="{% url 'show_category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
                         {% endfor %}
                     </div>
-                {% else %}
+                {% elif category.parent_id == None  %}
                     <a class="cat-link" href="{% url "show_category" category.id %}">{{ category.name }}</a>
                 {% endif %}
             {% endfor %}

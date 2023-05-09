@@ -204,6 +204,34 @@ def add_category(request):
         return redirect('home')
 
 @login_required(login_url=LOGIN_URL)
+def add_product(request, cat_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+
+    try:
+        category = Category.objects.get(pk=cat_id)
+    except Exception:
+        return redirect("home", permanent=True)
+
+    if user_type == "admin":
+        if request.method == 'POST':
+            try:
+                product = Product.objects.create(
+                    name=request.POST.get('prod_name'),
+                    stock_num=request.POST.get('prod_serial'),
+                    category=category
+                )
+            except Exception:
+                return redirect('home')
+        context = {"categories": categories, "user_type": user_type, "category": category}
+        return render(request, "base/add_product.html", context)
+    else:
+        return redirect('show_category', cat_id)
+
+
+
+
+@login_required(login_url=LOGIN_URL)
 def show_category(request, cat_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)

@@ -1,9 +1,14 @@
 {% extends "main.html" %}
 {% block content %}
-    <div class="borrowings-page-admin">
+    <div class="product-page">
         <table>
             <caption>
                 {{ category.name }}
+                <div class="prod-buttons">
+                    <div>
+                        <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
+                    </div>
+                </div>
             </caption>
             <colgroup>
                 <col span="8">
