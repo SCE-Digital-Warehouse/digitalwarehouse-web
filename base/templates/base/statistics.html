@@ -2,24 +2,28 @@
 {% block content %}
     <div class="statistics-page">
         <div class="statistics-card">
-            <p>סה"כ השאלות</p>
-            <p>500</p>
+            <p>סה"כ בקשות להשאלה</p>
+            <p>{{ total_requests }}</p>
         </div>
         <div class="statistics-card">
-            <p>סה"כ תורים</p>
-            <p>1000</p>
+            <p>סה"כ פריטים בתיקון</p>
+            <p>{{ total_in_repair }}</p>
+        </div>
+        <div class="statistics-card">
+            <p>סה"כ השאלות</p>
+            <p>{{ total_borrowings }}</p>
         </div>
         <div class="statistics-card">
             <p>סה"כ פריטים באתר</p>
-            <p>200</p>
+            <p>{{ total_products }}</p>
         </div>
         <div class="statistics-card">
             <p>סה"כ משתמשים</p>
-            <p>400</p>
+            <p>{{ total_users }}</p>
         </div>
         <div class="statistics-card">
-            <p>סה"כ בקשות</p>
-            <p>800</p>
+            <p>סה"כ מודרטורים</p>
+            <p>{{ total_mods }}</p>
         </div>
     </div>
 {% endblock content %}

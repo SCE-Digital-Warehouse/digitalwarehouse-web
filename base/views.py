@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from base.models import Borrowing, Moderator, Product, Repair, Request
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -18,7 +19,7 @@ def index(request):
     context = {"user_type": user_type, "categories": categories}
     if not user.is_first_login:
         if (user_type == "user"):
-            return HttpResponse("User Panel is base/user_panel.html")
+            return render(request, "base/user_panel.html", context)
         if (user_type == "moderator"):
             return HttpResponse("Moderator Panel is base/moderator_panel.html")
         if (user_type == "admin"):
@@ -148,7 +149,22 @@ def requests(request):
 def statistics(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    total_users = User.objects.count()
+    total_mods = Moderator.objects.count()
+    total_requests = Request.objects.count()
+    total_borrowings = Borrowing.objects.count()
+    total_in_repair = Repair.objects.count()
+    total_products = Product.objects.count()
+    context = {
+        "user_type": user_type,
+        "total_users": total_users,
+        "total_mods": total_mods,
+        "total_requests": total_requests,
+        "total_borrowings": total_borrowings,
+        "total_products": total_products,
+        "total_in_repair": total_in_repair,
+        "categories": categories
+    }
     if user_type == "admin":
         return render(request, "base/statistics.html", context)
     return redirect("home")
