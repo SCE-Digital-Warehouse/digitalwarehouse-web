@@ -49,4 +49,5 @@ urlpatterns = [
     path("category/<int:cat_id>/", show_category, name="show_category"),
 
     path("requests/<int:prod_id>/", requests_by_prod, name="requests_by_prod"),
+    path("borrowings/<int:prod_id>/", borrowings_by_prod, name="borrowings_by_prod")
 ]

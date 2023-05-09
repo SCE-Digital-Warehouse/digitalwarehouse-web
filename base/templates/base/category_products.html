@@ -15,6 +15,7 @@
             <tr>
                 <th>למחוק את הפריט</th>
                 <th>לשנות את הפריט</th>
+                <th>השאלות לפריט</th>
                 <th>אנשים בתור</th>
                 <th>בהשאלה</th>
                 <th>שפ המוצר</th>
@@ -32,6 +33,11 @@
                     <td>
                         <div class="prod-buttons">
                             <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי פריט</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="prod-buttons">
+                            <a href="{% url 'borrowings_by_prod' product.id %}" class="edit-btn">לראות השאלות</a>
                         </div>
                     </td>
                     <td>

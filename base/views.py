@@ -313,3 +313,16 @@ def requests_by_prod(request, prod_id):
 
     context = {"categories": categories, "user_type": user_type, "product": product}
     return render(request, "base/queues_by_product.html", context)
+
+@login_required(login_url=LOGIN_URL)
+def borrowings_by_prod(request, prod_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+
+    try:
+        product = Product.objects.get(pk=prod_id)
+    except:
+        return render('home')
+
+    context = {"categories": categories, "user_type": user_type, "product": product}
+    return render(request, "base/borrowings.html", context)
