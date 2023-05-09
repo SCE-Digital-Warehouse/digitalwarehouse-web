@@ -46,5 +46,7 @@ urlpatterns = [
     path("add-product/<int:cat_id>/", add_product, name="add_product"),
     path("delete-product/<int:prod_id>/", delete_product, name="delete_product"),
     path("edit-product/<int:prod_id>/", edit_product, name="edit_product"),
-    path("category/<int:cat_id>/", show_category, name="show_category")
+    path("category/<int:cat_id>/", show_category, name="show_category"),
+
+    path("requests/<int:prod_id>/", requests_by_prod, name="requests_by_prod"),
 ]

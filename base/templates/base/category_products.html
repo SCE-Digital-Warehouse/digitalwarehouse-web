@@ -15,7 +15,7 @@
             <tr>
                 <th>למחוק את הפריט</th>
                 <th>לשנות את הפריט</th>
-                <th>כמות אנשים בתור</th>
+                <th>אנשים בתור</th>
                 <th>בהשאלה</th>
                 <th>שפ המוצר</th>
                 <th> מקט</th>
@@ -34,7 +34,11 @@
                             <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי פריט</a>
                         </div>
                     </td>
-                    <td>To DO</td>
+                    <td>
+                        <div class="prod-buttons">
+                            <a href="{% url 'requests_by_prod' product.id %}" class="edit-btn">לראות תור</a>
+                        </div>
+                    </td>
                     <td>{{ product.is_available }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.stock_num }}</td>
