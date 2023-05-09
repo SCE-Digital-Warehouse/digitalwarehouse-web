@@ -232,6 +232,59 @@ def add_product(request, cat_id):
         return redirect('show_category', cat_id)
 
 
+@login_required(login_url=LOGIN_URL)
+def delete_product(request, prod_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    product = Product.objects.get(pk=prod_id)
+
+    try:
+        category = Category.objects.get(pk=product.category.id)
+    except Exception:
+        return redirect("home", permanent=True)
+
+    if user_type == "admin":
+        if request.method == 'POST':
+            try:
+                product.delete()
+            except Exception:
+                return redirect('home')
+            return redirect('show_category', category.id)
+        context = {"categories": categories, "user_type": user_type, "category": category, "product": product}
+        return render(request, "base/delete_product.html", context)
+    else:
+        return redirect('show_category', category.id)
+
+
+@login_required(login_url=LOGIN_URL)
+def edit_product(request, prod_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    product = Product.objects.get(pk=prod_id)
+
+    try:
+        category = Category.objects.get(pk=product.category.id)
+    except Exception:
+        return redirect("home", permanent=True)
+
+    if user_type == "admin":
+        if request.method == 'POST':
+            cat_parent = request.POST.get('cat_parent')
+            try:
+                product.delete()
+                product = Product.objects.update_or_create(
+                    name=request.POST.get('prod_name'),
+                    stock_num=request.POST.get('prod_serial'),
+                    category=Category.objects.get(name=cat_parent)
+                )
+            except Exception:
+                return redirect('home')
+            return redirect('show_category', category.id)
+        context = {"categories": categories, "user_type": user_type, "category": category, "product": product}
+        return render(request, "base/edit_product.html", context)
+    else:
+        return redirect('show_category', category.id)
+
 
 
 @login_required(login_url=LOGIN_URL)

@@ -46,7 +46,7 @@ table {
     float: right;
     border-collapse: collapse;
     width: 100%;
-    margin: 20px 0px;
+    margin: 10px 0px;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
@@ -57,6 +57,13 @@ th,
 td {
     text-align: center;
     padding: 12px 15px;
+    justify-content: center;
+}
+
+td .edit-btn{
+    font-size: 20px;
+    height: 100%;
+    text-align: center;
 }
 
 th {
@@ -77,15 +84,15 @@ tbody tr:last-of-type{
     border-bottom: 2px solid #009879;
 }
 
-tbody tr:hover{
-    font-weight: bold;
-    color: #009879;
-}
-
 caption {
     font-size: 25px;
     font-weight: 700;
     margin: 10px;
+}
+
+caption .prod-buttons{
+    display: block;
+    float: right;
 }
 
 h1 {
@@ -505,7 +512,7 @@ ADD CATEGORY PAGE
 .add_category,
 .add_product {
     width: 35%;
-    height: 30em;
+    height: 35em;
     background-color: #fff;
     border-radius: 10px;
     margin: 200px 100px 200px 600px;
@@ -531,7 +538,8 @@ ADD CATEGORY PAGE
 
 .add-category-form input[type="text"],
 .add-category-form select,
-.add-product-form input[type="text"]{
+.add-product-form input[type="text"],
+.add-product-form select{
     width: 60%;
     padding: 12px 20px;
     margin: 20px 0;
@@ -561,8 +569,8 @@ ADD CATEGORY PAGE
 PRODUCTS PAGE
 ==================*/
 .prod-buttons {
-    display: flex;
     direction: rtl;
+    position: static;
 }
 
 .edit-btn {
@@ -575,7 +583,6 @@ PRODUCTS PAGE
     box-sizing: border-box;
     color: #fff;
     cursor: pointer;
-    display: inline-flex;
     height: 48px;
     justify-content: center;
     line-height: 1;
@@ -583,7 +590,6 @@ PRODUCTS PAGE
     overflow: hidden;
     padding-left: 16px;
     padding-right: 16px;
-    position: relative;
     text-align: left;
     text-decoration: none;
     transition: box-shadow .15s,transform .15s;
@@ -603,9 +609,14 @@ PRODUCTS PAGE
 .edit-btn:hover {
     box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
     transform: translateY(-2px);
+    color: var(--color-text);
 }
 
 .edit-btn:active {
     box-shadow: #3c4fe0 0 3px 7px inset;
     transform: translateY(2px);
+}
+
+#delete-inp {
+    background: red;
 }

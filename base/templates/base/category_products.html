@@ -5,25 +5,35 @@
             <caption>
                 {{ category.name }}
                 <div class="prod-buttons">
-                    <div>
-                        <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
-                    </div>
+                    <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
                 </div>
             </caption>
             <colgroup>
                 <col span="8">
             </colgroup>
             <thead>
-                <tr>
-                    <th>כמות אנשים בתור</th>
-                    <th>בהשאלה</th>
-                    <th>שפ המוצר</th>
-                    <th> מקט</th>
-                </tr>
+            <tr>
+                <th>למחוק את הפריט</th>
+                <th>לשנות את הפריט</th>
+                <th>כמות אנשים בתור</th>
+                <th>בהשאלה</th>
+                <th>שפ המוצר</th>
+                <th> מקט</th>
+            </tr>
             </thead>
             <tbody>
             {% for product in products %}
                 <tr>
+                    <td>
+                        <div class="prod-buttons">
+                            <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת פריט</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="prod-buttons">
+                            <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי פריט</a>
+                        </div>
+                    </td>
                     <td>To DO</td>
                     <td>{{ product.is_available }}</td>
                     <td>{{ product.name }}</td>

@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="add_product">
+        <form action="" method="POST" class="add-product-form">
+            {% csrf_token %}
+            <label for="prod_name">שם הפריט</label>
+            <input type="text" id="prod_name" name="prod_name" value="{{ product.name }}" readonly required>
+
+            <label for="prod_serial">מקט הפריט</label>
+            <input type="text" id="prod_serial" name="prod_serial" value="{{ product.stock_num }}" readonly required>
+
+            <label for="prod_cat">קטגוריה</label>
+            <input type="text" id="prod_cat" name="prod_cat" value="{{ category.name }}" readonly required>
+            <div>
+                <input id="delete-inp" type="submit" value="למחוק">
+            </div>
+        </form>
+    </div>
+{% endblock content %}
