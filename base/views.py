@@ -191,11 +191,13 @@ def add_category(request):
                         parent=Category.objects.get(name=cat_parent),
                         image_url=request.POST.get('cat_image')
                     )
+                    category.save()
                 else:
                     category = Category.objects.create(
                         name=request.POST.get('cat_name'),
                         image_url=request.POST.get('cat_image')
                     )
+                    category.save()
             except Exception:
                 return redirect('add_category')
         context = {"categories": categories, "user_type": user_type}
@@ -221,6 +223,7 @@ def add_product(request, cat_id):
                     stock_num=request.POST.get('prod_serial'),
                     category=category
                 )
+                product.save()
             except Exception:
                 return redirect('home')
         context = {"categories": categories, "user_type": user_type, "category": category}
@@ -235,13 +238,14 @@ def add_product(request, cat_id):
 def show_category(request, cat_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
+    products = Product.objects.all().filter(category_id=cat_id)
 
     try:
         category = Category.objects.get(pk=cat_id)
     except Exception:
         return redirect("home", permanent=True)
 
-    context = {"categories": categories, "user_type": user_type, "category": category}
+    context = {"categories": categories, "user_type": user_type, "category": category, "products": products}
     return render(request, "base/category_products.html", context)
 
 

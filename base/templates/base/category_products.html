@@ -22,12 +22,14 @@
                 </tr>
             </thead>
             <tbody>
+            {% for product in products %}
                 <tr>
-                    <td>Row 1, Column 1</td>
-                    <td>Row 1, Column 2</td>
-                    <td>Row 1, Column 3</td>
-                    <td>Row 1, Column 4</td>
+                    <td>To DO</td>
+                    <td>{{ product.is_available }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.stock_num }}</td>
                 </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
