@@ -15,6 +15,7 @@
             <tr>
                 <th>למחוק את הפריט</th>
                 <th>לשנות את הפריט</th>
+                <th>תקין\לא תקין</th>
                 <th>השאלות לפריט</th>
                 <th>אנשים בתור</th>
                 <th>בהשאלה</th>
@@ -33,6 +34,11 @@
                     <td>
                         <div class="prod-buttons">
                             <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי פריט</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="prod-buttons">
+                            <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
                         </div>
                     </td>
                     <td>

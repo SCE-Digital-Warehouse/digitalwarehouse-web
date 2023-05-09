@@ -286,6 +286,24 @@ def edit_product(request, prod_id):
         return redirect('show_category', category.id)
 
 
+@login_required(login_url=LOGIN_URL)
+def bad_product(request, prod_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    product = Product.objects.get(pk=prod_id)
+    if user_type == "admin":
+        try:
+            category = Category.objects.get(pk=product.category.id)
+        except Exception:
+            return redirect("home", permanent=True)
+
+        try:
+            product.is_available = False
+            product.save()
+        except:
+            return render('home')
+    context = {"categories": categories, "user_type": user_type, "category": category, "product": product}
+    return render(request, "base/category_products.html", context)
 
 @login_required(login_url=LOGIN_URL)
 def show_category(request, cat_id):
@@ -306,10 +324,11 @@ def requests_by_prod(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
 
-    try:
-        product = Product.objects.get(pk=prod_id)
-    except:
-        return render('home')
+    if user_type == "admin":
+        try:
+            product = Product.objects.get(pk=prod_id)
+        except:
+            return render('home')
 
     context = {"categories": categories, "user_type": user_type, "product": product}
     return render(request, "base/queues_by_product.html", context)
@@ -319,10 +338,11 @@ def borrowings_by_prod(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
 
-    try:
-        product = Product.objects.get(pk=prod_id)
-    except:
-        return render('home')
+    if user_type == "admin":
+        try:
+            product = Product.objects.get(pk=prod_id)
+        except:
+            return render('home')
 
     context = {"categories": categories, "user_type": user_type, "product": product}
     return render(request, "base/borrowings.html", context)

@@ -43,10 +43,12 @@ urlpatterns = [
     path("contact_us/", contact_us, name="contact_us"),
 
     path("add-category/", add_category, name="add_category"),
+    path("category/<int:cat_id>/", show_category, name="show_category"),
+
     path("add-product/<int:cat_id>/", add_product, name="add_product"),
     path("delete-product/<int:prod_id>/", delete_product, name="delete_product"),
     path("edit-product/<int:prod_id>/", edit_product, name="edit_product"),
-    path("category/<int:cat_id>/", show_category, name="show_category"),
+    path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
 
     path("requests/<int:prod_id>/", requests_by_prod, name="requests_by_prod"),
     path("borrowings/<int:prod_id>/", borrowings_by_prod, name="borrowings_by_prod")
