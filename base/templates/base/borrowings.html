@@ -31,7 +31,7 @@
         <tbody>
         {% for el in borrowings %}
         {% if not request.GET.identity_num or el.user.identity_num == request.GET.identity_num %}
-        <tr>
+        <tr class="clickable-row" data-href="?identity_num={{ el.user.identity_num }}">
             <td>{{el.date_to_return}}</td>
             <td>{{el.date_borrowed}}</td>
             <td>{{el.user.role}}</td>
@@ -48,4 +48,23 @@
         </tbody>
     </table>
 </div>
+<style>
+    .hoverable-row:hover {
+        background-color: #0074D9;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var rows = document.querySelectorAll(".clickable-row");
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].classList.add("hoverable-row");
+            rows[i].addEventListener("click", function() {
+                window.open(this.getAttribute("data-href"), "_blank");
+            });
+        }
+    });
+</script>
+
 {% endblock content %}
