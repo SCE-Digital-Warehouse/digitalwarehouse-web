@@ -511,3 +511,41 @@ def extention_request(request, borrow_id):
         "user": user
     }
     return render(request, "base/extention_request.html", context)
+
+@login_required(login_url=LOGIN_URL)
+def borrow_confirm(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    green = False
+    borrowings = Borrowing.objects.all()
+    if user_type == "admin":
+        borrow = Borrowing.objects.get(pk=borrow_id)
+        product = Product.objects.get(pk=borrow.product_id)
+        product.is_available = 0
+        product.save()
+        green = True
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "borrow": borrow,
+        "green": green,
+        "borrowings": borrowings
+    }
+    return render(request, "base/borrowings.html", context)
+
+@login_required(login_url=LOGIN_URL)
+def borrow_reject(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    red = False
+    borrowings = Borrowing.objects.all()
+    if user_type == "admin":
+        red = True
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "red": red,
+        "borrowings": borrowings
+    }
+    return render(request, "base/borrowings.html", context)
+
