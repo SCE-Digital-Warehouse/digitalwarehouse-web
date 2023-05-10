@@ -144,7 +144,7 @@ def requests(request):
     categories = Category.objects.all()
     if user_type != "admin":
         user = request.user
-        reqs = Request.objects.all()
+        reqs = Request.objects.all().filter(user_id=user.pk)
         context = {"user_type": user_type, "categories": categories, "user": user, "reqs": reqs}
     else:
         context = {"user_type": user_type, "categories": categories}
