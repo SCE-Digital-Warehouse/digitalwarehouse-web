@@ -11,6 +11,13 @@ html {
     height: 100%;
 }
 
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+    /* make scrollbar transparent */
+}
+
+
 body {
     background-color: var(--color-bg);
     min-height: 100vh;
@@ -40,25 +47,54 @@ table {
     float: right;
     border-collapse: collapse;
     width: 100%;
-    margin: 20px 0;
+    margin: 10px 0px;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 th,
 td {
     text-align: center;
-    padding: 10px;
-    border: 1px solid #fff;
+    padding: 12px 15px;
+    justify-content: center;
+}
 
+td .edit-btn {
+    font-size: 20px;
+    height: 100%;
+    text-align: center;
 }
 
 th {
-    background-color: lightgray;
+    background-color: #009879;
+    color: #ffffff;
+    border-left: 1px solid #dddddd;
+    ;
+}
+
+tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
 }
 
 caption {
     font-size: 25px;
     font-weight: 700;
     margin: 10px;
+}
+
+caption .prod-buttons {
+    display: block;
+    float: right;
 }
 
 h1 {
@@ -176,7 +212,7 @@ Login Page
     margin: 30px 0 -15px 50px;
     align-items: center;
     width: 80%;
-    font-size:20px;
+    font-size: 20px;
     font-weight: 700;
 }
 
@@ -186,8 +222,10 @@ NAVBAR
 ==================*/
 
 .header {
+    position: fixed;
+    top: 0;
     height: 80px;
-    /*margin-inline-start: 135px;*/
+    width: 94.8%;
     background: #fff;
     border: 1px solid #efefef;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
@@ -226,32 +264,87 @@ NAVBAR
 SIDE BAR
 ==================*/
 .side-bar {
+    position: fixed;
+    top: 7.2em;
+    right: 0;
     list-style-type: none;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
     margin: 0;
     padding: 0;
-    width: 12rem;
-    height: 100%;
+    width: 13rem;
+    height: 80%;
     background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
-    float: right;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-.side-bar a {
+.side-bar .menu {
+    width: 100%;
+    margin: 10px 0 100px 0;
+}
+
+.side-bar .menu .item,
+.side-bar .item{
+    position: relative;
+    cursor: pointer;
+}
+
+
+.side-bar .menu .item .cat-link,
+.side-bar .item .cat-link{
     display: block;
     padding: 8px 16px;
     text-decoration: none;
-    height: 4rem;
     font-size: 1.5em;
     font-weight: 700;
     color: #fff;
-    float: right;
+    float: left;
+    height: 4rem;
+    width: 100%;
 }
 
-.side-bar a:hover {
-    background-color: #ff3399;
-    width: 100%;
-    float: right;
+.side-bar a .dropdown {
+    position: absolute;
+    right: 20px;
+    margin: 5px;
+    transition: 0.3s ease;
 }
+
+.side-bar .menu .item .cat-link:hover,
+.side-bar .item .cat-link:hover{
+    background-color: #ff3399;
+}
+
+.side-bar .menu .item .sub-menu {
+    display: none;
+}
+
+.side-bar .menu .item .sub-menu a {
+    padding-left: 30px;
+}
+
+.sub-btn {
+    position: relative;
+    top: -70px;
+    left: -20px;
+    height: 10px;
+    float: right;
+    width: 20px;
+    margin: 0;
+    font-size: 25px;
+}
+
+.sub-btn:hover {
+    color: white;
+}
+
+.side-bar .new-cat {
+    position: fixed;
+    bottom: 0;
+    background-color: #33ccff;
+}
+
+
 
 /*==================
 HOME PAGE
@@ -263,7 +356,7 @@ HOME PAGE
     column-gap: 5px;
     row-gap: 1px;
     height: 50em;
-    margin: 15px;
+    margin: 150px;
 }
 
 .home-card {
@@ -298,13 +391,14 @@ REQUESTS PAGE | BORROWINGS PAGE | SPECIAL REQUESTS PAGE
 .requests-page-admin,
 .user-list,
 .special_requests-page-admin,
-.contact_us-page{
+.contact_us-page,
+.product-page {
     width: 100em;
     height: 50em;
     float: right;
     background-color: #fff;
     border-radius: 10px;
-    margin: 40px 40px 0 0;
+    margin: 170px 230px 200px 200px;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 
@@ -315,12 +409,13 @@ PERSONAL INFO PAGE
 .personal-info {
     width: 80em;
     height: 45em;
-    margin: 50px;
+    margin: 150px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     float: right;
+
 }
 
 .personal-info-form {
@@ -372,7 +467,7 @@ STATISTICS PAGE
 .statistics-page {
     justify-content: center;
     display: grid;
-    margin: 50px;
+    margin: 150px;
     grid: repeat(2, 250px) / auto-flow 400px;
 }
 
@@ -394,6 +489,7 @@ CONTACT_US PAGE
     direction: rtl;
     text-align: center;
 }
+
 .contact_us-card {
     font-size: 30px;
     font-weight: 700;
@@ -413,4 +509,120 @@ CONTACT_US PAGE
     background-color: #33ccff;
     color: #fff;
     border-radius: 10px;
+}
+
+/*==================
+ADD CATEGORY PAGE
+==================*/
+
+.add_category,
+.add_product {
+    width: 35%;
+    height: 35em;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 200px 100px 200px 600px;
+    box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+}
+
+.add_category form,
+.add_product form {
+    margin: 40px;
+    direction: rtl;
+    font-size: 30px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-category-form label,
+.add-product-form label {
+    display: block;
+    margin-bottom: 10px;
+    padding-top: 20px;
+}
+
+.add-category-form input[type="text"],
+.add-category-form select,
+.add-product-form input[type="text"],
+.add-product-form select {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+.add-category-form input[type="submit"],
+.add-product-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.add-category-form input[type="file"] {
+    font-size: 20px;
+}
+
+/*==================
+PRODUCTS PAGE
+==================*/
+.prod-buttons {
+    direction: rtl;
+    position: static;
+}
+
+.edit-btn {
+    align-items: center;
+    appearance: none;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+    border: 0;
+    border-radius: 6px;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    margin: 10px;
+    font-size: 25px;
+}
+
+.edit-btn:focus {
+    box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
+
+.edit-btn:hover {
+    box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+    transform: translateY(-2px);
+    color: var(--color-text);
+}
+
+.edit-btn:active {
+    box-shadow: #3c4fe0 0 3px 7px inset;
+    transform: translateY(2px);
+}
+
+#delete-inp {
+    background: red;
 }

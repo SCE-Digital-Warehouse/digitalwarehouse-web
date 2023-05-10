@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="add_product">
+        <form action="" method="POST" class="add-product-form">
+            {% csrf_token %}
+            <label for="prod_name">שם הפריט</label>
+            <input type="text"
+                   id="prod_name"
+                   name="prod_name"
+                   value="{{ product.name }}"
+                   required>
+            <label for="stock_num">מק''ט הפריט</label>
+            <input type="text"
+                   id="stock_num"
+                   name="stock_num"
+                   value="{{ product.stock_num }}"
+                   required>
+            <label for="cat_parent">קטגוריה</label>
+            <select id="cat_parent" name="cat_parent">
+                {% for category in categories %}
+                    <option value="{{ category }}">
+                        {{ category }}
+                    </option>
+                {% endfor %}
+            </select>
+            <div>
+                <input type="submit" value="לשמור">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

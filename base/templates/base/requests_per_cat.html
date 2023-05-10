@@ -1,17 +1,17 @@
 {% extends "main.html" %}
 {% block content %}
-    <div class="borrowings-page-admin">
+    <div class="requests-page-admin">
         <table>
             <caption>
-                מידע על ההאשלות של סטודנטים\מרצים
+                {{ category.name }} מידע על התורים להשאלות לקטגוריה
             </caption>
             <colgroup>
                 <col span="8">
             </colgroup>
             <thead>
                 <tr>
-                    <th>תאריך החזרה</th>
-                    <th>תאריך ההשאלה</th>
+                    <th>אורך ההשאלה</th>
+                    <th>תאריך בקשה</th>
                     <th>תפקיד</th>
                     <th>מייל</th>
                     <th>מס' טלפון</th>

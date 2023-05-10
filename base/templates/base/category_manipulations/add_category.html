@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="add_category">
+        <form action="" method="POST" class="add-category-form">
+            {% csrf_token %}
+            <label for="cat_name">שם הקטגוריה</label>
+            <input type="text" id="cat_name" name="cat_name" required>
+            <label for="cat_image">תמונה</label>
+            <input type="file" id="cat_image" name="cat_image">
+            <label for="cat_parent">קטגורית האב</label>
+            <select id="cat_parent" name="cat_parent">
+                {% for category in categories %}
+                    <option value="{{ category }}">
+                        {{ category }}
+                    </option>
+                {% endfor %}
+                <option value="בלי">
+                    ללא קטגורית אב
+                </option>
+            </select>
+            <div>
+                <input type="submit" value="להוסיף">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

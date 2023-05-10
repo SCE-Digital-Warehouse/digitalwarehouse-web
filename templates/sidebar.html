@@ -1,26 +1,25 @@
-<ul class="side-bar">
-    <li class="side-bar-link">
-        <a href="">מצלמות</a>
-    </li>
-    <li class="side-bar-link">
-        <a href=""> מוצרי הקלטות</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">מוצרי אפאל</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">טריפוד</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">פרויקטורים</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">כבלים</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">מנורות</a>
-    </li>
-    <li class="side-bar-link">
-        <a href="">מתאמים</a>
-    </li>
-</ul>
+<div class="side-bar">
+    <div class="menu">
+        <div class="item">
+            {% for category in categories %}
+                {% if category.children.count %}
+                    <a class="cat-link" href="{% url 'show_category' category.id %}">{{ category.name }}</a>
+                    <a class="sub-btn"><i class="fas fa-angle-right dropdown"></i></a>
+                    <div class="sub-menu">
+                        {% for sub_cat in category.children.all %}
+                            <a class="cat-link"
+                               href="{% url 'show_category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
+                        {% endfor %}
+                    </div>
+                {% elif category.parent_id == None %}
+                    <a class="cat-link" href="{% url 'show_category' category.id %}">{{ category.name }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% if user_type == "admin" %}
+        <div class="item">
+            <a class="cat-link new-cat" href="{% url 'add_category' %}">קטגוריה חדשה</a>
+        </div>
+    {% endif %}
+</div>

@@ -1,5 +1,3 @@
-from re import template
-from urllib import request
 from django.urls import path
 from django.contrib.auth import views
 from .views import *
@@ -41,4 +39,20 @@ urlpatterns = [
     path("requests/", requests, name="requests"),
     path("statistics/", statistics, name="statistics"),
     path("contact_us/", contact_us, name="contact_us"),
+
+    path("add-category/", add_category, name="add_category"),
+    path("category/<int:cat_id>/", show_category, name="show_category"),
+
+    path("add-product/<int:cat_id>/", add_product, name="add_product"),
+    path("delete-product/<int:prod_id>/",
+         delete_product, name="delete_product"),
+    path("edit-product/<int:prod_id>/", edit_product, name="edit_product"),
+    # path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
+
+    path(
+        "requests/<int:cat_id>/",
+        requests_per_product,
+        name="requests_per_product"
+    ),
+    path("borrowings/<int:cat_id>/", borrowings_per_cat, name="borrowings_per_cat"),
 ]
