@@ -82,7 +82,8 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    borrowings = Borrowing.objects.all()
+    context = {"user_type": user_type, "categories": categories, "borrowings": borrowings}
     return render(request, "base/borrowings.html", context)
 
 
