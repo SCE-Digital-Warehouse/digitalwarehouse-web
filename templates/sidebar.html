@@ -1,4 +1,8 @@
-<div class="side-bar">
+<div class="side-bar"
+    {% if user_type != "admin" %}
+        style="height: 90%"
+    {% endif %}
+    >
     <div class="menu">
         <div class="item">
             {% for category in categories %}
