@@ -3,38 +3,68 @@
     <div class="requests-page-admin">
         <table>
             <caption>
-                מידע על התורים להשאלות
+                {% if user_type != "admiin" %}
+                    {{ user.first_name }}  מידע על התורים להשאלות למשתמש
+                {% endif %}
             </caption>
             <colgroup>
                 <col span="8">
             </colgroup>
             <thead>
-                <tr>
-                    <th>אורך ההשאלה</th>
-                    <th>תאריך בקשה</th>
-                    <th>תפקיד</th>
-                    <th>מייל</th>
-                    <th>מס' טלפון</th>
-                    <th>שם הפריט</th>
-                    <th>מק''ט הפריט</th>
-                    <th>שם משפחה</th>
-                    <th>שפ פרטי</th>
-                    <th>ת.ז</th>
-                </tr>
+                {% if user_type == "admin" %}
+                    <tr>
+                        <th>אורך ההשאלה</th>
+                        <th>תאריך בקשה</th>
+                        <th>תפקיד</th>
+                        <th>מייל</th>
+                        <th>מס' טלפון</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
+                        <th>שם משפחה</th>
+                        <th>שפ פרטי</th>
+                        <th>ת.ז</th>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th>תאריך רצוי להחזר הפריט</th>
+                        <th>תאריך רצוי לתחילת השימוש</th>
+                        <th>תאריך בקשה</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
+                        <th>שם משפחה</th>
+                        <th>שפ פרטי</th>
+                        <th>ת.ז</th>
+                    </tr>
+                {% endif %}
             </thead>
             <tbody>
-                <tr>
-                    <td>Row 1, Column 1</td>
-                    <td>Row 1, Column 2</td>
-                    <td>Row 1, Column 3</td>
-                    <td>Row 1, Column 4</td>
-                    <td>Row 1, Column 5</td>
-                    <td>Row 1, Column 6</td>
-                    <td>Row 1, Column 7</td>
-                    <td>Row 1, Column 7</td>
-                    <td>Row 1, Column 7</td>
-                    <td>336195524</td>
-                </tr>
+                {% if user_type == "admin" %}
+                    <tr>
+                        <td>Row 1, Column 1</td>
+                        <td>Row 1, Column 2</td>
+                        <td>Row 1, Column 3</td>
+                        <td>Row 1, Column 4</td>
+                        <td>Row 1, Column 5</td>
+                        <td>Row 1, Column 6</td>
+                        <td>Row 1, Column 7</td>
+                        <td>Row 1, Column 7</td>
+                        <td>Row 1, Column 7</td>
+                        <td>336195524</td>
+                    </tr>
+                {% else %}
+                    {% for req in reqs %}
+                        <tr>
+                            <td>{{ req.exp_date_to_return }}</td>
+                            <td>{{ req.exp_date_to_borrow }}</td>
+                            <td>{{ req.date_requested }}</td>
+                            <td>{{ req.product.name }}</td>
+                            <td>{{ req.product_id }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.id }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>

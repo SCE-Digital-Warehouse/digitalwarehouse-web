@@ -82,7 +82,15 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+
+    if user_type != "admin":
+        user = request.user
+        borrows = Borrowing.objects.all().filter(user_id=user.pk)
+        context = {"user_type": user_type, "categories": categories, "user": user, "borrows":borrows}
+    else:
+        borrowings = Borrowing.objects.all()
+        context = {"user_type": user_type, "categories": categories, "borrowings": borrowings}
+
     return render(request, "base/borrowings.html", context)
 
 
@@ -172,7 +180,12 @@ def special_requests(request):
 def requests(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    if user_type != "admin":
+        user = request.user
+        reqs = Request.objects.all().filter(user_id=user.pk)
+        context = {"user_type": user_type, "categories": categories, "user": user, "reqs": reqs}
+    else:
+        context = {"user_type": user_type, "categories": categories}
     return render(request, "base/requests.html", context)
 
 
@@ -402,3 +415,22 @@ def borrowings_per_cat(request, cat_id):
         "category": category
     }
     return render(request, "base/borrowings_by_cat.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def extention_request(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    if user_type != "admin":
+        borrow = Borrowing.objects.get(pk=borrow_id)
+        user = request.user
+        if request.method == "POST":
+            return redirect('home')  
+            """to do send to special_requests"""
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "borrow": borrow,
+        "user": user
+    }
+    return render(request, "base/extention_request.html", context)
