@@ -142,7 +142,12 @@ def special_requests(request):
 def requests(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    if user_type != "admin":
+        user = request.user
+        reqs = Request.objects.all()
+        context = {"user_type": user_type, "categories": categories, "user": user, "reqs": reqs}
+    else:
+        context = {"user_type": user_type, "categories": categories}
     return render(request, "base/requests.html", context)
 
 
