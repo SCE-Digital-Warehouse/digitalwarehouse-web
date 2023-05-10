@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="add_category">
+        <form action="" method="POST" class="add-category-form">
+            {% csrf_token %}
+            <label for="cat_name">בקשה מיוחדת</label>
+
+            <label >בחר מוצר</label>
+
+            {{form.product}}
+
+             <input type="text" id="req_name3" name="cat_name" required placeholder="comments">
+             <input type="date" id="req_name4" name="cat_name" required placeholder="exp_date_to_borrow" >
+
+             <input type="text" id="req_name5" name="cat_name" required placeholder="exp_date_to_return">
+
+
+
+
+
+            <div>
+                <input type="submit" value="להוסיף">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

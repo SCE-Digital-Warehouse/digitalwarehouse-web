@@ -59,4 +59,5 @@ urlpatterns = [
     path(
         "extention-request/<int:borrow_id>/", extention_request, name="extention_req"
     ),
+    path('add_req/',add_req,name='add_req'),
 ]
