@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="product-page">
+        <table>
+            <caption>
+                משתמשי האתר
+                <div class="prod-buttons">
+                    <a href="{% url 'add_user' %}" class="edit-btn">הוספת משתמש</a>
+                </div>
+            </caption>
+            <colgroup>
+                <col span="8">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>למחוק משתמש</th>
+                    <th>לערוך פרטים</th>
+                    <th>מינוי/הדחה</th>
+                    <th>מנהל מחסן</th>
+                    <th>מודרטור</th>
+                    <th>תפקיד</th>
+                    <th>נייד</th>
+                    <th>אי מייל</th>
+                    <th>שם משפחה</th>
+                    <th>שם פרטי</th>
+                    <th>ת.ז</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'delete_user' user.id %}" class="edit-btn">למחוק</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'edit_user' user.id %}" class="edit-btn">לערוך</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'prom_dem_user' user.id %}" class="edit-btn">למנות/להדיח</a>
+                            </div>
+                        </td>
+                        <td>{{ user.is_admin }}</td>
+                        <td>{{ user.is_mod }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.mobile_num }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.identity_num }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

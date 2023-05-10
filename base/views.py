@@ -43,7 +43,6 @@ def login_user(request):
             messages.error(request, "שם משתמש/ת ו/או סיסמה לא נכונים")
     else:
         form = LoginUserForm(request)
-
     context = {"form": form}
     return render(request, "base/login/login.html", context)
 
@@ -69,7 +68,6 @@ def set_password(request):
             messages.error(request, "סיסמאות לא תואמות")
     else:
         form = PasswordSetForm(user)
-
     context = {"form": form}
     if user.is_first_login:
         return render(request, "base/login/set_password.html", context)
@@ -84,25 +82,133 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-
     if user_type != "admin":
         user = request.user
         borrows = Borrowing.objects.all().filter(user_id=user.pk)
-        context = {"user_type": user_type, "categories": categories, "user": user, "borrows":borrows}
+        context = {"user_type": user_type, "categories": categories,
+                   "user": user, "borrows": borrows}
     else:
         borrowings = Borrowing.objects.all()
-        context = {"user_type": user_type, "categories": categories, "borrowings": borrowings}
-
+        context = {"user_type": user_type,
+                   "categories": categories, "borrowings": borrowings}
     return render(request, "base/borrowings.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
-def users(request):
+def show_users(request):
     user_type = get_user_type(request)
-    categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
     if user_type == "admin":
-        return render(request, "base/users.html", context)
+        users = User.objects.filter(is_staff=False)
+        categories = Category.objects.all()
+        context = {
+            "user_type": user_type,
+            "users": users,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulation/show_users.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def add_user(request):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        if request.method == "POST":
+            try:
+                user = User.objects.create(
+                    identity_num=request.POST.get("identity_num"),
+                    first_name=request.POST.get("first_name"),
+                    last_name=request.POST.get("last_name"),
+                    mobile_num=request.POST.get("mobile_num"),
+                    email=request.POST.get("email"),
+                    role=request.POST.get("role"),
+                    username=request.POST.get("email").split('@')[0],
+                    password=request.POST.get("identity_num")
+                )
+            except Exception:
+                pass
+            finally:
+                return redirect("show_users")
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulation/add_user.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def edit_user(request, user_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception:
+            return redirect("show_users", permanent=True)
+        if request.method == "POST":
+            try:
+                user.delete()
+                user = User.objects.create(
+                    identity_num=request.POST.get("identity_num"),
+                    first_name=request.POST.get("first_name"),
+                    last_name=request.POST.get("last_name"),
+                    mobile_num=request.POST.get("mobile_num"),
+                    email=request.POST.get("email"),
+                    role=request.POST.get("role"),
+                )
+            except Exception:
+                pass
+            finally:
+                return redirect("show_users")
+        context = {
+            "user_type": user_type,
+            "user": user,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulation/edit_user.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def delete_user(request, user_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception:
+            return redirect("show_users", permanent=True)
+        if request.method == "POST":
+            try:
+                user.delete()
+            except Exception:
+                pass
+            finally:
+                return redirect("show_users")
+        context = {
+            "user_type": user_type,
+            "user": user,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulation/delete_user.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def prom_dem_user(request, user_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception:
+            return redirect("show_users", permanent=True)
+        if not user.is_mod:
+            user.promote()
+        else:
+            user.demote()
+        return redirect("show_users")
     return redirect("home")
 
 
@@ -158,7 +264,8 @@ def requests(request):
     if user_type != "admin":
         user = request.user
         reqs = Request.objects.all().filter(user_id=user.pk)
-        context = {"user_type": user_type, "categories": categories, "user": user, "reqs": reqs}
+        context = {"user_type": user_type,
+                   "categories": categories, "user": user, "reqs": reqs}
     else:
         context = {"user_type": user_type, "categories": categories}
     return render(request, "base/requests.html", context)
@@ -400,7 +507,7 @@ def extention_request(request, borrow_id):
         borrow = Borrowing.objects.get(pk=borrow_id)
         user = request.user
         if request.method == "POST":
-            return redirect('home')  
+            return redirect('home')
             """to do send to special_requests"""
     context = {
         "categories": categories,
@@ -409,6 +516,7 @@ def extention_request(request, borrow_id):
         "user": user
     }
     return render(request, "base/extention_request.html", context)
+
 
 def add_req(request):
     error=''
@@ -426,3 +534,42 @@ def add_req(request):
         'error':error
     }
     return render(request,'base/add_req.html',data)
+
+@login_required(login_url=LOGIN_URL)
+def borrow_confirm(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    green = False
+    borrowings = Borrowing.objects.all()
+    if user_type == "admin":
+        borrow = Borrowing.objects.get(pk=borrow_id)
+        product = Product.objects.get(pk=borrow.product_id)
+        product.is_available = 0
+        product.save()
+        green = True
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "borrow": borrow,
+        "green": green,
+        "borrowings": borrowings
+    }
+    return render(request, "base/borrowings.html", context)
+
+@login_required(login_url=LOGIN_URL)
+def borrow_reject(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    red = False
+    borrowings = Borrowing.objects.all()
+    if user_type == "admin":
+        red = True
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "red": red,
+        "borrowings": borrowings
+    }
+    return render(request, "base/borrowings.html", context)
+
+

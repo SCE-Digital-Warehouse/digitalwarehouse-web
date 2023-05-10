@@ -284,14 +284,14 @@ SIDE BAR
 }
 
 .side-bar .menu .item,
-.side-bar .item{
+.side-bar .item {
     position: relative;
     cursor: pointer;
 }
 
 
 .side-bar .menu .item .cat-link,
-.side-bar .item .cat-link{
+.side-bar .item .cat-link {
     display: block;
     padding: 8px 16px;
     text-decoration: none;
@@ -311,7 +311,7 @@ SIDE BAR
 }
 
 .side-bar .menu .item .cat-link:hover,
-.side-bar .item .cat-link:hover{
+.side-bar .item .cat-link:hover {
     background-color: #ff3399;
 }
 
@@ -516,7 +516,8 @@ ADD CATEGORY PAGE
 ==================*/
 
 .add_category,
-.add_product {
+.add_product,
+.extention_req {
     width: 35%;
     height: 35em;
     background-color: #fff;
@@ -525,8 +526,13 @@ ADD CATEGORY PAGE
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 
+.extention_req {
+    height: 55em;
+}
+
 .add_category form,
-.add_product form {
+.add_product form,
+.extention_req form {
     margin: 40px;
     direction: rtl;
     font-size: 30px;
@@ -536,7 +542,8 @@ ADD CATEGORY PAGE
 }
 
 .add-category-form label,
-.add-product-form label {
+.add-product-form label,
+.extention_req-form label {
     display: block;
     margin-bottom: 10px;
     padding-top: 20px;
@@ -545,7 +552,8 @@ ADD CATEGORY PAGE
 .add-category-form input[type="text"],
 .add-category-form select,
 .add-product-form input[type="text"],
-.add-product-form select {
+.add-product-form select,
+.extention_req-form input[type="text"] {
     width: 60%;
     padding: 12px 20px;
     margin: 20px 0;
@@ -557,7 +565,8 @@ ADD CATEGORY PAGE
 }
 
 .add-category-form input[type="submit"],
-.add-product-form input[type="submit"] {
+.add-product-form input[type="submit"],
+.extention_req-form input[type="submit"] {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -568,6 +577,58 @@ ADD CATEGORY PAGE
 }
 
 .add-category-form input[type="file"] {
+    font-size: 20px;
+}
+
+
+/*==================
+ADD USER PAGE
+==================*/
+
+.add_user {
+    width: 35%;
+    height: 65em;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 200px 100px 200px 600px;
+    box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+}
+
+.add_user form {
+    margin: 40px;
+    direction: rtl;
+    font-size: 30px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-user-form label {
+    display: block;
+    margin-bottom: 10px;
+    padding-top: 20px;
+}
+
+.add-user-form input[type="text"],
+.add-user-form input[type="email"],
+.add-user-form select {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+.add-user-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 20px;
 }
 
