@@ -4,23 +4,27 @@
         <table>
             <caption>
                 {{ category.name }}
-                <div class="prod-buttons">
-                    <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
-                </div>
-                <div class="prod-buttons">
-                    <a href="{% url 'borrowings_per_cat' category.id %}" class="edit-btn">השאלות</a>
-                </div>
-                <div class="prod-buttons">
-                    <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">תורים</a>
-                </div>
+                {% if user_type == "admin" %}
+                    <div class="prod-buttons">
+                        <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
+                    </div>
+                    <div class="prod-buttons">
+                        <a href="{% url 'borrowings_per_cat' category.id %}" class="edit-btn">השאלות</a>
+                    </div>
+                    <div class="prod-buttons">
+                        <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">תורים</a>
+                    </div>
+                {% endif %}
             </caption>
             <colgroup>
                 <col span="8">
             </colgroup>
             <thead>
                 <tr>
-                    <th>למחוק את הפריט</th>
-                    <th>לשנות את הפריט</th>
+                    {% if user_type == "admin" %}
+                        <th>למחוק את הפריט</th>
+                        <th>לשנות את הפריט</th>
+                    {% endif %}
                     <th>זמין</th>
                     <th>שם הפריט</th>
                     <th>מק''ט</th>
@@ -29,16 +33,18 @@
             <tbody>
                 {% for product in products %}
                     <tr>
-                        <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת הפריט</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי הפריט</a>
-                            </div>
-                        </td>
+                        {% if user_type == "admin" %}
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת הפריט</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי הפריט</a>
+                                </div>
+                            </td>
+                        {% endif %}
                         {% comment %} <td>
                             <div class="prod-buttons">
                                 <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
