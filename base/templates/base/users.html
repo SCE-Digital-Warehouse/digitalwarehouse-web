@@ -1,36 +1,47 @@
 {% extends "main.html" %}
 {% block content %}
-    <div class="user-list">
+    <div class="product-page">
         <table>
             <caption>
-                מידע על משתמשים
+                משתמשי האתר
+                <div class="prod-buttons">
+                    <a href="#" class="edit-btn">הוספת משתמש</a>
+                </div>
             </caption>
             <colgroup>
                 <col span="8">
             </colgroup>
             <thead>
                 <tr>
-                    <th>כמות עבירות</th>
-                    <th>כמות פריטים שהשאיל</th>
+                    {% comment %} <th>למחוק את הפריט</th> {% endcomment %}
+                    <th>מנהל מחסן</th>
+                    <th>מודרטור</th>
                     <th>תפקיד</th>
-                    <th>מייל</th>
-                    <th>מס' טלפון</th>
+                    <th>נייד</th>
+                    <th>אי מייל</th>
                     <th>שם משפחה</th>
-                    <th>שפ פרטי</th>
+                    <th>שם פרטי</th>
                     <th>ת.ז</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Row 1, Column 1</td>
-                    <td>Row 1, Column 2</td>
-                    <td>Row 1, Column 3</td>
-                    <td>Row 1, Column 4</td>
-                    <td>Row 1, Column 5</td>
-                    <td>Row 1, Column 6</td>
-                    <td>Row 1, Column 7</td>
-                    <td>336195524</td>
-                </tr>
+                {% for user in users %}
+                    <tr>
+                        {% comment %} <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת הפריט</a>
+                            </div>
+                        </td> {% endcomment %}
+                        <td>{{ user.is_admin }}</td>
+                        <td>{{ user.is_mod }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.mobile_num }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.identity_num }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

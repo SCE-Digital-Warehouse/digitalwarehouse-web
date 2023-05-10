@@ -89,9 +89,14 @@ def borrowings(request):
 @login_required(login_url=LOGIN_URL)
 def users(request):
     user_type = get_user_type(request)
-    categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
     if user_type == "admin":
+        users = User.objects.filter(is_staff=False)
+        categories = Category.objects.all()
+        context = {
+            "user_type": user_type,
+            "users": users,
+            "categories": categories,
+        }
         return render(request, "base/users.html", context)
     return redirect("home")
 
