@@ -3,12 +3,13 @@
     <div class="borrowings-page-admin">
         <table>
             <caption>
-                מידע על ההאשלות של סטודנטים\מרצים
+                מידע על ההשאלות של סטודנטים\מרצים
             </caption>
             <colgroup>
                 <col span="8">
             </colgroup>
             <thead>
+                {% if user_type == "admin" %}
                 <tr>
                     <th>תאריך החזרה</th>
                     <th>תאריך ההשאלה</th>
@@ -18,23 +19,48 @@
                     <th>שם הפריט</th>
                     <th>מק''ט הפריט</th>
                     <th>שם משפחה</th>
-                    <th>שפ פרטי</th>
+                    <th>שם פרטי</th>
                     <th>ת.ז</th>
                 </tr>
+                {% else %}
+                    <tr>
+                        <th>תאריך החזרה</th>
+                        <th>תאריך ההשאלה</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
+                        <th>שם משפחה</th>
+                        <th>שם פרטי</th>
+                        <th>ת.ז</th>
+                    </tr>
+                {% endif %}
             </thead>
             <tbody>
-                <tr>
-                    <td>Row 1, Column 1</td>
-                    <td>Row 1, Column 2</td>
-                    <td>Row 1, Column 3</td>
-                    <td>Row 1, Column 4</td>
-                    <td>Row 1, Column 5</td>
-                    <td>Row 1, Column 6</td>
-                    <td>Row 1, Column 7</td>
-                    <td>Row 1, Column 7</td>
-                    <td>Row 1, Column 7</td>
-                    <td>336195524</td>
-                </tr>
+                {% if user_type == "admin" %}
+                    <tr>
+                        <td>Row 1, Column 1</td>
+                        <td>Row 1, Column 2</td>
+                        <td>Row 1, Column 3</td>
+                        <td>Row 1, Column 4</td>
+                        <td>Row 1, Column 5</td>
+                        <td>Row 1, Column 6</td>
+                        <td>Row 1, Column 7</td>
+                        <td>Row 1, Column 7</td>
+                        <td>Row 1, Column 7</td>
+                        <td>336195524</td>
+                    </tr>
+                {% else %}
+                    {%for borrow in borrows%}
+                        <tr>
+                            <td>{{borrow.date_to_return}}</td>
+                            <td>{{borrow.date_borrowed}}</td>
+                            <td>{{borrow.product.name}}</td>
+                            <td>{{borrow.product.id}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.identity_num}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>
