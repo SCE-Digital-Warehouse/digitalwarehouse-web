@@ -13,7 +13,9 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>למחוק את המשתמש</th>
+                    <th>למחוק משתמש</th>
+                    <th>לערוך פרטים</th>
+                    {% comment %} <th>מינוי/הדחה</th> {% endcomment %}
                     <th>מנהל מחסן</th>
                     <th>מודרטור</th>
                     <th>תפקיד</th>
@@ -32,6 +34,16 @@
                                 <a href="{% url 'delete_user' user.id %}" class="edit-btn">למחוק</a>
                             </div>
                         </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'edit_user' user.id %}" class="edit-btn">לערוך</a>
+                            </div>
+                        </td>
+                        {% comment %} <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'prom_dem_user' user.id %}" class="edit-btn">למנות/להדיח</a>
+                            </div>
+                        </td> {% endcomment %}
                         <td>{{ user.is_admin }}</td>
                         <td>{{ user.is_mod }}</td>
                         <td>{{ user.role }}</td>

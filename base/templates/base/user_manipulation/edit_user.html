@@ -1,0 +1,50 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="add_user">
+        <form action="" method="POST" class="add-user-form">
+            {% csrf_token %}
+            <label for="identity_num">ת.ז</label>
+            <input type="text"
+                   id="identity_num"
+                   name="identity_num"
+                   value="{{ user.identity_num }}"
+                   required>
+            <label for="first_name">שם פרטי</label>
+            <input type="text"
+                   id="first_name"
+                   name="first_name"
+                   value="{{ user.first_name }}"
+                   required>
+            <label for="last_name">שם משפחה</label>
+            <input type="text"
+                   id="last_name"
+                   name="last_name"
+                   value="{{ user.last_name }}"
+                   required>
+            <label for="mobile_num">נייד</label>
+            <input type="text"
+                   id="mobile_num"
+                   name="mobile_num"
+                   value="{{ user.mobile_num }}"
+                   required>
+            <label for="email">אי מייל</label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   value="{{ user.email }}"
+                   required>
+            <label for="role">תפקיד</label>
+            <select name="role" id="role">
+                <option value="student" selected required>
+                    סטודנט
+                </option>
+                <option value="lecturer" required>
+                    מרצה
+                </option>
+            </select>
+            <div>
+                <input type="submit" value="לשמור">
+            </div>
+        </form>
+    </div>
+{% endblock content %}
