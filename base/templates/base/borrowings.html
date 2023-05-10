@@ -50,9 +50,9 @@
         {% for el in borrowings %}
         {% if not request.GET.identity_num or el.user.identity_num == request.GET.identity_num %}
         <tr 
-            {% if green is True %}
+            {% if el.product.is_available == 1 %}
                 style="background-color: rgb(137, 246, 137);"
-            {% elif red is True %}
+            {% elif el.product.is_available == 0 %}
                 style="background-color: rgb(254, 100, 100);"
             {% endif %}
         >

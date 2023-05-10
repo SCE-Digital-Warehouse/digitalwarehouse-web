@@ -82,7 +82,6 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    green = False
 
     if user_type != "admin":
         user = request.user
@@ -90,7 +89,7 @@ def borrowings(request):
         context = {"user_type": user_type, "categories": categories, "user": user, "borrows":borrows}
     else:
         borrowings = Borrowing.objects.all()
-        context = {"user_type": user_type, "categories": categories, "borrowings": borrowings, "green": green}
+        context = {"user_type": user_type, "categories": categories, "borrowings": borrowings}
 
     return render(request, "base/borrowings.html", context)
 
@@ -417,6 +416,7 @@ def borrow_confirm(request, borrow_id):
         borrow = Borrowing.objects.get(pk=borrow_id)
         product = Product.objects.get(pk=borrow.product_id)
         product.is_available = 0
+        product.save()
         green = True
     context = {
         "categories": categories,
