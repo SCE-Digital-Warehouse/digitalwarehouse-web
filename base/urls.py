@@ -31,8 +31,14 @@ urlpatterns = [
 
     path("change-password/", change_password, name="change_password"),
     path("borrowings/", borrowings, name="borrowings"),
-    path("users/", users, name="users"),
+
+    path("add-user/", add_user, name="add_user"),
+    path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
+    path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
+    path("prom-dem-user/<int:user_id>/", prom_dem_user, name="prom_dem_user"),
     path("user/<int:user_id>/", show_user, name="show_user"),
+    path("users/", show_users, name="show_users"),
+
     path("catalog/", catalog, name="catalog"),
     path("personal_det/", personal_det, name="personal_det"),
     path("special_requests/", special_requests, name="special_requests"),
