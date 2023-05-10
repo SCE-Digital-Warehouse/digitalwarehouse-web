@@ -1,3 +1,4 @@
+from itertools import product
 from django.db import models
 from django.db.models import F
 from django.conf import settings
@@ -166,7 +167,8 @@ class Request(models.Model):
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
     comments = models.TextField(max_length=200, null=True, blank=True)
-    date_requested = models.DateTimeField(auto_now_add=True, blank=True)
+    date_requested = models.DateTimeField(
+        auto_now_add=True)
     exp_date_to_borrow = models.DateTimeField()
     exp_date_to_return = models.DateTimeField()
 
@@ -204,9 +206,9 @@ class Borrowing(models.Model):
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
     date_borrowed = models.DateTimeField(
-        auto_now_add=True, null=True, blank=True)
+        auto_now_add=True)
     date_to_return = models.DateTimeField()
-    returned_at = models.DateTimeField()
+    returned_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         unique_together = ("user", "product")
@@ -215,8 +217,7 @@ class Borrowing(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.increase_times_borrowed()
-            self.product.save()
+            self.product.increase_times_borrowed()
         super(Borrowing, self).save(*args, **kwargs)
 
 
@@ -226,7 +227,7 @@ class Repair(models.Model):
         "Product", on_delete=models.PROTECT)
     comments = models.TextField(max_length=200, null=True, blank=True)
     broke_at = models.DateTimeField(auto_now_add=True)
-    repaired_at = models.DateTimeField()
+    repaired_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         unique_together = ("user", "product")
@@ -234,6 +235,5 @@ class Repair(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.increase_times_borrowed()
-            self.product.save()
+            self.product.increase_times_borrowed()
         super(Repair, self).save(*args, **kwargs)
