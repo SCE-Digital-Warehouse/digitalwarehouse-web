@@ -341,34 +341,34 @@ def bad_product(request, prod_id):
 
 
 @login_required(login_url=LOGIN_URL)
-def requests_per_product(request, prod_id):
+def requests_per_product(request, cat_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
         try:
-            product = Product.objects.get(pk=prod_id)
+            category = Category.objects.get(pk=cat_id)
         except:
             return render("home")
     context = {
         "categories": categories,
         "user_type": user_type,
-        "product": product
+        "category": category
     }
-    return render(request, "base/requests_per_product.html", context)
+    return render(request, "base/requests_per_cat.html", context)
 
 
-""" @login_required(login_url=LOGIN_URL)
-def borrowings_per_product(request, prod_id):
+@login_required(login_url=LOGIN_URL)
+def borrowings_per_cat(request, cat_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
         try:
-            product = Product.objects.get(pk=prod_id)
+            category = Category.objects.get(pk=cat_id)
         except:
             return render("home")
     context = {
         "categories": categories,
         "user_type": user_type,
-        "product": product
+        "category": category
     }
-    return render(request, "base/borrowings.html", context) """
+    return render(request, "base/borrowings_by_cat.html", context)

@@ -8,10 +8,10 @@
                     <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
                 </div>
                 <div class="prod-buttons">
-                    <a href="{% url 'add_product' category.id %}" class="edit-btn">השאלות</a>
+                    <a href="{% url 'borrowings_per_cat' category.id %}" class="edit-btn">השאלות</a>
                 </div>
                 <div class="prod-buttons">
-                    <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
+                    <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">תורים</a>
                 </div>
             </caption>
             <colgroup>
@@ -21,9 +21,6 @@
                 <tr>
                     <th>למחוק את הפריט</th>
                     <th>לשנות את הפריט</th>
-                    {% comment %} <th>תקין\לא תקין</th> {% endcomment %}
-                    {% comment %} <th>השאלות לפריט</th> {% endcomment %}
-                    {% comment %} <th>אנשים בתור</th> {% endcomment %}
                     <th>זמין</th>
                     <th>שם הפריט</th>
                     <th>מק''ט</th>
@@ -45,16 +42,6 @@
                         {% comment %} <td>
                             <div class="prod-buttons">
                                 <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
-                            </div>
-                        </td> {% endcomment %}
-                        {% comment %} <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'borrowings_per_product' product.id %}" class="edit-btn">לראות השאלות</a>
-                            </div>
-                        </td> {% endcomment %}
-                        {% comment %} <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'requests_per_product' product.id %}" class="edit-btn">לראות תור</a>
                             </div>
                         </td> {% endcomment %}
                         <td>{{ product.is_available }}</td>

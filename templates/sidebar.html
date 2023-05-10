@@ -7,18 +7,19 @@
                     <a class="sub-btn"><i class="fas fa-angle-right dropdown"></i></a>
                     <div class="sub-menu">
                         {% for sub_cat in category.children.all %}
-                            <a class="cat-link" href="{% url 'show_category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
+                            <a class="cat-link"
+                               href="{% url 'show_category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
                         {% endfor %}
                     </div>
-                {% elif category.parent_id == None  %}
+                {% elif category.parent_id == None %}
                     <a class="cat-link" href="{% url 'show_category' category.id %}">{{ category.name }}</a>
                 {% endif %}
             {% endfor %}
         </div>
-        {% if user_type == "admin" %}
-            <div class="item">
-                <a class="cat-link new-cat" href="{% url 'add_category' %}">קטגוריה חדשה</a>
-            </div>
-        {% endif %}
     </div>
+    {% if user_type == "admin" %}
+        <div class="item">
+            <a class="cat-link new-cat" href="{% url 'add_category' %}">קטגוריה חדשה</a>
+        </div>
+    {% endif %}
 </div>

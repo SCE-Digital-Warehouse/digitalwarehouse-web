@@ -50,9 +50,9 @@ urlpatterns = [
     # path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
 
     path(
-        "requests/<int:prod_id>/",
+        "requests/<int:cat_id>/",
         requests_per_product,
         name="requests_per_product"
     ),
-    # path("borrowings/<int:prod_id>/", borrowings_per_product, name="borrowings_per_product"),
+    path("borrowings/<int:cat_id>/", borrowings_per_cat, name="borrowings_per_cat"),
 ]

@@ -272,7 +272,7 @@ SIDE BAR
     margin: 0;
     padding: 0;
     width: 13rem;
-    height: 80vh;
+    height: 80%;
     background-image: linear-gradient(to bottom right, #ff9900 0%, #ff3399 50%, #33ccff 100%);
     overflow-y: scroll;
     overflow-x: hidden;
@@ -280,16 +280,18 @@ SIDE BAR
 
 .side-bar .menu {
     width: 100%;
-    margin: 10px 0 50px 0;
+    margin: 10px 0 100px 0;
 }
 
-.side-bar .menu .item {
+.side-bar .menu .item,
+.side-bar .item{
     position: relative;
     cursor: pointer;
 }
 
 
-.side-bar .menu .item .cat-link {
+.side-bar .menu .item .cat-link,
+.side-bar .item .cat-link{
     display: block;
     padding: 8px 16px;
     text-decoration: none;
@@ -308,7 +310,8 @@ SIDE BAR
     transition: 0.3s ease;
 }
 
-.side-bar .menu .item .cat-link:hover {
+.side-bar .menu .item .cat-link:hover,
+.side-bar .item .cat-link:hover{
     background-color: #ff3399;
 }
 
@@ -335,7 +338,7 @@ SIDE BAR
     color: white;
 }
 
-.side-bar .menu .new-cat {
+.side-bar .new-cat {
     position: fixed;
     bottom: 0;
     background-color: #33ccff;
