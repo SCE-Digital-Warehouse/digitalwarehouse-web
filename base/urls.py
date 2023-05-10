@@ -58,5 +58,7 @@ urlpatterns = [
 
     path("extention-request/<int:borrow_id>/", extention_request, name="extention_req"),
 
-    path("borrow-confirm/<int:borrow_id>/", borrow_confirm, name="borrow_confirm")
+    path("borrow-confirm/<int:borrow_id>/", borrow_confirm, name="borrow_confirm"),
+
+    path("borrow-reject/<int:borrow_id>/", borrow_reject, name="borrow_reject")
 ]

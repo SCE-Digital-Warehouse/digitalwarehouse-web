@@ -426,3 +426,19 @@ def borrow_confirm(request, borrow_id):
         "borrowings": borrowings
     }
     return render(request, "base/borrowings.html", context)
+
+@login_required(login_url=LOGIN_URL)
+def borrow_reject(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    red = False
+    borrowings = Borrowing.objects.all()
+    if user_type == "admin":
+        red = True
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "red": red,
+        "borrowings": borrowings
+    }
+    return render(request, "base/borrowings.html", context)

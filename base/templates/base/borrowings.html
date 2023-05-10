@@ -52,12 +52,14 @@
         <tr 
             {% if green is True %}
                 style="background-color: rgb(137, 246, 137);"
+            {% elif red is True %}
+                style="background-color: rgb(254, 100, 100);"
             {% endif %}
         >
             <td>
                 <div class="prod-buttons">
                     <a href="{%url 'borrow_confirm' el.id%}" class="edit-btn">אשר</a>
-                    <a href="" class="edit-btn">דחה</a>
+                    <a href="{%url 'borrow_reject' el.id%}" class="edit-btn">דחה</a>
                 </div>
             </td>
             <td>{{el.date_to_return}}</td>
