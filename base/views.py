@@ -140,8 +140,11 @@ def personal_det(request):
 def special_requests(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    special_requests=Request.objects.all()
+    context = {"user_type": user_type, "categories": categories,"special_requests":special_requests}
     if user_type == "admin":
+        return render(request, "base/special_requests.html", context)
+    if user_type == "user":
         return render(request, "base/special_requests.html", context)
     return redirect("home")
 
