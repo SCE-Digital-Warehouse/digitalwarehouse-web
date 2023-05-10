@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="extention_req">
+        <form action="" method="POST" class="extention_req-form">
+            {% csrf_token %}
+            <label for="req_name">שם פרטי</label>
+            <input type="text" id="req_name" name="req_name" value="{{user.first_name}}" readonly>
+            <label for="req_last_name">שם משפחה</label>
+            <input type="text" id="req_last_name" name="req_last_name" value="{{user.last_name}}"readonly>
+            <label for="stock_num">שם הפריט</label>
+            <input type="text" id="stock_num" name="stock_num" value="{{borrow.product.name}}" readonly>
+            <label for="stock_num">מק''ט הפריט</label>
+            <input type="text" id="stock_num" name="stock_num" value="{{borrow.product.stock_num}}" readonly>
+            <label for="stock_num">מספר ימי הארכה</label>
+            <input type="text" id="stock_num" name="stock_num" required>
+            <div>
+                <input type="submit" value="שלח">
+            </div>
+        </form>
+    </div>
+{% endblock content %}
