@@ -166,6 +166,22 @@ def delete_user(request, user_id):
 
 
 @login_required(login_url=LOGIN_URL)
+def prom_dem_user(request, user_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception:
+            return redirect("show_users", permanent=True)
+        if not user.is_mod:
+            user.promote()
+        else:
+            user.demote()
+        return redirect("show_users")
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def show_user(request, user_id):
     user_type = get_user_type(request)
     categories = Category.objects.all()

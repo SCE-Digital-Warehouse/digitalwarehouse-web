@@ -15,7 +15,7 @@
                 <tr>
                     <th>למחוק משתמש</th>
                     <th>לערוך פרטים</th>
-                    {% comment %} <th>מינוי/הדחה</th> {% endcomment %}
+                    <th>מינוי/הדחה</th>
                     <th>מנהל מחסן</th>
                     <th>מודרטור</th>
                     <th>תפקיד</th>
@@ -39,11 +39,11 @@
                                 <a href="{% url 'edit_user' user.id %}" class="edit-btn">לערוך</a>
                             </div>
                         </td>
-                        {% comment %} <td>
+                        <td>
                             <div class="prod-buttons">
                                 <a href="{% url 'prom_dem_user' user.id %}" class="edit-btn">למנות/להדיח</a>
                             </div>
-                        </td> {% endcomment %}
+                        </td>
                         <td>{{ user.is_admin }}</td>
                         <td>{{ user.is_mod }}</td>
                         <td>{{ user.role }}</td>
