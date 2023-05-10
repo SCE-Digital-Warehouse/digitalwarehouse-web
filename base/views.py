@@ -382,3 +382,22 @@ def borrowings_per_cat(request, cat_id):
         "category": category
     }
     return render(request, "base/borrowings_by_cat.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def extention_request(request, borrow_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    if user_type != "admin":
+        borrow = Borrowing.objects.get(pk=borrow_id)
+        user = request.user
+        if request.method == "POST":
+            return redirect('home')  
+            """to do send to special_requests"""
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "borrow": borrow,
+        "user": user
+    }
+    return render(request, "base/extention_request.html", context)

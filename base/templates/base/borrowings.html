@@ -24,6 +24,7 @@
                 </tr>
                 {% else %}
                     <tr>
+                        <th>בקשה להארכה</th>
                         <th>תאריך החזרה</th>
                         <th>תאריך ההשאלה</th>
                         <th>שם הפריט</th>
@@ -51,6 +52,11 @@
                 {% else %}
                     {%for borrow in borrows%}
                         <tr>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{%url 'extention_req' borrow.id%}" class="edit-btn">בקשה להארכה</a>
+                                </div>
+                            </td>
                             <td>{{borrow.date_to_return}}</td>
                             <td>{{borrow.date_borrowed}}</td>
                             <td>{{borrow.product.name}}</td>

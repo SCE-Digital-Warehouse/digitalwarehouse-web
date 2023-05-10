@@ -55,4 +55,8 @@ urlpatterns = [
         name="requests_per_product"
     ),
     path("borrowings/<int:cat_id>/", borrowings_per_cat, name="borrowings_per_cat"),
+
+    path(
+        "extention-request/<int:borrow_id>/", extention_request, name="extention_req"
+    ),
 ]
