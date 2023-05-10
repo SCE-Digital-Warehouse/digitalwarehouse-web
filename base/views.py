@@ -177,59 +177,63 @@ def contact_us(request):
     context = {"user_type": user_type, "categories": categories}
     return render(request, "base/contact_us.html", context)
 
+
 @login_required(login_url=LOGIN_URL)
 def add_category(request):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
-        if request.method == 'POST':
-            cat_parent = request.POST.get('cat_parent')
+        if request.method == "POST":
+            cat_parent = request.POST.get("cat_parent")
             try:
-                if cat_parent != 'ללא קטגוריה אב':
+                if cat_parent != "ללא קטגורית אב":
                     category = Category.objects.create(
-                        name=request.POST.get('cat_name'),
+                        name=request.POST.get("cat_name"),
                         parent=Category.objects.get(name=cat_parent),
-                        image_url=request.POST.get('cat_image')
+                        image_url=request.POST.get("cat_image")
                     )
                     category.save()
                 else:
                     category = Category.objects.create(
-                        name=request.POST.get('cat_name'),
-                        image_url=request.POST.get('cat_image')
+                        name=request.POST.get("cat_name"),
+                        image_url=request.POST.get("cat_image")
                     )
                     category.save()
             except Exception:
-                return redirect('add_category')
+                return redirect("add_category")
         context = {"categories": categories, "user_type": user_type}
         return render(request, "base/add_category.html", context)
     else:
-        return redirect('home')
+        return redirect("home")
+
 
 @login_required(login_url=LOGIN_URL)
 def add_product(request, cat_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
-
     try:
         category = Category.objects.get(pk=cat_id)
     except Exception:
         return redirect("home", permanent=True)
-
     if user_type == "admin":
-        if request.method == 'POST':
+        if request.method == "POST":
             try:
                 product = Product.objects.create(
-                    name=request.POST.get('prod_name'),
-                    stock_num=request.POST.get('prod_serial'),
+                    name=request.POST.get("prod_name"),
+                    stock_num=request.POST.get("prod_serial"),
                     category=category
                 )
                 product.save()
             except Exception:
-                return redirect('home')
-        context = {"categories": categories, "user_type": user_type, "category": category}
+                return redirect("home")
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "category": category
+        }
         return render(request, "base/add_product.html", context)
     else:
-        return redirect('show_category', cat_id)
+        return redirect("show_category", cat_id)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -237,23 +241,26 @@ def delete_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     product = Product.objects.get(pk=prod_id)
-
     try:
         category = Category.objects.get(pk=product.category.id)
     except Exception:
         return redirect("home", permanent=True)
-
     if user_type == "admin":
-        if request.method == 'POST':
+        if request.method == "POST":
             try:
                 product.delete()
             except Exception:
-                return redirect('home')
-            return redirect('show_category', category.id)
-        context = {"categories": categories, "user_type": user_type, "category": category, "product": product}
+                return redirect("home")
+            return redirect("show_category", category.id)
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "category": category,
+            "product": product
+        }
         return render(request, "base/delete_product.html", context)
     else:
-        return redirect('show_category', category.id)
+        return redirect("show_category", category.id)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -261,29 +268,32 @@ def edit_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     product = Product.objects.get(pk=prod_id)
-
     try:
         category = Category.objects.get(pk=product.category.id)
     except Exception:
         return redirect("home", permanent=True)
-
     if user_type == "admin":
-        if request.method == 'POST':
-            cat_parent = request.POST.get('cat_parent')
+        if request.method == "POST":
+            cat_parent = request.POST.get("cat_parent")
             try:
                 product.delete()
                 product = Product.objects.update_or_create(
-                    name=request.POST.get('prod_name'),
-                    stock_num=request.POST.get('prod_serial'),
+                    name=request.POST.get("prod_name"),
+                    stock_num=request.POST.get("prod_serial"),
                     category=Category.objects.get(name=cat_parent)
                 )
             except Exception:
-                return redirect('home')
-            return redirect('show_category', category.id)
-        context = {"categories": categories, "user_type": user_type, "category": category, "product": product}
+                return redirect("home")
+            return redirect("show_category", category.id)
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "category": category,
+            "product": product
+        }
         return render(request, "base/edit_product.html", context)
     else:
-        return redirect('show_category', category.id)
+        return redirect("show_category", category.id)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -296,53 +306,67 @@ def bad_product(request, prod_id):
             category = Category.objects.get(pk=product.category.id)
         except Exception:
             return redirect("home", permanent=True)
-
         try:
             product.is_available = False
             product.save()
         except:
-            return render('home')
-    context = {"categories": categories, "user_type": user_type, "category": category, "product": product}
+            return render("home")
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "category": category,
+        "product": product
+    }
     return render(request, "base/category_products.html", context)
+
 
 @login_required(login_url=LOGIN_URL)
 def show_category(request, cat_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     products = Product.objects.all().filter(category_id=cat_id)
-
     try:
         category = Category.objects.get(pk=cat_id)
     except Exception:
         return redirect("home", permanent=True)
-
-    context = {"categories": categories, "user_type": user_type, "category": category, "products": products}
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "category": category,
+        "products": products
+    }
     return render(request, "base/category_products.html", context)
+
 
 @login_required(login_url=LOGIN_URL)
 def requests_by_prod(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
-
     if user_type == "admin":
         try:
             product = Product.objects.get(pk=prod_id)
         except:
-            return render('home')
-
-    context = {"categories": categories, "user_type": user_type, "product": product}
+            return render("home")
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "product": product
+    }
     return render(request, "base/queues_by_product.html", context)
+
 
 @login_required(login_url=LOGIN_URL)
 def borrowings_by_prod(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
-
     if user_type == "admin":
         try:
             product = Product.objects.get(pk=prod_id)
         except:
-            return render('home')
-
-    context = {"categories": categories, "user_type": user_type, "product": product}
+            return render("home")
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "product": product
+    }
     return render(request, "base/borrowings.html", context)

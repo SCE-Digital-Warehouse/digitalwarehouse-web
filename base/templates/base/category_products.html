@@ -12,50 +12,50 @@
                 <col span="8">
             </colgroup>
             <thead>
-            <tr>
-                <th>למחוק את הפריט</th>
-                <th>לשנות את הפריט</th>
-                <th>תקין\לא תקין</th>
-                <th>השאלות לפריט</th>
-                <th>אנשים בתור</th>
-                <th>בהשאלה</th>
-                <th>שפ המוצר</th>
-                <th> מקט</th>
-            </tr>
+                <tr>
+                    <th>למחוק את הפריט</th>
+                    <th>לשנות את הפריט</th>
+                    <th>תקין\לא תקין</th>
+                    <th>השאלות לפריט</th>
+                    <th>אנשים בתור</th>
+                    <th>בהשאלה</th>
+                    <th>שם הפריט</th>
+                    <th>מק''ט</th>
+                </tr>
             </thead>
             <tbody>
-            {% for product in products %}
-                <tr>
-                    <td>
-                        <div class="prod-buttons">
-                            <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת פריט</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="prod-buttons">
-                            <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי פריט</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="prod-buttons">
-                            <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="prod-buttons">
-                            <a href="{% url 'borrowings_by_prod' product.id %}" class="edit-btn">לראות השאלות</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="prod-buttons">
-                            <a href="{% url 'requests_by_prod' product.id %}" class="edit-btn">לראות תור</a>
-                        </div>
-                    </td>
-                    <td>{{ product.is_available }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.stock_num }}</td>
-                </tr>
-            {% endfor %}
+                {% for product in products %}
+                    <tr>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת הפריט</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי הפריט</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'borrowings_by_prod' product.id %}" class="edit-btn">לראות השאלות</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'requests_by_prod' product.id %}" class="edit-btn">לראות תור</a>
+                            </div>
+                        </td>
+                        <td>{{ product.is_available }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.stock_num }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

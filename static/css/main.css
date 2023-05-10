@@ -13,7 +13,8 @@ html {
 
 ::-webkit-scrollbar {
     width: 0;
-    background: transparent; /* make scrollbar transparent */
+    background: transparent;
+    /* make scrollbar transparent */
 }
 
 
@@ -60,7 +61,7 @@ td {
     justify-content: center;
 }
 
-td .edit-btn{
+td .edit-btn {
     font-size: 20px;
     height: 100%;
     text-align: center;
@@ -69,7 +70,8 @@ td .edit-btn{
 th {
     background-color: #009879;
     color: #ffffff;
-    border-left: 1px solid #dddddd;;
+    border-left: 1px solid #dddddd;
+    ;
 }
 
 tbody tr {
@@ -80,7 +82,7 @@ tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
-tbody tr:last-of-type{
+tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
 }
 
@@ -90,7 +92,7 @@ caption {
     margin: 10px;
 }
 
-caption .prod-buttons{
+caption .prod-buttons {
     display: block;
     float: right;
 }
@@ -210,7 +212,7 @@ Login Page
     margin: 30px 0 -15px 50px;
     align-items: center;
     width: 80%;
-    font-size:20px;
+    font-size: 20px;
     font-weight: 700;
 }
 
@@ -276,12 +278,12 @@ SIDE BAR
     overflow-x: hidden;
 }
 
-.side-bar .menu{
+.side-bar .menu {
     width: 100%;
     margin: 10px 0 50px 0;
 }
 
-.side-bar .menu .item{
+.side-bar .menu .item {
     position: relative;
     cursor: pointer;
 }
@@ -310,15 +312,15 @@ SIDE BAR
     background-color: #ff3399;
 }
 
-.side-bar .menu .item .sub-menu{
+.side-bar .menu .item .sub-menu {
     display: none;
 }
 
-.side-bar .menu .item .sub-menu a{
+.side-bar .menu .item .sub-menu a {
     padding-left: 30px;
 }
 
-.sub-btn{
+.sub-btn {
     position: relative;
     top: -70px;
     left: -20px;
@@ -387,7 +389,7 @@ REQUESTS PAGE | BORROWINGS PAGE | SPECIAL REQUESTS PAGE
 .user-list,
 .special_requests-page-admin,
 .contact_us-page,
-.product-page{
+.product-page {
     width: 100em;
     height: 50em;
     float: right;
@@ -484,6 +486,7 @@ CONTACT_US PAGE
     direction: rtl;
     text-align: center;
 }
+
 .contact_us-card {
     font-size: 30px;
     font-weight: 700;
@@ -520,7 +523,7 @@ ADD CATEGORY PAGE
 }
 
 .add_category form,
-.add_product form{
+.add_product form {
     margin: 40px;
     direction: rtl;
     font-size: 30px;
@@ -530,7 +533,7 @@ ADD CATEGORY PAGE
 }
 
 .add-category-form label,
-.add-product-form label{
+.add-product-form label {
     display: block;
     margin-bottom: 10px;
     padding-top: 20px;
@@ -539,7 +542,7 @@ ADD CATEGORY PAGE
 .add-category-form input[type="text"],
 .add-category-form select,
 .add-product-form input[type="text"],
-.add-product-form select{
+.add-product-form select {
     width: 60%;
     padding: 12px 20px;
     margin: 20px 0;
@@ -579,7 +582,7 @@ PRODUCTS PAGE
     background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
     border: 0;
     border-radius: 6px;
-    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
     box-sizing: border-box;
     color: #fff;
     cursor: pointer;
@@ -592,12 +595,12 @@ PRODUCTS PAGE
     padding-right: 16px;
     text-align: left;
     text-decoration: none;
-    transition: box-shadow .15s,transform .15s;
+    transition: box-shadow .15s, transform .15s;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
     white-space: nowrap;
-    will-change: box-shadow,transform;
+    will-change: box-shadow, transform;
     margin: 10px;
     font-size: 25px;
 }

@@ -4,15 +4,23 @@
         <form action="" method="POST" class="add-product-form">
             {% csrf_token %}
             <label for="prod_name">שם הפריט</label>
-            <input type="text" id="prod_name" name="prod_name" value="{{ product.name }}" required>
-
-            <label for="prod_serial">מקט הפריט</label>
-            <input type="text" id="prod_serial" name="prod_serial" value="{{ product.stock_num }}" required>
-
+            <input type="text"
+                   id="prod_name"
+                   name="prod_name"
+                   value="{{ product.name }}"
+                   required>
+            <label for="prod_serial">מק''ט הפריט</label>
+            <input type="text"
+                   id="prod_serial"
+                   name="prod_serial"
+                   value="{{ product.stock_num }}"
+                   required>
             <label for="cat_parent">קטגוריה</label>
             <select id="cat_parent" name="cat_parent">
                 {% for category in categories %}
-                    <option value="{{ category }}">{{ category }}</option>
+                    <option value="{{ category }}">
+                        {{ category }}
+                    </option>
                 {% endfor %}
             </select>
             <div>
