@@ -108,6 +108,35 @@ def show_users(request):
 
 
 @login_required(login_url=LOGIN_URL)
+def add_user(request):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        if request.method == "POST":
+            try:
+                user = User.objects.create(
+                    identity_num=request.POST.get("identity_num"),
+                    first_name=request.POST.get("first_name"),
+                    last_name=request.POST.get("last_name"),
+                    mobile_num=request.POST.get("mobile_num"),
+                    email=request.POST.get("email"),
+                    role=request.POST.get("role"),
+                    username=request.POST.get("email").split('@')[0],
+                    password=request.POST.get("identity_num")
+                )
+            except Exception:
+                pass
+            finally:
+                return redirect("show_users")
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulation/add_user.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def edit_user(request, user_id):
     user_type = get_user_type(request)
     if user_type == "admin":

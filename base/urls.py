@@ -32,6 +32,7 @@ urlpatterns = [
     path("change-password/", change_password, name="change_password"),
     path("borrowings/", borrowings, name="borrowings"),
 
+    path("add-user/", add_user, name="add_user"),
     path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
     path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
     path("prom-dem-user/<int:user_id>/", prom_dem_user, name="prom_dem_user"),
