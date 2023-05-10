@@ -516,7 +516,8 @@ ADD CATEGORY PAGE
 ==================*/
 
 .add_category,
-.add_product {
+.add_product, 
+.extention_req{
     width: 35%;
     height: 35em;
     background-color: #fff;
@@ -525,8 +526,13 @@ ADD CATEGORY PAGE
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
 }
 
+.extention_req{
+    height: 55em;
+}
+
 .add_category form,
-.add_product form {
+.add_product form,
+.extention_req form {
     margin: 40px;
     direction: rtl;
     font-size: 30px;
@@ -536,7 +542,8 @@ ADD CATEGORY PAGE
 }
 
 .add-category-form label,
-.add-product-form label {
+.add-product-form label,
+.extention_req-form label {
     display: block;
     margin-bottom: 10px;
     padding-top: 20px;
@@ -545,7 +552,8 @@ ADD CATEGORY PAGE
 .add-category-form input[type="text"],
 .add-category-form select,
 .add-product-form input[type="text"],
-.add-product-form select {
+.add-product-form select,
+.extention_req-form input[type="text"] {
     width: 60%;
     padding: 12px 20px;
     margin: 20px 0;
@@ -557,7 +565,8 @@ ADD CATEGORY PAGE
 }
 
 .add-category-form input[type="submit"],
-.add-product-form input[type="submit"] {
+.add-product-form input[type="submit"],
+.extention_req-form input[type="submit"] {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -626,3 +635,4 @@ PRODUCTS PAGE
 #delete-inp {
     background: red;
 }
+
