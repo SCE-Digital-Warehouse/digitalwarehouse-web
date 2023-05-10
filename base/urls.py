@@ -44,10 +44,15 @@ urlpatterns = [
     path("category/<int:cat_id>/", show_category, name="show_category"),
 
     path("add-product/<int:cat_id>/", add_product, name="add_product"),
-    path("delete-product/<int:prod_id>/", delete_product, name="delete_product"),
+    path("delete-product/<int:prod_id>/",
+         delete_product, name="delete_product"),
     path("edit-product/<int:prod_id>/", edit_product, name="edit_product"),
-    path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
+    # path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
 
-    path("requests/<int:prod_id>/", requests_by_prod, name="requests_by_prod"),
-    path("borrowings/<int:prod_id>/", borrowings_by_prod, name="borrowings_by_prod")
+    path(
+        "requests/<int:prod_id>/",
+        requests_per_product,
+        name="requests_per_product"
+    ),
+    # path("borrowings/<int:prod_id>/", borrowings_per_product, name="borrowings_per_product"),
 ]

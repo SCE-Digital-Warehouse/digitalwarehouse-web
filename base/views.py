@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from base.models import Borrowing, Moderator, Product, Repair, Request
+from base.models import *
+from django.db.models import F
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -202,9 +203,28 @@ def add_category(request):
             except Exception:
                 return redirect("add_category")
         context = {"categories": categories, "user_type": user_type}
-        return render(request, "base/add_category.html", context)
+        return render(request, "base/category_manipulations/add_category.html", context)
     else:
         return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def show_category(request, cat_id):
+    """Shows all products by specific category."""
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    products = Product.objects.all().filter(category_id=cat_id)
+    try:
+        category = Category.objects.get(pk=cat_id)
+    except Exception:
+        return redirect("home", permanent=True)
+    context = {
+        "categories": categories,
+        "user_type": user_type,
+        "category": category,
+        "products": products
+    }
+    return render(request, "base/category_manipulations/show_category.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -220,7 +240,7 @@ def add_product(request, cat_id):
             try:
                 product = Product.objects.create(
                     name=request.POST.get("prod_name"),
-                    stock_num=request.POST.get("prod_serial"),
+                    stock_num=request.POST.get("stock_num"),
                     category=category
                 )
                 product.save()
@@ -231,7 +251,7 @@ def add_product(request, cat_id):
             "user_type": user_type,
             "category": category
         }
-        return render(request, "base/add_product.html", context)
+        return render(request, "base/product_manipulations/add_product.html", context)
     else:
         return redirect("show_category", cat_id)
 
@@ -258,7 +278,7 @@ def delete_product(request, prod_id):
             "category": category,
             "product": product
         }
-        return render(request, "base/delete_product.html", context)
+        return render(request, "base/product_manipulations/delete_product.html", context)
     else:
         return redirect("show_category", category.id)
 
@@ -279,7 +299,7 @@ def edit_product(request, prod_id):
                 product.delete()
                 product = Product.objects.update_or_create(
                     name=request.POST.get("prod_name"),
-                    stock_num=request.POST.get("prod_serial"),
+                    stock_num=request.POST.get("stock_num"),
                     category=Category.objects.get(name=cat_parent)
                 )
             except Exception:
@@ -291,12 +311,12 @@ def edit_product(request, prod_id):
             "category": category,
             "product": product
         }
-        return render(request, "base/edit_product.html", context)
+        return render(request, "base/product_manipulations/edit_product.html", context)
     else:
         return redirect("show_category", category.id)
 
 
-@login_required(login_url=LOGIN_URL)
+""" @login_required(login_url=LOGIN_URL)
 def bad_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
@@ -317,29 +337,11 @@ def bad_product(request, prod_id):
         "category": category,
         "product": product
     }
-    return render(request, "base/category_products.html", context)
+    return render(request, "base/category_manipulations/show_category.html", context) """
 
 
 @login_required(login_url=LOGIN_URL)
-def show_category(request, cat_id):
-    categories = Category.objects.all()
-    user_type = get_user_type(request)
-    products = Product.objects.all().filter(category_id=cat_id)
-    try:
-        category = Category.objects.get(pk=cat_id)
-    except Exception:
-        return redirect("home", permanent=True)
-    context = {
-        "categories": categories,
-        "user_type": user_type,
-        "category": category,
-        "products": products
-    }
-    return render(request, "base/category_products.html", context)
-
-
-@login_required(login_url=LOGIN_URL)
-def requests_by_prod(request, prod_id):
+def requests_per_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
@@ -352,11 +354,11 @@ def requests_by_prod(request, prod_id):
         "user_type": user_type,
         "product": product
     }
-    return render(request, "base/queues_by_product.html", context)
+    return render(request, "base/requests_per_product.html", context)
 
 
-@login_required(login_url=LOGIN_URL)
-def borrowings_by_prod(request, prod_id):
+""" @login_required(login_url=LOGIN_URL)
+def borrowings_per_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
@@ -369,4 +371,4 @@ def borrowings_by_prod(request, prod_id):
         "user_type": user_type,
         "product": product
     }
-    return render(request, "base/borrowings.html", context)
+    return render(request, "base/borrowings.html", context) """
