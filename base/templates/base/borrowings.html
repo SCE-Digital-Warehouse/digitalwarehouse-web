@@ -1,6 +1,9 @@
 {% extends "main.html" %}
 {% block content %}
 
+
+
+
 <div class="borrowings-page-admin">
     <form method="GET">
         <label for="identity_num">Search by Identity Number:</label>
@@ -9,12 +12,14 @@
     </form>
     <table>
         <caption>
-            מידע על ההאשלות של סטודנטים\מרצים
+            מידע על ההשאלות של סטודנטים\מרצים
         </caption>
         <colgroup>
             <col span="8">
         </colgroup>
         <thead>
+        {% if user_type == "admin" %}
+
         <tr>
             <th>תאריך החזרה</th>
             <th>תאריך ההשאלה</th>
@@ -24,11 +29,24 @@
             <th>שם הפריט</th>
             <th>מק''ט הפריט</th>
             <th>שם משפחה</th>
-            <th>שפ פרטי</th>
+            <th>שם פרטי</th>
             <th>ת.ז</th>
         </tr>
+        {% else %}
+        <tr>
+            <th>בקשה להארכה</th>
+            <th>תאריך החזרה</th>
+            <th>תאריך ההשאלה</th>
+            <th>שם הפריט</th>
+            <th>מק''ט הפריט</th>
+            <th>שם משפחה</th>
+            <th>שם פרטי</th>
+            <th>ת.ז</th>
+        </tr>
+        {% endif %}
         </thead>
         <tbody>
+        {% if user_type == "admin" %}
         {% for el in borrowings %}
         {% if not request.GET.identity_num or el.user.identity_num == request.GET.identity_num %}
         <tr class="clickable-row" data-href="?identity_num={{ el.user.identity_num }}">
@@ -45,6 +63,24 @@
         </tr>
         {% endif %}
         {% endfor %}
+        {% else %}
+        {%for borrow in borrows%}
+        <tr>
+            <td>
+                <div class="prod-buttons">
+                    <a href="{%url 'extention_req' borrow.id%}" class="edit-btn">בקשה להארכה</a>
+                </div>
+            </td>
+            <td>{{borrow.date_to_return}}</td>
+            <td>{{borrow.date_borrowed}}</td>
+            <td>{{borrow.product.name}}</td>
+            <td>{{borrow.product.id}}</td>
+            <td>{{user.last_name}}</td>
+            <td>{{user.first_name}}</td>
+            <td>{{user.identity_num}}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 </div>
@@ -56,11 +92,11 @@
     }
 </style>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var rows = document.querySelectorAll(".clickable-row");
         for (var i = 0; i < rows.length; i++) {
             rows[i].classList.add("hoverable-row");
-            rows[i].addEventListener("click", function() {
+            rows[i].addEventListener("click", function () {
                 window.open(this.getAttribute("data-href"), "_blank");
             });
         }
