@@ -87,7 +87,7 @@ def borrowings(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def users(request):
+def show_users(request):
     user_type = get_user_type(request)
     if user_type == "admin":
         users = User.objects.filter(is_staff=False)
@@ -97,7 +97,32 @@ def users(request):
             "users": users,
             "categories": categories,
         }
-        return render(request, "base/users.html", context)
+        return render(request, "base/user_manipulation/show_users.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def delete_user(request, user_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception:
+            return redirect("show_users", permanent=True)
+        if request.method == "POST":
+            try:
+                user.delete()
+            except Exception:
+                pass
+            finally:
+                return redirect("show_users")
+        context = {
+            "user_type": user_type,
+            "user": user,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulation/delete_user.html", context)
     return redirect("home")
 
 

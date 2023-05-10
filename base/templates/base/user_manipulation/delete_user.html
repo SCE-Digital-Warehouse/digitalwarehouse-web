@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="add_product">
+        <form action="" method="POST" class="add-product-form">
+            {% csrf_token %}
+            <label for="prod_name">שם פרטי</label>
+            <input type="text"
+                   id="prod_name"
+                   name="prod_name"
+                   value="{{ user.first_name }}"
+                   readonly
+                   required>
+            <label for="prod_serial">שם משפחה</label>
+            <input type="text"
+                   id="prod_serial"
+                   name="prod_serial"
+                   value="{{ user.last_name }}"
+                   readonly
+                   required>
+            <label for="prod_cat">ת.ז</label>
+            <input type="text"
+                   id="prod_cat"
+                   name="prod_cat"
+                   value="{{ user.identity_num }}"
+                   readonly
+                   required>
+            <div>
+                <input id="delete-inp" type="submit" value="למחוק">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

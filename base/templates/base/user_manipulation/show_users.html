@@ -13,7 +13,7 @@
             </colgroup>
             <thead>
                 <tr>
-                    {% comment %} <th>למחוק את הפריט</th> {% endcomment %}
+                    <th>למחוק את המשתמש</th>
                     <th>מנהל מחסן</th>
                     <th>מודרטור</th>
                     <th>תפקיד</th>
@@ -27,11 +27,11 @@
             <tbody>
                 {% for user in users %}
                     <tr>
-                        {% comment %} <td>
+                        <td>
                             <div class="prod-buttons">
-                                <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת הפריט</a>
+                                <a href="{% url 'delete_user' user.id %}" class="edit-btn">למחוק</a>
                             </div>
-                        </td> {% endcomment %}
+                        </td>
                         <td>{{ user.is_admin }}</td>
                         <td>{{ user.is_mod }}</td>
                         <td>{{ user.role }}</td>
