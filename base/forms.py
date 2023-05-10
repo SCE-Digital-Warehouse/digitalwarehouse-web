@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm, PasswordResetForm, PasswordChangeForm
+from .models import Request
+from django.forms import ModelForm
 
 User = get_user_model()
 
@@ -42,3 +44,8 @@ class PasswordSetForm(SetPasswordForm):
         label="אמת/י את הסיסמה",
         strip=False,
         widget=forms.PasswordInput())
+
+class RequestsForm(ModelForm):
+    class Meta:
+        model=Request
+        fields=['user','product','comments','exp_date_to_borrow','exp_date_to_return']

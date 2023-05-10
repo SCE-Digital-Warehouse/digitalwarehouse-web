@@ -5,6 +5,8 @@ from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from base.models import *
 from django.db.models import F
+from .models import Request
+from .forms import RequestsForm
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -246,8 +248,11 @@ def personal_det(request):
 def special_requests(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    special_requests=Request.objects.all()
+    context = {"user_type": user_type, "categories": categories,"special_requests":special_requests}
     if user_type == "admin":
+        return render(request, "base/special_requests.html", context)
+    if user_type == "user":
         return render(request, "base/special_requests.html", context)
     return redirect("home")
 
@@ -512,6 +517,24 @@ def extention_request(request, borrow_id):
     }
     return render(request, "base/extention_request.html", context)
 
+
+def add_req(request):
+    error=''
+    if request.method=='POST':
+        form=RequestsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            error='צורה לא תקינה'
+    form=RequestsForm()
+
+    data={
+        'form':form,
+        'error':error
+    }
+    return render(request,'base/add_req.html',data)
+
 @login_required(login_url=LOGIN_URL)
 def borrow_confirm(request, borrow_id):
     categories = Category.objects.all()
@@ -548,4 +571,5 @@ def borrow_reject(request, borrow_id):
         "borrowings": borrowings
     }
     return render(request, "base/borrowings.html", context)
+
 
