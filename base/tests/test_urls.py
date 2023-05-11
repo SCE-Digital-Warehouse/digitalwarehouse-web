@@ -40,33 +40,101 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, change_password)
 
     def test_asks_url_is_resolved(self):
-        url = reverse("asks")
-        self.assertEquals(resolve(url).func, asks)
+        url = reverse("requests")
+        self.assertEquals(resolve(url).func, requests)
 
     def test_users_url_is_resolved(self):
         url = reverse("users")
-        self.assertEquals(resolve(url).func, users)
+        self.assertEquals(resolve(url).func, show_users)
 
     def test_menu_url_is_resolved(self):
-        url = reverse("menu")
-        self.assertEquals(resolve(url).func, menu)
+        url = reverse("show_category")
+        self.assertEquals(resolve(url).func, show_category)
 
     def test_personal_det_url_is_resolved(self):
         url = reverse("personal_det")
         self.assertEquals(resolve(url).func, personal_det)
 
     def test_special_asks_url_is_resolved(self):
-        url = reverse("special_asks")
-        self.assertEquals(resolve(url).func, special_asks)
+        url = reverse("special_requests")
+        self.assertEquals(resolve(url).func, special_requests)
 
     def test_queues_url_is_resolved(self):
-        url = reverse("queues")
-        self.assertEquals(resolve(url).func, queues)
+        url = reverse("borrowings")
+        self.assertEquals(resolve(url).func, borrowings)
 
     def test_stat_url_is_resolved(self):
         url = reverse("stat")
         self.assertEquals(resolve(url).func, statistics)
 
     def test_connections_url_is_resolved(self):
-        url = reverse("connections")
-        self.assertEquals(resolve(url).func, connections)
+        url = reverse("contact_us")
+        self.assertEquals(resolve(url).func, contact_us)
+
+    def test_add_user_url_is_resolved(self):
+        url = reverse("add_user")
+        self.assertEquals(resolve(url).func, add_user)
+
+    def test_edit_user_url_is_resolved(self):
+        url = reverse("edit_user")
+        self.assertEquals(resolve(url).func, edit_user)
+
+    def test_delete_user_url_is_resolved(self):
+        url = reverse("delete_user")
+        self.assertEquals(resolve(url).func, delete_user)
+
+    def test_prom_dem_user_url_is_resolved(self):
+        url = reverse("prom_dem_user")
+        self.assertEquals(resolve(url).func, prom_dem_user)
+
+    def test_show_user_url_is_resolved(self):
+        url = reverse("show_user")
+        self.assertEquals(resolve(url).func, show_user)
+
+    def test_show_users_url_is_resolved(self):
+        url = reverse("show_users")
+        self.assertEquals(resolve(url).func, show_users)
+
+    def test_add_category_url_is_resolved(self):
+        url = reverse("add_category")
+        self.assertEquals(resolve(url).func, add_category)
+
+    def test_show_category_url_is_resolved(self):
+        url = reverse("show_category")
+        self.assertEquals(resolve(url).func, show_category)
+
+    def test_add_product_url_is_resolved(self):
+        url = reverse("add_product")
+        self.assertEquals(resolve(url).func, add_product)
+
+    def test_delete_product_url_is_resolved(self):
+        url = reverse("delete_product")
+        self.assertEquals(resolve(url).func, delete_product)
+
+    def test_edit_product_url_is_resolved(self):
+        url = reverse("edit_product")
+        self.assertEquals(resolve(url).func, edit_product)
+
+    def test_requests_per_product_url_is_resolved(self):
+        url = reverse("requests_per_product")
+        self.assertEquals(resolve(url).func, requests_per_product)
+
+    def test_borrowings_per_cat_url_is_resolved(self):
+        url = reverse("borrowings_per_cat")
+        self.assertEquals(resolve(url).func, borrowings_per_cat)
+
+    def test_add_req_url_is_resolved(self):
+        url = reverse("add_req")
+        self.assertEquals(resolve(url).func, add_req)
+
+    def test_extention_request_is_resolved(self):
+        url = reverse("extention_req")
+        self.assertEquals(resolve(url).func, extention_request)
+
+    def test_borrow_confirm_is_resolved(self):
+        url = reverse("borrow_confirm")
+        self.assertEquals(resolve(url).func, borrow_confirm)
+
+    def test_borrow_reject_is_resolved(self):
+        url = reverse("borrow_reject")
+        self.assertEquals(resolve(url).func, borrow_reject)
