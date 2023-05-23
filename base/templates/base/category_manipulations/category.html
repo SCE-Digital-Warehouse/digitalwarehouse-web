@@ -25,7 +25,7 @@
                         <th>למחוק את הפריט</th>
                         <th>לשנות את הפריט</th>
                     {% endif %}
-                    <th>זמין</th>
+                    <th>זמינות</th>
                     <th>שם הפריט</th>
                     <th>מק''ט</th>
                 </tr>
@@ -50,7 +50,13 @@
                                 <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
                             </div>
                         </td> {% endcomment %}
-                        <td>{{ product.is_available }}</td>
+                        <td>
+                            {% if product.is_available %}
+                                זמין
+                            {% else %}
+                                לא זמין
+                            {% endif %}
+                        </td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.stock_num }}</td>
                     </tr>
