@@ -45,15 +45,15 @@ class TestUrls(SimpleTestCase):
 
     def test_users_url_is_resolved(self):
         url = reverse("users")
-        self.assertEquals(resolve(url).func, show_users)
+        self.assertEquals(resolve(url).func, users)
 
     def test_menu_url_is_resolved(self):
         url = reverse("show_category")
-        self.assertEquals(resolve(url).func, show_category)
+        self.assertEquals(resolve(url).func, category)
 
     def test_personal_det_url_is_resolved(self):
         url = reverse("personal_det")
-        self.assertEquals(resolve(url).func, personal_det)
+        self.assertEquals(resolve(url).func, personal_details)
 
     def test_special_asks_url_is_resolved(self):
         url = reverse("special_requests")
@@ -89,11 +89,11 @@ class TestUrls(SimpleTestCase):
 
     def test_show_user_url_is_resolved(self):
         url = reverse("show_user")
-        self.assertEquals(resolve(url).func, show_user)
+        self.assertEquals(resolve(url).func, user)
 
     def test_show_users_url_is_resolved(self):
         url = reverse("show_users")
-        self.assertEquals(resolve(url).func, show_users)
+        self.assertEquals(resolve(url).func, users)
 
     def test_add_category_url_is_resolved(self):
         url = reverse("add_category")
@@ -101,7 +101,7 @@ class TestUrls(SimpleTestCase):
 
     def test_show_category_url_is_resolved(self):
         url = reverse("show_category")
-        self.assertEquals(resolve(url).func, show_category)
+        self.assertEquals(resolve(url).func, category)
 
     def test_add_product_url_is_resolved(self):
         url = reverse("add_product")
@@ -117,19 +117,19 @@ class TestUrls(SimpleTestCase):
 
     def test_requests_per_product_url_is_resolved(self):
         url = reverse("requests_per_product")
-        self.assertEquals(resolve(url).func, requests_per_product)
+        self.assertEquals(resolve(url).func, requests_per_category)
 
     def test_borrowings_per_cat_url_is_resolved(self):
         url = reverse("borrowings_per_cat")
-        self.assertEquals(resolve(url).func, borrowings_per_cat)
+        self.assertEquals(resolve(url).func, borrowings_per_category)
 
     def test_add_req_url_is_resolved(self):
         url = reverse("add_req")
-        self.assertEquals(resolve(url).func, add_req)
+        self.assertEquals(resolve(url).func, add_special_request)
 
     def test_extention_request_is_resolved(self):
         url = reverse("extention_req")
-        self.assertEquals(resolve(url).func, extention_request)
+        self.assertEquals(resolve(url).func, borrowing_extention)
 
     def test_borrow_confirm_is_resolved(self):
         url = reverse("borrow_confirm")

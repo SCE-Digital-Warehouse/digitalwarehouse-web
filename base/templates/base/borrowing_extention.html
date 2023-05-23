@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="borrowing_extention">
+        <form action="" method="POST" class="borrowing_extention-form">
+            {% csrf_token %}
+            <label for="stock_num">מק''ט הפריט</label>
+            <input type="text"
+                   id="stock_num"
+                   name="stock_num"
+                   value="{{ borrowing.product.stock_num }}"
+                   readonly>
+            <label for="stock_num">שם הפריט</label>
+            <input type="text"
+                   id="stock_num"
+                   name="stock_num"
+                   value="{{ borrowing.product.name }}"
+                   readonly>
+            <label for="stock_num">מספר ימי הארכה</label>
+            <input type="text" id="stock_num" name="stock_num" required>
+            <div>
+                <input type="submit" value="שלח/י">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

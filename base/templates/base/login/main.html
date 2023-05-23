@@ -15,7 +15,15 @@
             <div class="login-title">{{ PROJECT_NAME }}</div>
             {% block content %}
             {% endblock content %}
-            {% include "base/messages.html" %}
+            {% if messages %}
+                <div>
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         </div>
     </body>
     <footer>

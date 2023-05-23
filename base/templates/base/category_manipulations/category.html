@@ -9,10 +9,10 @@
                         <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
                     </div>
                     <div class="prod-buttons">
-                        <a href="{% url 'borrowings_per_cat' category.id %}" class="edit-btn">השאלות</a>
+                        <a href="{% url 'borrowings_per_category' category.id %}" class="edit-btn">השאלות</a>
                     </div>
                     <div class="prod-buttons">
-                        <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">תורים</a>
+                        <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">בקשות</a>
                     </div>
                 {% endif %}
             </caption>
