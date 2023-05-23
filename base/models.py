@@ -1,4 +1,4 @@
-from itertools import product
+from datetime import timedelta
 from django.db import models
 from django.db.models import F
 from django.conf import settings
@@ -87,7 +87,9 @@ class Moderator(models.Model):
     delete_product = models.BooleanField(default=True)
     borrow_product = models.BooleanField(default=True)
     approve_return = models.BooleanField(default=True)
-    date_promoted = models.DateTimeField(auto_now_add=True)
+    approve_request = models.BooleanField(default=True)
+    reject_request = models.BooleanField(default=True)
+    promoted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return str(self.user)
@@ -167,16 +169,16 @@ class Request(models.Model):
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
     comments = models.TextField(max_length=200, null=True, blank=True)
-    date_requested = models.DateTimeField(
+    requested_at = models.DateTimeField(
         auto_now_add=True)
     exp_date_to_borrow = models.DateTimeField()
     exp_date_to_return = models.DateTimeField()
 
     class Meta:
         unique_together = ("user", "product")
-        ordering = ["date_requested", "user"]
-        # usage: Request.objects.latest() -> the earliest date of date_requested
-        get_latest_by = ["date_requested"]
+        ordering = ["requested_at", "user"]
+        # usage: Request.objects.latest() -> the earliest date of requested_at
+        get_latest_by = ["requested_at"]
 
     """ def save(self, *args, **kwargs):
         if self.pk is None:  # determines whether the instance is new
@@ -197,7 +199,31 @@ class Request(models.Model):
         if self.pk is None:  # determines whether the instance is new
             self.product.is_available = False
             self.product.save()
-        super(Request, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
+
+class SpecialRequest(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        "Product", on_delete=models.PROTECT)
+    comments = models.TextField(max_length=200, null=True, blank=True)
+    borrowed_at = models.DateTimeField()
+    upd_date_to_return = models.DateTimeField()
+    additional_days = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = ("user", "product")
+        ordering = ["borrowed_at", "user"]
+        get_latest_by = ["borrowed_at"]
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            borrowing = self.product.borrowing_set.first()
+            if borrowing:
+                self.borrowed_at = borrowing.borrowed_at
+            self.upd_date_to_return = self.borrowed_at + \
+                timedelta(days=self.additional_days)
+        super().save(*args, **kwargs)
 
 
 class Borrowing(models.Model):
@@ -205,20 +231,20 @@ class Borrowing(models.Model):
         "User", on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
-    date_borrowed = models.DateTimeField(
+    borrowed_at = models.DateTimeField(
         auto_now_add=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         unique_together = ("user", "product")
-        ordering = ["date_borrowed", "user"]
+        ordering = ["borrowed_at", "user"]
         get_latest_by = ["date_to_return"]
 
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.product.increase_times_borrowed()
-        super(Borrowing, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 class Repair(models.Model):
@@ -236,4 +262,4 @@ class Repair(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             self.product.increase_times_borrowed()
-        super(Repair, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

@@ -121,7 +121,7 @@ def add_user(request):
         categories = Category.objects.all()
         if request.method == "POST":
             try:
-                user = User.objects.create(
+                User.objects.create(
                     identity_num=request.POST.get("identity_num"),
                     first_name=request.POST.get("first_name"),
                     last_name=request.POST.get("last_name"),
@@ -318,18 +318,16 @@ def add_category(request):
             cat_parent = request.POST.get("cat_parent")
             try:
                 if cat_parent != "ללא קטגורית אב":
-                    category = Category.objects.create(
+                    Category.objects.create(
                         name=request.POST.get("cat_name"),
                         parent=Category.objects.get(name=cat_parent),
                         image_url=request.POST.get("cat_image")
                     )
-                    category.save()
                 else:
-                    category = Category.objects.create(
+                    Category.objects.create(
                         name=request.POST.get("cat_name"),
                         image_url=request.POST.get("cat_image")
                     )
-                    category.save()
             except Exception:
                 return redirect("add_category")
         context = {"categories": categories, "user_type": user_type}
@@ -368,12 +366,11 @@ def add_product(request, cat_id):
     if user_type == "admin":
         if request.method == "POST":
             try:
-                product = Product.objects.create(
+                Product.objects.create(
                     name=request.POST.get("prod_name"),
                     stock_num=request.POST.get("stock_num"),
                     category=category
                 )
-                product.save()
             except Exception:
                 return redirect("home")
         context = {
