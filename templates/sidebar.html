@@ -7,16 +7,16 @@
         <div class="item">
             {% for category in categories %}
                 {% if category.children.count %}
-                    <a class="cat-link" href="{% url 'show_category' category.id %}">{{ category.name }}</a>
+                    <a class="cat-link" href="{% url 'category' category.id %}">{{ category.name }}</a>
                     <a class="sub-btn"><i class="fas fa-angle-right dropdown"></i></a>
                     <div class="sub-menu">
                         {% for sub_cat in category.children.all %}
                             <a class="cat-link"
-                               href="{% url 'show_category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
+                               href="{% url 'category' cat_id=sub_cat.id %}">{{ sub_cat.name }}</a>
                         {% endfor %}
                     </div>
                 {% elif category.parent_id == None %}
-                    <a class="cat-link" href="{% url 'show_category' category.id %}">{{ category.name }}</a>
+                    <a class="cat-link" href="{% url 'category' category.id %}">{{ category.name }}</a>
                 {% endif %}
             {% endfor %}
         </div>

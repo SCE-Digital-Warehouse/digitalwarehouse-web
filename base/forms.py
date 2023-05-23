@@ -44,8 +44,3 @@ class PasswordSetForm(SetPasswordForm):
         label="אמת/י את הסיסמה",
         strip=False,
         widget=forms.PasswordInput())
-
-class RequestsForm(ModelForm):
-    class Meta:
-        model=Request
-        fields=['user','product','comments','exp_date_to_borrow','exp_date_to_return']

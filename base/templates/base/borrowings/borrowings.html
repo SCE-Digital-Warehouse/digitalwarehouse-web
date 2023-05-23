@@ -1,0 +1,130 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="borrowings-page-admin">
+        {% if user_type == "admin" %}
+            <form method="GET">
+                <button type="submit">חפש/י</button>
+                <input type="text" id="identity_num" name="identity_num">
+                <label for="identity_num">חיפוש לפי ת.ז</label>
+            </form>
+        {% endif %}
+        <table>
+            <caption>
+                {% if user_type == "admin" %}
+                    מידע על השאלות של סטודנטים/מרצים
+                {% else %}
+                    השאלות שלי
+                {% endif %}
+            </caption>
+            <colgroup>
+                <col span="8">
+            </colgroup>
+            <thead>
+                {% if user_type == "admin" %}
+                    <tr>
+                        <th>אשר/דחה</th>
+                        <th>תאריך החזרה</th>
+                        <th>תאריך ההשאלה</th>
+                        <th>תפקיד</th>
+                        <th>מייל</th>
+                        <th>מס' טלפון</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
+                        <th>שם משפחה</th>
+                        <th>שם פרטי</th>
+                        <th>ת.ז</th>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th>בקשה להארכה</th>
+                        <th>תאריך החזרה</th>
+                        <th>תאריך השאלה</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
+                    </tr>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% if user_type == "admin" %}
+                    {% for borrowing in borrowings %}
+                        {% if not request.GET.identity_num or borrowing.user.identity_num == request.GET.identity_num %}
+                            <tr {% if borrowing.product.is_available == 1 %} style="background-color: rgb(137, 246, 137);" {% elif borrowing.product.is_available == 0 %} style="background-color: rgb(254, 100, 100);" {% endif %}>
+                                <td>
+                                    <div class="prod-buttons">
+                                        <a href="{% url 'borrow_confirm' borrowing.id %}" class="edit-btn">אשר</a>
+                                        <a href="{% url 'borrow_reject' borrowing.id %}" class="edit-btn">דחה</a>
+                                    </div>
+                                </td>
+                                <td>{{ borrowing.date_to_return }}</td>
+                                <td>{{ borrowing.date_borrowed }}</td>
+                                <td>{{ borrowing.user.role }}</td>
+                                <td>
+                                    {{ borrowing.user.email }}
+                                </td>
+                                <td>
+                                    {{ borrowing.user.mobile_num }}
+                                </td>
+                                <td>
+                                    {{ borrowing.product.name }}
+                                </td>
+                                <td>
+                                    {{ borrowing.product.stock_num }}
+                                </td>
+                                <td>
+                                    {{ borrowing.user.first_name }}
+                                </td>
+                                <td>
+                                    {{ borrowing.user.last_name }}
+                                </td>
+                                <td class="clickable-row"
+                                    data-href="?identity_num={{ borrowing.user.identity_num }}">
+                                    {{ borrowing.user.identity_num }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for borrowing in borrowings %}
+                        <tr>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'borrowing_extention' borrowing.id %}" class="edit-btn">בקשה להארכה</a>
+                                </div>
+                            </td>
+                            <td>
+                                {{ borrowing.date_to_return }}
+                            </td>
+                            <td>
+                                {{ borrowing.date_borrowed }}
+                            </td>
+                            <td>
+                                {{ borrowing.product.name }}
+                            </td>
+                            <td>
+                                {{ borrowing.product.stock_num }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <style>
+        .hoverable-row:hover {
+            background-color: #0074D9;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var rows = document.querySelectorAll(".clickable-row");
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].classList.add("hoverable-row");
+            rows[i].addEventListener("click", function () {
+                window.open(this.getAttribute("data-href"), "_blank");
+            });
+        }
+    });
+    </script>
+{% endblock content %}

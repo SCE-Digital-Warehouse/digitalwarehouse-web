@@ -1,10 +1,19 @@
 {% extends "main.html" %}
 {% block content %}
     <div class="requests-page-admin">
+        {% if user_type == "admin" %}
+            <form method="GET">
+                <button type="submit">חפש/י</button>
+                <input type="text" id="identity_num" name="identity_num">
+                <label for="identity_num">חיפוש לפי ת.ז</label>
+            </form>
+        {% endif %}
         <table>
             <caption>
-                {% if user_type != "admiin" %}
-                    {{ user.first_name }}  מידע על התורים להשאלות למשתמש
+                {% if user_type == "admin" %}
+                    מידע על בקשות של סטודנטים/מרצים
+                {% else %}
+                    בקשות שלי
                 {% endif %}
             </caption>
             <colgroup>
@@ -13,7 +22,7 @@
             <thead>
                 {% if user_type == "admin" %}
                     <tr>
-                        <th>אורך ההשאלה</th>
+                        <th>אורך השאלה</th>
                         <th>תאריך בקשה</th>
                         <th>תפקיד</th>
                         <th>מייל</th>
@@ -31,9 +40,6 @@
                         <th>תאריך בקשה</th>
                         <th>שם הפריט</th>
                         <th>מק''ט הפריט</th>
-                        <th>שם משפחה</th>
-                        <th>שפ פרטי</th>
-                        <th>ת.ז</th>
                     </tr>
                 {% endif %}
             </thead>
@@ -48,20 +54,31 @@
                         <td>Row 1, Column 6</td>
                         <td>Row 1, Column 7</td>
                         <td>Row 1, Column 7</td>
-                        <td>Row 1, Column 7</td>
-                        <td>336195524</td>
+                        <td>
+                            Row 1, Column 7
+                        </td>
+                        <td>
+                            336195524
+                        </td>
                     </tr>
                 {% else %}
-                    {% for req in reqs %}
+                    {% for request in requests %}
                         <tr>
-                            <td>{{ req.exp_date_to_return }}</td>
-                            <td>{{ req.exp_date_to_borrow }}</td>
-                            <td>{{ req.date_requested }}</td>
-                            <td>{{ req.product.name }}</td>
-                            <td>{{ req.product_id }}</td>
-                            <td>{{ user.last_name }}</td>
-                            <td>{{ user.first_name }}</td>
-                            <td>{{ user.id }}</td>
+                            <td>
+                                {{ request.exp_date_to_return }}
+                            </td>
+                            <td>
+                                {{ request.exp_date_to_borrow }}
+                            </td>
+                            <td>
+                                {{ request.date_requested }}
+                            </td>
+                            <td>
+                                {{ request.product.name }}
+                            </td>
+                            <td>
+                                {{ request.product.stock_num }}
+                            </td>
                         </tr>
                     {% endfor %}
                 {% endif %}

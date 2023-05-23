@@ -52,7 +52,8 @@ def create_users(self):
         email="manager_dht@mail.com",
         identity_num="000000000",
         mobile_num="0500000000",
-        is_admin=True
+        is_admin=True,
+        is_first_login=False,
     ).save()
 
     self.stdout.write(self.style.HTTP_INFO("3/4 Creating moderator..."))
