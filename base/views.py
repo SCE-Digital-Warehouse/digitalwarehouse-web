@@ -475,7 +475,7 @@ def requests_per_category(request, cat_id):
     if user_type == "admin":
         try:
             category = Category.objects.get(pk=cat_id)
-        except:
+        except Exception:
             return redirect("home")
     context = {
         "categories": categories,
@@ -493,7 +493,7 @@ def borrowings_per_category(request, cat_id):
     if user_type == "admin":
         try:
             category = Category.objects.get(pk=cat_id)
-        except:
+        except Exception:
             return redirect("home", permanent=True)
         context = {
             "categories": categories,
@@ -511,7 +511,7 @@ def add_borrowing_extension(request, borrowing_id):
     if user_type != "admin":
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
-        except:
+        except Exception:
             return redirect("borrowings", permanent=True)
         user = request.user
         if request.method == "POST":
@@ -536,7 +536,7 @@ def borrowing_extension(request, borrowing_id):
     if user_type == "admin":
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
-        except:
+        except Exception:
             return redirect("borrowings", permanent=True)
         upd_date_to_return = borrowing.date_to_return + \
             timedelta(days=borrowing.additional_days)
@@ -552,38 +552,25 @@ def borrowing_extension(request, borrowing_id):
 
 @login_required(login_url=LOGIN_URL)
 def accept_extension(request, borrowing_id):
-    categories = Category.objects.all()
     user_type = get_user_type(request)
-    green = False
-    borrowings = Borrowing.objects.all()
     if user_type == "admin":
-        borrowing = Borrowing.objects.get(pk=borrowing_id)
-        product = Product.objects.get(pk=borrowing.product_id)
-        product.is_available = 0
-        product.save()
-        green = True
-    context = {
-        "categories": categories,
-        "user_type": user_type,
-        "borrow": borrowing,
-        "green": green,
-        "borrowings": borrowings
-    }
-    return render(request, "base/borrowings/borrowings.html", context)
+        try:
+            borrowing = Borrowing.objects.get(pk=borrowing_id)
+        except Exception:
+            return redirect("borrowings", permanent=True)
+        borrowing.accept_extension()
+        return redirect("borrowings")
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
-def reject_extension(request, borrow_id):
-    categories = Category.objects.all()
+def reject_extension(request, borrowing_id):
     user_type = get_user_type(request)
-    red = False
-    borrowings = Borrowing.objects.all()
     if user_type == "admin":
-        red = True
-    context = {
-        "categories": categories,
-        "user_type": user_type,
-        "red": red,
-        "borrowings": borrowings
-    }
-    return render(request, "base/borrowings/borrowings.html", context)
+        try:
+            borrowing = Borrowing.objects.get(pk=borrowing_id)
+        except Exception:
+            return redirect("borrowings", permanent=True)
+        borrowing.reject_extension()
+        return redirect("borrowings")
+    return redirect("home")
