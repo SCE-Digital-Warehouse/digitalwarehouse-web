@@ -75,9 +75,9 @@ urlpatterns = [
     path("add-special-request/", add_special_request, name="add_special_request"),
 
     path(
-        "borrowing-extention/<int:borrowing_id>/",
-        borrowing_extention,
-        name="borrowing_extention"
+        "borrowing-extension/<int:borrowing_id>/",
+        borrowing_extension,
+        name="borrowing_extension"
     ),
 
     path("borrow-confirm/<int:borrow_id>/",

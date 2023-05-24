@@ -1,10 +1,10 @@
+from itertools import product
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from base.models import *
-from django.db.models import F
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -476,7 +476,7 @@ def requests_per_category(request, cat_id):
         try:
             category = Category.objects.get(pk=cat_id)
         except:
-            return render("home")
+            return redirect("home")
     context = {
         "categories": categories,
         "user_type": user_type,
@@ -494,34 +494,42 @@ def borrowings_per_category(request, cat_id):
         try:
             category = Category.objects.get(pk=cat_id)
         except:
-            return render("home")
+            return redirect("home", permanent=True)
         context = {
             "categories": categories,
             "user_type": user_type,
             "category": category
         }
         return render(request, "base/borrowings/borrowings_per_category.html", context)
-    return render("home")
+    return redirect("home")
 
 
-#! TO COMPLETE
 @login_required(login_url=LOGIN_URL)
-def borrowing_extention(request, borrowing_id):
+def borrowing_extension(request, borrowing_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type != "admin":
-        borrowing = Borrowing.objects.get(pk=borrowing_id)
+        try:
+            borrowing = Borrowing.objects.get(pk=borrowing_id)
+        except:
+            return redirect("borrowings", permanent=True)
         user = request.user
         if request.method == "POST":
-            return redirect("home")
-            #! TODO: send to special_requests
-    context = {
-        "categories": categories,
-        "user_type": user_type,
-        "borrowing": borrowing,
-        "user": user
-    }
-    return render(request, "base/borrowing_extention.html", context)
+            SpecialRequest.objects.create(
+                user=user,
+                product=borrowing.product,
+                additional_days=int(request.POST.get("additional_days")),
+                comments=request.POST.get("comments")
+            )
+            return redirect("borrowings")
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "borrowing": borrowing,
+            "user": user
+        }
+        return render(request, "base/borrowing_extension.html", context)
+    return redirect("home")
 
 
 #! TO COMPLETE
