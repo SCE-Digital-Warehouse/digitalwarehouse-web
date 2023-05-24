@@ -103,7 +103,7 @@ def borrowings(request):
 def users(request):
     user_type = get_user_type(request)
     if user_type == "admin":
-        users = User.objects.filter(is_staff=False)
+        users = User.objects.filter(is_staff=False).exclude(pk=request.user.pk)
         categories = Category.objects.all()
         context = {
             "user_type": user_type,
