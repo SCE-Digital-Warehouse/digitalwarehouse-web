@@ -129,12 +129,12 @@ class TestUrls(SimpleTestCase):
 
     def test_extention_request_is_resolved(self):
         url = reverse("extention_req")
-        self.assertEquals(resolve(url).func, borrowing_extension)
+        self.assertEquals(resolve(url).func, add_borrowing_extension)
 
     def test_borrow_confirm_is_resolved(self):
         url = reverse("borrow_confirm")
-        self.assertEquals(resolve(url).func, borrow_confirm)
+        self.assertEquals(resolve(url).func, accept_extension)
 
     def test_borrow_reject_is_resolved(self):
         url = reverse("borrow_reject")
-        self.assertEquals(resolve(url).func, borrow_reject)
+        self.assertEquals(resolve(url).func, reject_extension)

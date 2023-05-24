@@ -202,7 +202,7 @@ class Request(models.Model):
         super().save(*args, **kwargs)
 
 
-class SpecialRequest(models.Model):
+""" class SpecialRequest(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
@@ -224,7 +224,7 @@ class SpecialRequest(models.Model):
                     self.borrowed_at = borrowing.borrowed_at
                 self.upd_date_to_return = borrowing.date_to_return + \
                     timedelta(days=self.additional_days)
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs) """
 
 
 class Borrowing(models.Model):
@@ -232,11 +232,13 @@ class Borrowing(models.Model):
         "User", on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
+    comments = models.TextField(max_length=200, null=True, blank=True)
     borrowed_at = models.DateTimeField(
         auto_now_add=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField(blank=True, null=True)
     extension_requested = models.BooleanField(default=False)
+    additional_days = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         unique_together = ("user", "product")
@@ -247,6 +249,42 @@ class Borrowing(models.Model):
         if self.pk is None:
             self.product.increase_times_borrowed()
         super().save(*args, **kwargs)
+
+    def request_extension(self, additional_days, comments):
+        if additional_days > 0:
+            self.additional_days = additional_days
+            if comments:
+                self.comments = comments
+            self.extension_requested = True
+            self.save(update_fields=[
+                "additional_days",
+                "comments",
+                "extension_requested"
+            ])
+
+    def accept_extension(self):
+        if self.additional_days > 0:
+            self.date_to_return += timedelta(days=self.additional_days)
+            self.additional_days = 0
+            self.extension_requested = False
+            self.comments = None
+            self.save(update_fields=[
+                "date_to_return",
+                "additional_days",
+                "extension_requested",
+                "comments"
+            ])
+
+    def reject_extension(self):
+        if self.additional_days > 0:
+            self.additional_days = 0
+            self.extension_requested = False
+            self.comments = None
+            self.save(update_fields=[
+                "additional_days",
+                "extension_requested",
+                "comments"
+            ])
 
 
 class Repair(models.Model):

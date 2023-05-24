@@ -72,17 +72,25 @@ urlpatterns = [
         name="borrowings_per_category"
     ),
 
-    path("add-special-request/", add_special_request, name="add_special_request"),
-
     path(
         "borrowing-extension/<int:borrowing_id>/",
         borrowing_extension,
         name="borrowing_extension"
     ),
-
-    path("borrow-confirm/<int:borrow_id>/",
-         borrow_confirm, name="borrow_confirm"),
-
-    path("borrow-reject/<int:borrow_id>/", borrow_reject, name="borrow_reject")
+    path(
+        "add-borrowing-extension/<int:borrowing_id>/",
+        add_borrowing_extension,
+        name="add_borrowing_extension"
+    ),
+    path(
+        "accept-extension/<int:borrow_id>/",
+        accept_extension,
+        name="accept_extension"
+    ),
+    path(
+        "reject-extension/<int:borrow_id>/",
+        reject_extension,
+        name="reject_extension"
+    )
 
 ]

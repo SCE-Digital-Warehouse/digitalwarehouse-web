@@ -1,4 +1,4 @@
-from django.dispatch import receiver
+""" from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 from .models import SpecialRequest
@@ -10,4 +10,4 @@ def revert_extension_requested(sender, instance, created, **kwargs):
         borrowing = instance.product.borrowing_set.first()
         if borrowing:
             borrowing.extension_requested = not borrowing.extension_requested
-            borrowing.save(update_fields=["extension_requested"])
+            borrowing.save(update_fields=["extension_requested"]) """
