@@ -209,7 +209,7 @@ class SpecialRequest(models.Model):
     comments = models.TextField(max_length=200, null=True, blank=True)
     borrowed_at = models.DateTimeField()
     upd_date_to_return = models.DateTimeField()
-    additional_days = models.PositiveSmallIntegerField()
+    additional_days = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         unique_together = ("user", "product")
@@ -218,11 +218,12 @@ class SpecialRequest(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            borrowing = self.product.borrowing_set.first()
-            if borrowing:
-                self.borrowed_at = borrowing.borrowed_at
-            self.upd_date_to_return = borrowing.date_to_return + \
-                timedelta(days=self.additional_days)
+            if self.additional_days > 0:
+                borrowing = self.product.borrowing_set.first()
+                if borrowing:
+                    self.borrowed_at = borrowing.borrowed_at
+                self.upd_date_to_return = borrowing.date_to_return + \
+                    timedelta(days=self.additional_days)
         super().save(*args, **kwargs)
 
 
@@ -235,6 +236,7 @@ class Borrowing(models.Model):
         auto_now_add=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField(blank=True, null=True)
+    extension_requested = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("user", "product")

@@ -9,14 +9,16 @@
                    name="stock_num"
                    value="{{ borrowing.product.stock_num }}"
                    readonly>
-            <label for="stock_num">שם הפריט</label>
+            <label for="product_name">שם הפריט</label>
             <input type="text"
-                   id="stock_num"
-                   name="stock_num"
+                   id="product_name"
+                   name="product_name"
                    value="{{ borrowing.product.name }}"
                    readonly>
-            <label for="stock_num">מספר ימי הארכה</label>
-            <input type="text" id="stock_num" name="stock_num" required>
+            <label for="additional_days">מספר ימי הארכה</label>
+            <input type="number" id="additional_days" name="additional_days" required>
+            <label for="comments">הערות</label>
+            <input type="text" id="comments" name="comments" required>
             <div>
                 <input type="submit" value="שלח/י">
             </div>

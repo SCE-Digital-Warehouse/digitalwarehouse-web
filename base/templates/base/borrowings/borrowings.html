@@ -47,55 +47,49 @@
             <tbody>
                 {% if user_type == "admin" %}
                     {% for borrowing in borrowings %}
-                        {% if not request.GET.identity_num or borrowing.user.identity_num == request.GET.identity_num %}
-                            <tr {% if borrowing.product.is_available == 1 %} style="background-color: rgb(137, 246, 137);" {% elif borrowing.product.is_available == 0 %} style="background-color: rgb(254, 100, 100);" {% endif %}>
-                                <td>
-                                    <div class="prod-buttons">
-                                        <a href="{% url 'borrow_confirm' borrowing.id %}" class="edit-btn">אשר</a>
-                                        <a href="{% url 'borrow_reject' borrowing.id %}" class="edit-btn">דחה</a>
-                                    </div>
-                                </td>
-                                <td>{{ borrowing.date_to_return }}</td>
-                                <td>{{ borrowing.date_borrowed }}</td>
-                                <td>{{ borrowing.user.role }}</td>
-                                <td>
-                                    {{ borrowing.user.email }}
-                                </td>
-                                <td>
-                                    {{ borrowing.user.mobile_num }}
-                                </td>
-                                <td>
-                                    {{ borrowing.product.name }}
-                                </td>
-                                <td>
-                                    {{ borrowing.product.stock_num }}
-                                </td>
-                                <td>
-                                    {{ borrowing.user.first_name }}
-                                </td>
-                                <td>
-                                    {{ borrowing.user.last_name }}
-                                </td>
-                                <td class="clickable-row"
-                                    data-href="?identity_num={{ borrowing.user.identity_num }}">
-                                    {{ borrowing.user.identity_num }}
-                                </td>
-                            </tr>
-                        {% endif %}
+                        <tr {% if borrowing.product.is_available == 1 %} style="background-color: rgb(137, 246, 137);" {% elif borrowing.product.is_available == 0 %} style="background-color: rgb(254, 100, 100);" {% endif %}>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'borrow_confirm' borrowing.id %}" class="edit-btn">אשר</a>
+                                    <a href="{% url 'borrow_reject' borrowing.id %}" class="edit-btn">דחה</a>
+                                </div>
+                            </td>
+                            <td>{{ borrowing.date_to_return }}</td>
+                            <td>{{ borrowing.borrowed_at }}</td>
+                            <td>{{ borrowing.user.role }}</td>
+                            <td>{{ borrowing.user.email }}</td>
+                            <td>{{ borrowing.user.mobile_num }}</td>
+                            <td>{{ borrowing.product.name }}</td>
+                            <td>
+                                {{ borrowing.product.stock_num }}
+                            </td>
+                            <td>
+                                {{ borrowing.user.last_name }}
+                            </td>
+                            <td>
+                                {{ borrowing.user.first_name }}
+                            </td>
+                            <td class="clickable-row"
+                                data-href="?identity_num={{ borrowing.user.identity_num }}">
+                                {{ borrowing.user.identity_num }}
+                            </td>
+                        </tr>
                     {% endfor %}
                 {% else %}
                     {% for borrowing in borrowings %}
                         <tr>
                             <td>
-                                <div class="prod-buttons">
-                                    <a href="{% url 'borrowing_extention' borrowing.id %}" class="edit-btn">בקשה להארכה</a>
-                                </div>
+                                {% if not borrowing.extension_requested %}
+                                    <div class="prod-buttons">
+                                        <a href="{% url 'borrowing_extension' borrowing.id %}"  class="edit-btn">בקשה להארכה</a>
+                                    </div>
+                                {% endif %}
                             </td>
-                            <td>
+                            <td {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
                                 {{ borrowing.date_to_return }}
                             </td>
                             <td>
-                                {{ borrowing.date_borrowed }}
+                                {{ borrowing.borrowed_at }}
                             </td>
                             <td>
                                 {{ borrowing.product.name }}
