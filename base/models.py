@@ -221,7 +221,7 @@ class SpecialRequest(models.Model):
             borrowing = self.product.borrowing_set.first()
             if borrowing:
                 self.borrowed_at = borrowing.borrowed_at
-            self.upd_date_to_return = self.borrowed_at + \
+            self.upd_date_to_return = borrowing.date_to_return + \
                 timedelta(days=self.additional_days)
         super().save(*args, **kwargs)
 
