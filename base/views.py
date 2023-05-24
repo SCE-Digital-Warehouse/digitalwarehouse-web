@@ -505,7 +505,7 @@ def borrowings_per_category(request, cat_id):
 
 
 @login_required(login_url=LOGIN_URL)
-def borrowing_extension(request, borrowing_id):
+def add_borrowing_extension(request, borrowing_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type != "admin":
@@ -515,52 +515,57 @@ def borrowing_extension(request, borrowing_id):
             return redirect("borrowings", permanent=True)
         user = request.user
         if request.method == "POST":
-            SpecialRequest.objects.create(
-                user=user,
-                product=borrowing.product,
-                additional_days=int(request.POST.get("additional_days")),
-                comments=request.POST.get("comments")
-            )
+            additional_days = int(request.POST.get("additional_days"))
+            comments = request.POST.get("comments")
+            borrowing.request_extension(additional_days, comments)
             return redirect("borrowings")
         context = {
             "categories": categories,
             "user_type": user_type,
+            "user": user,
             "borrowing": borrowing,
-            "user": user
         }
-        return render(request, "base/borrowing_extension.html", context)
+        return render(request, "base/borrowings/add_borrowing_extension.html", context)
     return redirect("home")
 
 
-#! TO COMPLETE
 @login_required(login_url=LOGIN_URL)
-def add_special_request(request):
+def borrowing_extension(request, borrowing_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
-        if request.method == "POST":
-            #! create a special_request object from the givven data
-            return redirect("home")
-    context = {"categories": categories, "user_type": user_type}
-    return render(request, "base/special_requests/add_special_request.html", context)
+        try:
+            borrowing = Borrowing.objects.get(pk=borrowing_id)
+        except:
+            return redirect("borrowings", permanent=True)
+        upd_date_to_return = borrowing.date_to_return + \
+            timedelta(days=borrowing.additional_days)
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "borrowing": borrowing,
+            "upd_date_to_return": upd_date_to_return
+        }
+        return render(request, "base/borrowings/borrowing_extension.html", context)
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
-def borrow_confirm(request, borrow_id):
+def accept_extension(request, borrowing_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     green = False
     borrowings = Borrowing.objects.all()
     if user_type == "admin":
-        borrow = Borrowing.objects.get(pk=borrow_id)
-        product = Product.objects.get(pk=borrow.product_id)
+        borrowing = Borrowing.objects.get(pk=borrowing_id)
+        product = Product.objects.get(pk=borrowing.product_id)
         product.is_available = 0
         product.save()
         green = True
     context = {
         "categories": categories,
         "user_type": user_type,
-        "borrow": borrow,
+        "borrow": borrowing,
         "green": green,
         "borrowings": borrowings
     }
@@ -568,7 +573,7 @@ def borrow_confirm(request, borrow_id):
 
 
 @login_required(login_url=LOGIN_URL)
-def borrow_reject(request, borrow_id):
+def reject_extension(request, borrow_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     red = False

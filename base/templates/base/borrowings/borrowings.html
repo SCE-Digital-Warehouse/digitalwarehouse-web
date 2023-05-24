@@ -22,9 +22,9 @@
             <thead>
                 {% if user_type == "admin" %}
                     <tr>
-                        <th>אשר/דחה</th>
+                        <th>בקשת הארכה</th>
                         <th>תאריך החזרה</th>
-                        <th>תאריך ההשאלה</th>
+                        <th>תאריך השאלה</th>
                         <th>תפקיד</th>
                         <th>מייל</th>
                         <th>מס' טלפון</th>
@@ -36,7 +36,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <th>בקשה להארכה</th>
+                        <th>בקשת הארכה</th>
                         <th>תאריך החזרה</th>
                         <th>תאריך השאלה</th>
                         <th>שם הפריט</th>
@@ -47,12 +47,13 @@
             <tbody>
                 {% if user_type == "admin" %}
                     {% for borrowing in borrowings %}
-                        <tr {% if borrowing.product.is_available == 1 %} style="background-color: rgb(137, 246, 137);" {% elif borrowing.product.is_available == 0 %} style="background-color: rgb(254, 100, 100);" {% endif %}>
+                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);" {% endif %}>
                             <td>
-                                <div class="prod-buttons">
-                                    <a href="{% url 'borrow_confirm' borrowing.id %}" class="edit-btn">אשר</a>
-                                    <a href="{% url 'borrow_reject' borrowing.id %}" class="edit-btn">דחה</a>
-                                </div>
+                                {% if borrowing.extension_requested %}
+                                    <div class="prod-buttons">
+                                        <a href="{% url 'borrowing_extension' borrowing.id %}"   class="edit-btn">לצפות</a>
+                                    </div>
+                                {% endif %}
                             </td>
                             <td>{{ borrowing.date_to_return }}</td>
                             <td>{{ borrowing.borrowed_at }}</td>
@@ -81,8 +82,15 @@
                             <td>
                                 {% if not borrowing.extension_requested %}
                                     <div class="prod-buttons">
-                                        <a href="{% url 'borrowing_extension' borrowing.id %}"  class="edit-btn">בקשה להארכה</a>
+                                        <a href="{% url 'add_borrowing_extension' borrowing.id %}"  class="edit-btn">בקשה להארכה</a>
                                     </div>
+                                {% else %}
+                                    בקשת הארכה ל-{{ borrowing.additional_days }}
+                                    {% if borrowing.additional_days > 1 %}
+                                        ימים
+                                    {% else %}
+                                        יום
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
