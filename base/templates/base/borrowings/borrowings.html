@@ -47,11 +47,12 @@
             <tbody>
                 {% if user_type == "admin" %}
                     {% for borrowing in borrowings %}
-                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);" {% endif %}>
+                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
                             <td>
                                 {% if borrowing.extension_requested %}
                                     <div class="prod-buttons">
-                                        <a href="{% url 'borrowing_extension' borrowing.id %}"   class="edit-btn">לצפות</a>
+                                        <a href="{% url 'borrowing_extension' borrowing.id %}"
+                                           class="edit-btn">לצפות</a>
                                     </div>
                                 {% endif %}
                             </td>
@@ -61,9 +62,7 @@
                             <td>{{ borrowing.user.email }}</td>
                             <td>{{ borrowing.user.mobile_num }}</td>
                             <td>{{ borrowing.product.name }}</td>
-                            <td>
-                                {{ borrowing.product.stock_num }}
-                            </td>
+                            <td>{{ borrowing.product.stock_num }}</td>
                             <td>
                                 {{ borrowing.user.last_name }}
                             </td>
@@ -78,11 +77,12 @@
                     {% endfor %}
                 {% else %}
                     {% for borrowing in borrowings %}
-                        <tr>
+                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
                             <td>
                                 {% if not borrowing.extension_requested %}
                                     <div class="prod-buttons">
-                                        <a href="{% url 'add_borrowing_extension' borrowing.id %}"  class="edit-btn">בקשה להארכה</a>
+                                        <a href="{% url 'add_borrowing_extension' borrowing.id %}"
+                                           class="edit-btn">בקשה להארכה</a>
                                     </div>
                                 {% else %}
                                     בקשת הארכה ל-{{ borrowing.additional_days }}
@@ -93,7 +93,7 @@
                                     {% endif %}
                                 {% endif %}
                             </td>
-                            <td {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
+                            <td>
                                 {{ borrowing.date_to_return }}
                             </td>
                             <td>
@@ -111,22 +111,4 @@
             </tbody>
         </table>
     </div>
-    <style>
-        .hoverable-row:hover {
-            background-color: #0074D9;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var rows = document.querySelectorAll(".clickable-row");
-        for (var i = 0; i < rows.length; i++) {
-            rows[i].classList.add("hoverable-row");
-            rows[i].addEventListener("click", function () {
-                window.open(this.getAttribute("data-href"), "_blank");
-            });
-        }
-    });
-    </script>
 {% endblock content %}
