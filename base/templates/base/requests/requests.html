@@ -22,7 +22,9 @@
             <thead>
                 {% if user_type == "admin" %}
                     <tr>
-                        <th>אורך השאלה</th>
+                        <th>בקשת השאלה</th>
+                        <th>תאריך החזרה רצוי</th>
+                        <th>תאריך השאלה רצוי</th>
                         <th>תאריך בקשה</th>
                         <th>תפקיד</th>
                         <th>מייל</th>
@@ -35,8 +37,8 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <th>תאריך רצוי להחזר הפריט</th>
-                        <th>תאריך רצוי לתחילת השימוש</th>
+                        <th>תאריך החזרה רצוי</th>
+                        <th>תאריך השאלה רצוי</th>
                         <th>תאריך בקשה</th>
                         <th>שם הפריט</th>
                         <th>מק''ט הפריט</th>
@@ -45,40 +47,35 @@
             </thead>
             <tbody>
                 {% if user_type == "admin" %}
-                    <tr>
-                        <td>Row 1, Column 1</td>
-                        <td>Row 1, Column 2</td>
-                        <td>Row 1, Column 3</td>
-                        <td>Row 1, Column 4</td>
-                        <td>Row 1, Column 5</td>
-                        <td>Row 1, Column 6</td>
-                        <td>Row 1, Column 7</td>
-                        <td>Row 1, Column 7</td>
-                        <td>
-                            Row 1, Column 7
-                        </td>
-                        <td>
-                            336195524
-                        </td>
-                    </tr>
-                {% else %}
-                    {% for request in requests %}
+                    {% for req in requests %}
                         <tr>
                             <td>
-                                {{ request.exp_date_to_return }}
+                                <div class="prod-buttons">
+                                    <a href="{% url 'request' req.id %}"
+                                       class="edit-btn">לצפות</a>
+                                </div>
                             </td>
-                            <td>
-                                {{ request.exp_date_to_borrow }}
-                            </td>
-                            <td>
-                                {{ request.date_requested }}
-                            </td>
-                            <td>
-                                {{ request.product.name }}
-                            </td>
-                            <td>
-                                {{ request.product.stock_num }}
-                            </td>
+                            <td>{{ req.exp_date_to_return }}</td>
+                            <td>{{ req.exp_date_to_borrow }}</td>
+                            <td>{{ req.requested_at }}</td>
+                            <td>{{ req.user.role }}</td>
+                            <td>{{ req.user.email }}</td>
+                            <td>{{ req.user.mobile_num }}</td>
+                            <td>{{ req.product.name }}</td>
+                            <td>{{ req.product.stock_num }}</td>
+                            <td>{{ req.user.last_name }}</td>
+                            <td>{{ req.user.first_name }}</td>
+                            <td>{{ req.user.identity_num }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    {% for req in requests %}
+                        <tr>
+                            <td>{{ req.exp_date_to_return }}</td>
+                            <td>{{ req.exp_date_to_borrow }}</td>
+                            <td>{{ req.requested_at }}</td>
+                            <td>{{ req.product.name }}</td>
+                            <td>{{ req.product.stock_num }}</td>
                         </tr>
                     {% endfor %}
                 {% endif %}

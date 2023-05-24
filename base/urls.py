@@ -43,9 +43,6 @@ urlpatterns = [
     path("user/<int:user_id>/", user, name="user"),
 
     path("personal-details/", personal_details, name="personal_details"),
-    path("borrowings/", borrowings, name="borrowings"),
-    path("requests/", requests, name="requests"),
-    path("special-requests/", special_requests, name="special_requests"),
     path("statistics/", statistics, name="statistics"),
     path("contact-us/", contact_us, name="contact_us"),
 
@@ -61,17 +58,30 @@ urlpatterns = [
     path("edit-product/<int:prod_id>/", edit_product, name="edit_product"),
     # path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
 
+    path("requests/", requests, name="requests"),
+    path("request/<int:request_id>/", request, name="request"),
     path(
         "requests/<int:cat_id>/",
         requests_per_category,
         name="requests_per_product"
     ),
     path(
+        "accept_request/<int:request_id>/",
+        accept_request,
+        name="accept_request"
+    ),
+    path(
+        "reject_request/<int:request_id>/",
+        reject_request,
+        name="reject_request"
+    ),
+
+    path("borrowings/", borrowings, name="borrowings"),
+    path(
         "borrowings/<int:cat_id>/",
         borrowings_per_category,
         name="borrowings_per_category"
     ),
-
     path(
         "borrowing-extension/<int:borrowing_id>/",
         borrowing_extension,

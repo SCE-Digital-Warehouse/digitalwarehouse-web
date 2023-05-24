@@ -202,31 +202,6 @@ class Request(models.Model):
         super().save(*args, **kwargs)
 
 
-""" class SpecialRequest(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
-    product = models.ForeignKey(
-        "Product", on_delete=models.PROTECT)
-    comments = models.TextField(max_length=200, null=True, blank=True)
-    borrowed_at = models.DateTimeField()
-    upd_date_to_return = models.DateTimeField()
-    additional_days = models.PositiveSmallIntegerField(default=0)
-
-    class Meta:
-        unique_together = ("user", "product")
-        ordering = ["borrowed_at", "user"]
-        get_latest_by = ["borrowed_at"]
-
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            if self.additional_days > 0:
-                borrowing = self.product.borrowing_set.first()
-                if borrowing:
-                    self.borrowed_at = borrowing.borrowed_at
-                self.upd_date_to_return = borrowing.date_to_return + \
-                    timedelta(days=self.additional_days)
-        super().save(*args, **kwargs) """
-
-
 class Borrowing(models.Model):
     user = models.ForeignKey(
         "User", on_delete=models.CASCADE, null=True, blank=True)
