@@ -11,6 +11,11 @@
                 </a>
             </svg>
         </div>
+        <ul class="navigation" style="position: absolute; margin-left: 60px;">
+            <li>
+                <a href="{% url 'logout' %}">יציאה</a>
+            </li>
+        </ul>
         <ul class="navigation">
             {% include "base/navbar_buttons/contact_us_button.html" %}
             {% if user_type == "admin" or user_type == "moderator" %}

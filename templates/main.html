@@ -20,9 +20,9 @@
         {% include "sidebar.html" %}
         {% block content %}
         {% endblock content %}
-        <footer>
+        {% comment %} <footer>
             {% include "footer.html" %}
-        </footer>
+        </footer> {% endcomment %}
         <script src="{% static 'js/scripts.js' %}"></script>
     </body>
 </html>
