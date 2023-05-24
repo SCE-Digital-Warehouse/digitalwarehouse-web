@@ -83,12 +83,12 @@ urlpatterns = [
         name="add_borrowing_extension"
     ),
     path(
-        "accept-extension/<int:borrow_id>/",
+        "accept-extension/<int:borrowing_id>/",
         accept_extension,
         name="accept_extension"
     ),
     path(
-        "reject-extension/<int:borrow_id>/",
+        "reject-extension/<int:borrowing_id>/",
         reject_extension,
         name="reject_extension"
     )
