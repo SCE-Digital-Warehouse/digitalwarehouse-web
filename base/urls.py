@@ -61,7 +61,7 @@ urlpatterns = [
     path("requests/", requests, name="requests"),
     path("request/<int:request_id>/", request, name="request"),
     path(
-        "requests/<int:cat_id>/",
+        "requests/<int:category_id>/",
         requests_per_category,
         name="requests_per_product"
     ),

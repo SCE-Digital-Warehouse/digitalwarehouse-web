@@ -11,7 +11,8 @@
         <table>
             <caption>
                 {% if user_type == "admin" %}
-                    מידע על בקשות של סטודנטים/מרצים
+                    {{category}} מידע על בקשות של סטודנטים/מרצים
+                    {% if category %} של קטגורית {% endif %}
                 {% else %}
                     בקשות שלי
                 {% endif %}

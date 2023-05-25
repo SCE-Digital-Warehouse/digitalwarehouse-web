@@ -236,23 +236,6 @@ def personal_details(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def special_requests(request):
-    user_type = get_user_type(request)
-    categories = Category.objects.all()
-    special_requests = Request.objects.all()
-    context = {
-        "user_type": user_type,
-        "categories": categories,
-        "special_requests": special_requests
-    }
-    if user_type == "admin":
-        return render(request, "base/special_requests/special_requests.html", context)
-    if user_type == "user":
-        return render(request, "base/special_requests/special_requests.html", context)
-    return redirect("home")
-
-
-@login_required(login_url=LOGIN_URL)
 def requests(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
@@ -508,22 +491,24 @@ def bad_product(request, prod_id):
     return render(request, "base/category_manipulations/category.html", context) """
 
 
-#! TO COMPLETE
 @login_required(login_url=LOGIN_URL)
-def requests_per_category(request, cat_id):
+def requests_per_category(request, category_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
     if user_type == "admin":
         try:
-            category = Category.objects.get(pk=cat_id)
+            category = Category.objects.get(pk=category_id)
         except Exception:
             return redirect("home")
-    context = {
-        "categories": categories,
-        "user_type": user_type,
-        "category": category
-    }
-    return render(request, "base/requests/requests_per_category.html", context)
+        requests = Request.objects.filter(product__category=category)
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "category": category,
+            "requests": requests
+        }
+        return render(request, "base/requests/requests.html", context)
+    return redirect("home")
 
 
 #! TO COMPLETE
