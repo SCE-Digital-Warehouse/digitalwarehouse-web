@@ -63,16 +63,9 @@
                             <td>{{ borrowing.user.mobile_num }}</td>
                             <td>{{ borrowing.product.name }}</td>
                             <td>{{ borrowing.product.stock_num }}</td>
-                            <td>
-                                {{ borrowing.user.last_name }}
-                            </td>
-                            <td>
-                                {{ borrowing.user.first_name }}
-                            </td>
-                            <td class="clickable-row"
-                                data-href="?identity_num={{ borrowing.user.identity_num }}">
-                                {{ borrowing.user.identity_num }}
-                            </td>
+                            <td>{{ borrowing.user.last_name }}</td>
+                            <td>{{ borrowing.user.first_name }}</td>
+                            <td>{{ borrowing.user.identity_num }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
@@ -93,18 +86,10 @@
                                     {% endif %}
                                 {% endif %}
                             </td>
-                            <td>
-                                {{ borrowing.date_to_return }}
-                            </td>
-                            <td>
-                                {{ borrowing.borrowed_at }}
-                            </td>
-                            <td>
-                                {{ borrowing.product.name }}
-                            </td>
-                            <td>
-                                {{ borrowing.product.stock_num }}
-                            </td>
+                            <td>{{ borrowing.date_to_return }}</td>
+                            <td>{{ borrowing.borrowed_at }}</td>
+                            <td>{{ borrowing.product.name }}</td>
+                            <td>{{ borrowing.product.stock_num }}</td>
                         </tr>
                     {% endfor %}
                 {% endif %}

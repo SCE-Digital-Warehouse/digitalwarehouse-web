@@ -1,10 +1,8 @@
-from itertools import product
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from base.models import *
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -262,18 +260,65 @@ def special_requests(request):
 def requests(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    if user_type != "admin":
+    if user_type == "admin":
+        requests = Request.objects.all()
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+            "requests": requests
+        }
+    else:
         user = request.user
         requests = Request.objects.all().filter(user_id=user.pk)
         context = {
             "user_type": user_type,
             "categories": categories,
-            "user": user,
             "requests": requests
         }
-    else:
-        context = {"user_type": user_type, "categories": categories}
     return render(request, "base/requests/requests.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def request(request, request_id):
+    categories = Category.objects.all()
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            req = Request.objects.get(pk=request_id)
+        except Exception:
+            return redirect("requests", permanent=True)
+        context = {
+            "categories": categories,
+            "req": req
+        }
+        return render(request, "base/requests/request.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def accept_request(request, request_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            req = Request.objects.get(pk=request_id)
+        except Exception:
+            return redirect("requests", permanent=True)
+        req.accept_request()
+        return redirect("requests")
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def reject_request(request, request_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            req = Request.objects.get(pk=request_id)
+        except Exception:
+            return redirect("requests", permanent=True)
+        req.reject_request()
+        return redirect("requests")
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -542,7 +587,6 @@ def borrowing_extension(request, borrowing_id):
             timedelta(days=borrowing.additional_days)
         context = {
             "categories": categories,
-            "user_type": user_type,
             "borrowing": borrowing,
             "upd_date_to_return": upd_date_to_return
         }
