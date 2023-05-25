@@ -11,6 +11,7 @@ from .forms import *
 from .models import *
 
 
+#! TO COMPLETE MODERATOR PAGE
 @login_required(login_url=LOGIN_URL)
 def index(request):
     user = request.user
@@ -21,6 +22,7 @@ def index(request):
         if (user_type == "user"):
             return render(request, "base/panels/user_panel.html", context)
         if (user_type == "moderator"):
+            #! TODO:
             return HttpResponse("Moderator Panel at base/panels/moderator_panel.html")
         if (user_type == "admin"):
             return render(request, "base/panels/admin_panel.html", context)
@@ -44,6 +46,7 @@ def login_user(request):
     return render(request, "base/login/login.html", context)
 
 
+@login_required(login_url=LOGIN_URL)
 def logout_user(request):
     logout(request)
     return redirect("login")
@@ -57,8 +60,7 @@ def set_password(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            user.is_first_login = False
-            user.save(update_fields=["is_first_login"])
+            user.cancel_first_login()
             logout(request)
             return redirect("login")
         else:
@@ -145,7 +147,7 @@ def edit_user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("users", permanent=True)
+            return redirect("users")
         if request.method == "POST":
             try:
                 user.delete()
@@ -178,7 +180,7 @@ def delete_user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("users", permanent=True)
+            return redirect("users")
         if request.method == "POST":
             try:
                 user.delete()
@@ -202,7 +204,7 @@ def prom_dem_user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("users", permanent=True)
+            return redirect("users")
         if not user.is_mod:
             user.promote()
         else:
@@ -221,7 +223,7 @@ def user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("home", permanent=True)
+            return redirect("home")
         return HttpResponse(f"User's id is {user_id} User's info: {user}")
         # -------------------- TESTING URL ADDRESSES --------------------
     return redirect("home")
@@ -231,7 +233,12 @@ def user(request, user_id):
 def personal_details(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+    user = request.user
+    context = {
+        "user_type": user_type,
+        "user": user,
+        "categories": categories
+    }
     return render(request, "base/personal_details.html", context)
 
 
@@ -263,12 +270,12 @@ def request(request, request_id):
     user_type = get_user_type(request)
     if user_type == "admin":
         try:
-            req = Request.objects.get(pk=request_id)
+            requezt = Request.objects.get(pk=request_id)
         except Exception:
-            return redirect("requests", permanent=True)
+            return redirect("requests")
         context = {
             "categories": categories,
-            "req": req
+            "requezt": requezt
         }
         return render(request, "base/requests/request.html", context)
     return redirect("home")
@@ -279,10 +286,10 @@ def accept_request(request, request_id):
     user_type = get_user_type(request)
     if user_type == "admin":
         try:
-            req = Request.objects.get(pk=request_id)
+            requezt = Request.objects.get(pk=request_id)
         except Exception:
-            return redirect("requests", permanent=True)
-        req.accept_request()
+            return redirect("requests")
+        requezt.accept_request()
         return redirect("requests")
     return redirect("home")
 
@@ -292,10 +299,10 @@ def reject_request(request, request_id):
     user_type = get_user_type(request)
     if user_type == "admin":
         try:
-            req = Request.objects.get(pk=request_id)
+            requezt = Request.objects.get(pk=request_id)
         except Exception:
-            return redirect("requests", permanent=True)
-        req.reject_request()
+            return redirect("requests")
+        requezt.reject_request()
         return redirect("requests")
     return redirect("home")
 
@@ -356,8 +363,7 @@ def add_category(request):
                 return redirect("add_category")
         context = {"categories": categories, "user_type": user_type}
         return render(request, "base/category_manipulations/add_category.html", context)
-    else:
-        return redirect("home")
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -369,7 +375,7 @@ def category(request, cat_id):
     try:
         category = Category.objects.get(pk=cat_id)
     except Exception:
-        return redirect("home", permanent=True)
+        return redirect("home")
     context = {
         "categories": categories,
         "user_type": user_type,
@@ -386,7 +392,7 @@ def add_product(request, cat_id):
     try:
         category = Category.objects.get(pk=cat_id)
     except Exception:
-        return redirect("home", permanent=True)
+        return redirect("home")
     if user_type == "admin":
         if request.method == "POST":
             try:
@@ -396,15 +402,16 @@ def add_product(request, cat_id):
                     category=category
                 )
             except Exception:
-                return redirect("home")
+                pass
+            finally:
+                return redirect("category", cat_id)
         context = {
             "categories": categories,
             "user_type": user_type,
             "category": category
         }
         return render(request, "base/product_manipulations/add_product.html", context)
-    else:
-        return redirect("category", cat_id)
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -415,14 +422,15 @@ def delete_product(request, prod_id):
     try:
         category = Category.objects.get(pk=product.category.id)
     except Exception:
-        return redirect("home", permanent=True)
+        return redirect("home")
     if user_type == "admin":
         if request.method == "POST":
             try:
                 product.delete()
             except Exception:
-                return redirect("home")
-            return redirect("category", category.id)
+                pass
+            finally:
+                return redirect("category", category.id)
         context = {
             "categories": categories,
             "user_type": user_type,
@@ -430,8 +438,7 @@ def delete_product(request, prod_id):
             "product": product
         }
         return render(request, "base/product_manipulations/delete_product.html", context)
-    else:
-        return redirect("category", category.id)
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -442,20 +449,21 @@ def edit_product(request, prod_id):
     try:
         category = Category.objects.get(pk=product.category.id)
     except Exception:
-        return redirect("home", permanent=True)
+        return redirect("home")
     if user_type == "admin":
         if request.method == "POST":
             cat_parent = request.POST.get("cat_parent")
             try:
                 product.delete()
-                product = Product.objects.update_or_create(
+                product = Product.objects.create(
                     name=request.POST.get("prod_name"),
                     stock_num=request.POST.get("stock_num"),
                     category=Category.objects.get(name=cat_parent)
                 )
             except Exception:
-                return redirect("home")
-            return redirect("category", category.id)
+                pass
+            finally:
+                return redirect("category", category.id)
         context = {
             "categories": categories,
             "user_type": user_type,
@@ -463,8 +471,7 @@ def edit_product(request, prod_id):
             "product": product
         }
         return render(request, "base/product_manipulations/edit_product.html", context)
-    else:
-        return redirect("category", category.id)
+    return redirect("home")
 
 
 """ @login_required(login_url=LOGIN_URL)
@@ -476,7 +483,7 @@ def bad_product(request, prod_id):
         try:
             category = Category.objects.get(pk=product.category.id)
         except Exception:
-            return redirect("home", permanent=True)
+            return redirect("home")
         try:
             product.is_available = False
             product.save()
@@ -511,7 +518,6 @@ def requests_per_category(request, category_id):
     return redirect("home")
 
 
-#! TO COMPLETE
 @login_required(login_url=LOGIN_URL)
 def borrowings_per_category(request, cat_id):
     categories = Category.objects.all()
@@ -526,7 +532,8 @@ def borrowings_per_category(request, cat_id):
             "categories": categories,
             "category": category,
             "user_type": user_type,
-            "borrowings": borrowings
+            "borrowings": borrowings,
+            "now": timezone.now()
         }
         return render(request, "base/borrowings/borrowings.html", context)
     return redirect("home")
@@ -540,7 +547,7 @@ def add_borrowing_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings", permanent=True)
+            return redirect("borrowings")
         user = request.user
         if request.method == "POST":
             additional_days = int(request.POST.get("additional_days"))
@@ -565,7 +572,7 @@ def borrowing_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings", permanent=True)
+            return redirect("borrowings")
         upd_date_to_return = borrowing.date_to_return + \
             timedelta(days=borrowing.additional_days)
         context = {
@@ -584,7 +591,7 @@ def accept_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings", permanent=True)
+            return redirect("borrowings")
         borrowing.accept_extension()
         return redirect("borrowings")
     return redirect("home")
@@ -597,7 +604,20 @@ def reject_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings", permanent=True)
+            return redirect("borrowings")
         borrowing.reject_extension()
+        return redirect("borrowings")
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def finish_borrowing(request, borrowing_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            borrowing = Borrowing.objects.get(pk=borrowing_id)
+        except Exception:
+            return redirect("borrowings")
+        borrowing.finish_borrowing()
         return redirect("borrowings")
     return redirect("home")

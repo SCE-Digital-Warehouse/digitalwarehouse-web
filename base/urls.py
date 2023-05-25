@@ -7,6 +7,7 @@ urlpatterns = [
     path("login/", login_user, name="login"),
     path("logout/", logout_user, name="logout"),
     path("set-password/", set_password, name="set_password"),
+    path("change-password/", change_password, name="change_password"),
 
     path(
         "reset-password/",
@@ -32,8 +33,6 @@ urlpatterns = [
             template_name="base/reset_password/reset_password_complete.html"),
         name="password_reset_complete"
     ),
-
-    path("change-password/", change_password, name="change_password"),
 
     path("add-user/", add_user, name="add_user"),
     path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
@@ -101,6 +100,11 @@ urlpatterns = [
         "reject-extension/<int:borrowing_id>/",
         reject_extension,
         name="reject_extension"
-    )
+    ),
+    path(
+        "finish-borrowing/<int:borrowing_id>/",
+        finish_borrowing,
+        name="finish_borrowing"
+    ),
 
 ]

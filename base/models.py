@@ -74,6 +74,10 @@ class User(AbstractUser):
             self.is_mod = False
             self.save(update_fields=["is_mod"])
 
+    def cancel_first_login(self):
+        self.is_first_login = False
+        self.save(update_fields=["is_first_login"])
+
 
 class Moderator(models.Model):
     user = models.OneToOneField(
@@ -163,6 +167,10 @@ class Product(models.Model):
         self.times_broken = 0
         self.save(update_fields=["times_borrowed", "times_broken"])
 
+    def change_availability(self):
+        self.is_available = not self.is_available
+        self.save(update_fields=["is_available"])
+
 
 class Request(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
@@ -197,8 +205,7 @@ class Request(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:  # determines whether the instance is new
-            self.product.is_available = False
-            self.product.save()
+            self.product.change_availability()
         super().save(*args, **kwargs)
 
     def accept_request(self):
@@ -272,6 +279,10 @@ class Borrowing(models.Model):
                 "comments"
             ])
 
+    def finish_borrowing(self):
+        self.product.change_availability()
+        self.delete()
+
 
 class Repair(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
@@ -287,5 +298,7 @@ class Repair(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.product.increase_times_borrowed()
+            self.product.change_availability()
+            self.product.increase_times_broken()
+
         super().save(*args, **kwargs)

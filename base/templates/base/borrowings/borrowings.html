@@ -23,6 +23,7 @@
             <thead>
                 {% if user_type == "admin" %}
                     <tr>
+                        <th>סיום השאלה</th>
                         <th>בקשת הארכה</th>
                         <th>תאריך החזרה</th>
                         <th>תאריך השאלה</th>
@@ -49,6 +50,12 @@
                 {% if user_type == "admin" %}
                     {% for borrowing in borrowings %}
                         <tr style="background-color: {% if borrowing.extension_requested %} rgb(255, 171, 0) {% elif now > borrowing.date_to_return %} rgb(254, 100, 100){% endif %}">
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'finish_borrowing' borrowing.id %}"
+                                       class="edit-btn">לסיים</a>
+                                </div>
+                            </td>
                             <td>
                                 {% if borrowing.extension_requested %}
                                     <div class="prod-buttons">
