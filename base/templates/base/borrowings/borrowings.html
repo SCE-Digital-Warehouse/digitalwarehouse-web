@@ -11,7 +11,8 @@
         <table>
             <caption>
                 {% if user_type == "admin" %}
-                    מידע על השאלות של סטודנטים/מרצים
+                    {{category}} מידע על השאלות של סטודנטים/מרצים
+                    {% if category %} של קטגורית {% endif %}
                 {% else %}
                     השאלות שלי
                 {% endif %}
@@ -22,6 +23,7 @@
             <thead>
                 {% if user_type == "admin" %}
                     <tr>
+                        <th>סיום השאלה</th>
                         <th>בקשת הארכה</th>
                         <th>תאריך החזרה</th>
                         <th>תאריך השאלה</th>
@@ -47,7 +49,13 @@
             <tbody>
                 {% if user_type == "admin" %}
                     {% for borrowing in borrowings %}
-                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
+                        <tr style="background-color: {% if borrowing.extension_requested %} rgb(255, 171, 0) {% elif now > borrowing.date_to_return %} rgb(254, 100, 100){% endif %}">
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'finish_borrowing' borrowing.id %}"
+                                       class="edit-btn">לסיים</a>
+                                </div>
+                            </td>
                             <td>
                                 {% if borrowing.extension_requested %}
                                     <div class="prod-buttons">
@@ -56,8 +64,8 @@
                                     </div>
                                 {% endif %}
                             </td>
-                            <td>{{ borrowing.date_to_return }}</td>
-                            <td>{{ borrowing.borrowed_at }}</td>
+                            <td>{{ borrowing.date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ borrowing.borrowed_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ borrowing.user.role }}</td>
                             <td>{{ borrowing.user.email }}</td>
                             <td>{{ borrowing.user.mobile_num }}</td>
@@ -70,7 +78,7 @@
                     {% endfor %}
                 {% else %}
                     {% for borrowing in borrowings %}
-                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
+                        <tr style="background-color: {% if borrowing.extension_requested %} rgb(255, 171, 0) {% elif now > borrowing.date_to_return %} rgb(254, 100, 100){% endif %}">
                             <td>
                                 {% if not borrowing.extension_requested %}
                                     <div class="prod-buttons">
@@ -86,8 +94,8 @@
                                     {% endif %}
                                 {% endif %}
                             </td>
-                            <td>{{ borrowing.date_to_return }}</td>
-                            <td>{{ borrowing.borrowed_at }}</td>
+                            <td>{{ borrowing.date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ borrowing.borrowed_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ borrowing.product.name }}</td>
                             <td>{{ borrowing.product.stock_num }}</td>
                         </tr>

@@ -6,44 +6,44 @@
             <input type="text"
                    id="stock_num"
                    name="stock_num"
-                   value="{{ req.product.stock_num }}"
+                   value="{{ requezt.product.stock_num }}"
                    readonly>
             <label for="product_name">שם הפריט</label>
             <input type="text"
                    id="product_name"
                    name="product_name"
-                   value="{{ req.product.name }}"
+                   value="{{ requezt.product.name }}"
                    readonly>
             <label for="requested_at">תאריך בקשה</label>
             <input type="text"
                    id="requested_at"
                    name="requested_at"
-                   value="{{ req.requested_at }}"
+                   value="{{ requezt.requested_at|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             <label for="exp_date_to_borrow">תאריך השאלה רצוי</label>
             <input type="text"
                    id="exp_date_to_borrow"
                    name="exp_date_to_borrow"
-                   value="{{ req.exp_date_to_borrow }}"
+                   value="{{ requezt.exp_date_to_borrow|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             <label for="exp_date_to_return">תאריך החזרה רצוי</label>
             <input type="text"
                    id="exp_date_to_return"
                    name="exp_date_to_return"
-                   value="{{ req.exp_date_to_return }}"
+                   value="{{ requezt.exp_date_to_return|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
-            {% if req.comments %}
+            {% if requezt.comments %}
                 <label for="comments">הערות</label>
                 <input type="text"
                        id="comments"
                        name="comments"
-                       value="{{ req.comments }}"
+                       value="{{ requezt.comments }}"
                        readonly>
             {% endif %}
             <div class="prod-buttons">
-                <a href="{% url 'accept_request' req.id %}"
+                <a href="{% url 'accept_request' requezt.id %}"
                 class="edit-btn">לאשר</a>
-                <a href="{% url 'reject_request' req.id %}"
+                <a href="{% url 'reject_request' requezt.id %}"
                 class="edit-btn">לדחות</a>
             </div>
         </form>

@@ -11,7 +11,8 @@
         <table>
             <caption>
                 {% if user_type == "admin" %}
-                    מידע על בקשות של סטודנטים/מרצים
+                    {{category}} מידע על בקשות של סטודנטים/מרצים
+                    {% if category %} של קטגורית {% endif %}
                 {% else %}
                     בקשות שלי
                 {% endif %}
@@ -55,9 +56,9 @@
                                        class="edit-btn">לצפות</a>
                                 </div>
                             </td>
-                            <td>{{ req.exp_date_to_return }}</td>
-                            <td>{{ req.exp_date_to_borrow }}</td>
-                            <td>{{ req.requested_at }}</td>
+                            <td>{{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ req.user.role }}</td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ req.user.mobile_num }}</td>
@@ -71,9 +72,9 @@
                 {% else %}
                     {% for req in requests %}
                         <tr>
-                            <td>{{ req.exp_date_to_return }}</td>
-                            <td>{{ req.exp_date_to_borrow }}</td>
-                            <td>{{ req.requested_at }}</td>
+                            <td>{{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ req.product.name }}</td>
                             <td>{{ req.product.stock_num }}</td>
                         </tr>
