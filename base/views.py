@@ -503,8 +503,8 @@ def requests_per_category(request, category_id):
         requests = Request.objects.filter(product__category=category)
         context = {
             "categories": categories,
-            "user_type": user_type,
             "category": category,
+            "user_type": user_type,
             "requests": requests
         }
         return render(request, "base/requests/requests.html", context)
@@ -520,13 +520,15 @@ def borrowings_per_category(request, cat_id):
         try:
             category = Category.objects.get(pk=cat_id)
         except Exception:
-            return redirect("home", permanent=True)
+            return redirect("home")
+        borrowings = Borrowing.objects.filter(product__category=category)
         context = {
             "categories": categories,
+            "category": category,
             "user_type": user_type,
-            "category": category
+            "borrowings": borrowings
         }
-        return render(request, "base/borrowings/borrowings_per_category.html", context)
+        return render(request, "base/borrowings/borrowings.html", context)
     return redirect("home")
 
 

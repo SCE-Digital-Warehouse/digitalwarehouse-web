@@ -11,7 +11,8 @@
         <table>
             <caption>
                 {% if user_type == "admin" %}
-                    מידע על השאלות של סטודנטים/מרצים
+                    {{category}} מידע על השאלות של סטודנטים/מרצים
+                    {% if category %} של קטגורית {% endif %}
                 {% else %}
                     השאלות שלי
                 {% endif %}
