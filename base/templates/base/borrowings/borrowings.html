@@ -47,7 +47,7 @@
             <tbody>
                 {% if user_type == "admin" %}
                     {% for borrowing in borrowings %}
-                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
+                        <tr style="background-color: {% if borrowing.extension_requested %} rgb(255, 171, 0) {% elif now > borrowing.date_to_return %} rgb(254, 100, 100){% endif %}">
                             <td>
                                 {% if borrowing.extension_requested %}
                                     <div class="prod-buttons">
@@ -70,7 +70,7 @@
                     {% endfor %}
                 {% else %}
                     {% for borrowing in borrowings %}
-                        <tr {% if borrowing.extension_requested %} style="background-color: rgb(255, 171, 0);"{% endif %}>
+                        <tr style="background-color: {% if borrowing.extension_requested %} rgb(255, 171, 0) {% elif now > borrowing.date_to_return %} rgb(254, 100, 100){% endif %}">
                             <td>
                                 {% if not borrowing.extension_requested %}
                                     <div class="prod-buttons">

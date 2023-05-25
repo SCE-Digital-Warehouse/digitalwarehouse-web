@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -78,22 +79,17 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    if user_type != "admin":
+    if user_type == "admin":
+        borrowings = Borrowing.objects.all()
+    else:
         user = request.user
         borrowings = Borrowing.objects.all().filter(user_id=user.pk)
-        context = {
-            "user_type": user_type,
-            "categories": categories,
-            "user": user,
-            "borrowings": borrowings
-        }
-    else:
-        borrowings = Borrowing.objects.all()
-        context = {
-            "user_type": user_type,
-            "categories": categories,
-            "borrowings": borrowings
-        }
+    context = {
+        "user_type": user_type,
+        "categories": categories,
+        "borrowings": borrowings,
+        "now": timezone.now()
+    }
     return render(request, "base/borrowings/borrowings.html", context)
 
 
