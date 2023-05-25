@@ -297,7 +297,15 @@ def request(request, request_id):
 
 @login_required(login_url=LOGIN_URL)
 def accept_request(request, request_id):
-    pass
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            req = Request.objects.get(pk=request_id)
+        except Exception:
+            return redirect("requests", permanent=True)
+        req.accept_request()
+        return redirect("requests")
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)

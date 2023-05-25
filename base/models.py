@@ -201,6 +201,14 @@ class Request(models.Model):
             self.product.save()
         super().save(*args, **kwargs)
 
+    def accept_request(self):
+        Borrowing.objects.create(
+            user=self.user,
+            product=self.product,
+            date_to_return=self.exp_date_to_return,
+        )
+        self.delete()
+
     def reject_request(self):
         self.delete()
 
