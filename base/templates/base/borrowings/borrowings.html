@@ -64,8 +64,8 @@
                                     </div>
                                 {% endif %}
                             </td>
-                            <td>{{ borrowing.date_to_return }}</td>
-                            <td>{{ borrowing.borrowed_at }}</td>
+                            <td>{{ borrowing.date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ borrowing.borrowed_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ borrowing.user.role }}</td>
                             <td>{{ borrowing.user.email }}</td>
                             <td>{{ borrowing.user.mobile_num }}</td>
@@ -94,8 +94,8 @@
                                     {% endif %}
                                 {% endif %}
                             </td>
-                            <td>{{ borrowing.date_to_return }}</td>
-                            <td>{{ borrowing.borrowed_at }}</td>
+                            <td>{{ borrowing.date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td>{{ borrowing.borrowed_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ borrowing.product.name }}</td>
                             <td>{{ borrowing.product.stock_num }}</td>
                         </tr>

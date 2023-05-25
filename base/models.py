@@ -1,11 +1,14 @@
-from datetime import timedelta
 from django.db import models
 from django.db.models import F
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.urls import reverse
+from django.conf import settings
+from datetime import timedelta
+from django.utils import timezone
+from django.core.mail import send_mail
 
+from config.settings import PROJECT_NAME
 from base.utils import upload_to_path
 
 
@@ -230,6 +233,7 @@ class Borrowing(models.Model):
         auto_now_add=True)
     date_to_return = models.DateTimeField()
     returned_at = models.DateTimeField(blank=True, null=True)
+    notified_at = models.DateTimeField(blank=True, null=True)
     extension_requested = models.BooleanField(default=False)
     additional_days = models.PositiveSmallIntegerField(default=0)
 
@@ -242,6 +246,36 @@ class Borrowing(models.Model):
         if self.pk is None:
             self.product.increase_times_borrowed()
         super().save(*args, **kwargs)
+
+    def notify_user(self):
+        """The method notifies a user one per the day."""
+        now = timezone.now()
+        if now > self.date_to_return and \
+                (not self.notified_at or (now - self.notified_at).total_seconds() >= 216000):
+            self.notified_at = now
+            self.save(update_fields=["notified_at"])
+            subject = "איחור בהחזרת המוצר"
+            message = f"""
+                הודעה זו נשלחה אליך עקב האיחור שלך בהחזרת המוצר ששאלת.
+    
+                שם המוצר: {self.product.name}
+                מק''ט: {self.product.stock_num}
+                תאריך השאלה: {self.borrowed_at.strftime("%d/%m/%Y %H:%M")}
+                תאריך החזרה הנקבע: {self.date_to_return.strftime("%d/%m/%Y %H:%M")}
+    
+                את/ה מתבקש/ת להחזיר את המוצר בדחיפות, אחרת תיקנס/י.
+    
+                צוות {PROJECT_NAME}
+                """
+            email_from = settings.EMAIL_HOST_USER
+            email_to = [f"{self.user.email}"]
+            send_mail(
+                subject,
+                message,
+                email_from,
+                email_to,
+                fail_silently=False,
+            )
 
     def request_extension(self, additional_days, comments):
         if additional_days > 0:

@@ -83,6 +83,8 @@ def borrowings(request):
     categories = Category.objects.all()
     if user_type == "admin":
         borrowings = Borrowing.objects.all()
+        for borrowing in borrowings:
+            borrowing.notify_user()
     else:
         user = request.user
         borrowings = Borrowing.objects.all().filter(user_id=user.pk)
@@ -528,6 +530,8 @@ def borrowings_per_category(request, cat_id):
         except Exception:
             return redirect("home")
         borrowings = Borrowing.objects.filter(product__category=category)
+        for borrowing in borrowings:
+            borrowing.notify_user()
         context = {
             "categories": categories,
             "category": category,

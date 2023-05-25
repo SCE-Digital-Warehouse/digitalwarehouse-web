@@ -18,19 +18,19 @@
             <input type="text"
                    id="requested_at"
                    name="requested_at"
-                   value="{{ requezt.requested_at }}"
+                   value="{{ requezt.requested_at|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             <label for="exp_date_to_borrow">תאריך השאלה רצוי</label>
             <input type="text"
                    id="exp_date_to_borrow"
                    name="exp_date_to_borrow"
-                   value="{{ requezt.exp_date_to_borrow }}"
+                   value="{{ requezt.exp_date_to_borrow|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             <label for="exp_date_to_return">תאריך החזרה רצוי</label>
             <input type="text"
                    id="exp_date_to_return"
                    name="exp_date_to_return"
-                   value="{{ requezt.exp_date_to_return }}"
+                   value="{{ requezt.exp_date_to_return|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             {% if requezt.comments %}
                 <label for="comments">הערות</label>
