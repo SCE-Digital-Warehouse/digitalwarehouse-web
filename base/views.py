@@ -295,12 +295,22 @@ def request(request, request_id):
     return redirect("home")
 
 
+@login_required(login_url=LOGIN_URL)
 def accept_request(request, request_id):
     pass
 
 
+@login_required(login_url=LOGIN_URL)
 def reject_request(request, request_id):
-    pass
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            req = Request.objects.get(pk=request_id)
+        except Exception:
+            return redirect("requests", permanent=True)
+        req.reject_request()
+        return redirect("requests")
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)

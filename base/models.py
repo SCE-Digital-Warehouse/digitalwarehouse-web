@@ -201,6 +201,9 @@ class Request(models.Model):
             self.product.save()
         super().save(*args, **kwargs)
 
+    def reject_request(self):
+        self.delete()
+
 
 class Borrowing(models.Model):
     user = models.ForeignKey(
