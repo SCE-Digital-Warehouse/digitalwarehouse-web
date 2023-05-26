@@ -18,19 +18,19 @@
             <input type="text"
                    id="borrowed_at"
                    name="borrowed_at"
-                   value="{{ borrowing.borrowed_at }}"
+                   value="{{ borrowing.borrowed_at|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             <label for="date_to_return">תאריך החזרה</label>
             <input type="text"
                    id="date_to_return"
                    name="date_to_return"
-                   value="{{ borrowing.date_to_return }}"
+                   value="{{ borrowing.date_to_return|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             <label for="upd_date_to_return">תאריך החזרה מבוקש</label>
             <input type="text"
                    id="upd_date_to_return"
                    name="upd_date_to_return"
-                   value="{{ upd_date_to_return }}"
+                   value="{{ upd_date_to_return|date:'SHORT_DATETIME_FORMAT' }}"
                    readonly>
             {% if borrowing.comments %}
                 <label for="comments">הערות</label>

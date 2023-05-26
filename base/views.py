@@ -378,6 +378,8 @@ def category(request, cat_id):
         category = Category.objects.get(pk=cat_id)
     except Exception:
         return redirect("home")
+    if category.children.exists():
+        return redirect("home")
     context = {
         "categories": categories,
         "user_type": user_type,

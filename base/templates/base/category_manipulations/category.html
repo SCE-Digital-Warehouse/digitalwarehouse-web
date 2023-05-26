@@ -6,10 +6,14 @@
                 {{ category.name }}
                 {% if user_type == "admin" %}
                     <div class="prod-buttons">
+                        <a href="#" class="edit-btn">עריכת קטגוריה</a>
+                    </div>
+                    <div class="prod-buttons">
                         <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
                     </div>
                     <div class="prod-buttons">
-                        <a href="{% url 'borrowings_per_category' category.id %}" class="edit-btn">השאלות</a>
+                        <a href="{% url 'borrowings_per_category' category.id %}"
+                           class="edit-btn">השאלות</a>
                     </div>
                     <div class="prod-buttons">
                         <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">בקשות</a>
@@ -22,10 +26,10 @@
             <thead>
                 <tr>
                     {% if user_type == "admin" %}
-                        <th>למחוק את הפריט</th>
-                        <th>לשנות את הפריט</th>
+                        <th>מחיקת הפריט</th>
+                        <th>עריכת הפריט</th>
+                        <th>זמינות</th>
                     {% endif %}
-                    <th>זמינות</th>
                     <th>שם הפריט</th>
                     <th>מק''ט</th>
                 </tr>
@@ -36,29 +40,36 @@
                         {% if user_type == "admin" %}
                             <td>
                                 <div class="prod-buttons">
-                                    <a href="{% url 'delete_product' product.id %}" class="edit-btn">מחיקת הפריט</a>
+                                    <a href="{% if product.is_available %}{% url 'delete_product' product.id %}{% else %}#{% endif %}"
+                                       class="edit-btn">למחוק</a>
                                 </div>
                             </td>
                             <td>
                                 <div class="prod-buttons">
-                                    <a href="{% url 'edit_product' product.id %}" class="edit-btn">שינוי הפריט</a>
+                                    <a href="{% if product.is_available %}{% url 'edit_product' product.id %}{% else %}#{% endif %}"
+                                       class="edit-btn">לערוך</a>
                                 </div>
                             </td>
-                        {% endif %}
-                        {% comment %} <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'bad_product' product.id %}" class="edit-btn">לשנות תקינות</a>
-                            </div>
-                        </td> {% endcomment %}
-                        <td>
+                            {% comment %} <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'bad_product' product.id %}"    class="edit-btn">לשנות תקינות</a>
+                                </div>
+                            </td> {% endcomment %}
+                            <td>
+                                {% if product.is_available %}
+                                    זמין
+                                {% else %}
+                                    לא זמין
+                                {% endif %}
+                            </td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.stock_num }}</td>
+                        {% else %}
                             {% if product.is_available %}
-                                זמין
-                            {% else %}
-                                לא זמין
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.stock_num }}</td>
                             {% endif %}
-                        </td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.stock_num }}</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

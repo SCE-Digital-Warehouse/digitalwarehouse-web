@@ -127,20 +127,11 @@ def create_products(self):
         "Convertor": Convertor,
     } """
 
-    categories = Category.objects.all()
+    categories = Category.objects.all().exclude(children__isnull=False)
 
     for category in categories:
         for i in range(10):
             name = f"{category} – Item {i + 1}"
-            Product.objects.create(
-                category=category,
-                stock_num=stock_num(),
-                name=name
-            )
-
-    for category in Category.objects.get(name="Rec").children.all():
-        for i in range(10):
-            name = f"{category.name} – Item {i + 1}"
             Product.objects.create(
                 category=category,
                 stock_num=stock_num(),
