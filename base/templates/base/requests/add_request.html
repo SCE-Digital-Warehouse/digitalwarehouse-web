@@ -36,7 +36,7 @@
             </div>
         </form>
     </div>
-    
+
     <script>
         const expDateToBorrow = document.getElementById('exp_date_to_borrow');
         const expDateToReturn = document.getElementById('exp_date_to_return');
@@ -73,13 +73,17 @@
         expDateToReturn.addEventListener('input', function() {
             const selectedDate = new Date(expDateToReturn.value);
             const min = new Date(expDateToReturn.min);
+            const max = new Date(expDateToReturn.max);
             if (selectedDate <= min) {
                 expDateToReturn.value = getLocalDateTimeString(min);
+                return;
             }
-            else {
-                const roundedDate = roundMinutes(selectedDate);
-                expDateToReturn.value = getLocalDateTimeString(roundedDate);
+            if (selectedDate > max) {
+                expDateToReturn.value = getLocalDateTimeString(max);
+                return;
             }
+            const roundedDate = roundMinutes(selectedDate);
+            expDateToReturn.value = getLocalDateTimeString(roundedDate);
         });
     </script>
 {% endblock content %}

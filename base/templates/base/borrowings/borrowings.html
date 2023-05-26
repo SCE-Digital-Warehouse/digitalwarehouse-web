@@ -57,12 +57,10 @@
                                 </div>
                             </td>
                             <td>
-                                {% if borrowing.extension_requested %}
-                                    <div class="prod-buttons">
-                                        <a href="{% url 'borrowing_extension' borrowing.id %}"
-                                           class="edit-btn">לצפות</a>
-                                    </div>
-                                {% endif %}
+                                <div class="prod-buttons">
+                                    <a href="{% if borrowing.extension_requested %}{% url 'borrowing_extension' borrowing.id %}{% else %}#{% endif %}"
+                                       class="edit-btn" >לצפות</a>
+                                </div>
                             </td>
                             <td>{{ borrowing.date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ borrowing.borrowed_at|date:"SHORT_DATETIME_FORMAT" }}</td>
