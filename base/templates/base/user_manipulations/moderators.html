@@ -14,8 +14,8 @@
             <thead>
                 <tr>
                     <th>מחיקת מודרטור</th>
-                    <th>הדחה</th>
-                    <th>צפיה ב-/עריכת פרטים</th>
+                    <th>הדחת מודרטור</th>
+                    <th>צפיה בפרטים / עריכת פרטים</th>
                     <th>סטטוס</th>
                     <th>מייל</th>
                     <th>מס' טלפון</th>
@@ -25,24 +25,32 @@
                 </tr>
             </thead>
             <tbody>
-                {% for moderator in mods %}
+                {% for moderator in moderators %}
                     <tr>
                         <td>
                             <div class="prod-buttons">
-                                <a href="{% url 'delete_moderator' moderator.id %}" class="edit-btn">למחוק</a>
+                                <a href="{% url 'delete_moderator' moderator.pk %}" class="edit-btn">למחוק</a>
                             </div>
                         </td>
                         <td>
                             <div class="prod-buttons">
-                                <a href="{% url 'prom_dem_user' moderator.id %}" class="edit-btn">להדיח</a>
+                                <a href="{% url 'prom_dem_user' moderator.pk %}" class="edit-btn">להדיח</a>
                             </div>
                         </td>
                         <td>
                             <div class="prod-buttons">
-                                <a href="{% url 'edit_moderator' moderator.id %}" class="edit-btn">לצפות/לערוך</a>
+                                <a href="{% url 'edit_moderator' moderator.pk %}" class="edit-btn">לצפות/לערוך</a>
                             </div>
                         </td>
-                        <td>{{ moderator.role }}</td>
+                        <td>
+                            {% if moderator.role == "student" %}
+                                סטודנט
+                            {% elif moderator.role == "lecturer" %}
+                                מרצה
+                            {% else %}
+                                אחר
+                            {% endif %}
+                        </td>
                         <td>{{ moderator.email }}</td>
                         <td>{{ moderator.mobile_num }}</td>
                         <td>{{ moderator.last_name }}</td>

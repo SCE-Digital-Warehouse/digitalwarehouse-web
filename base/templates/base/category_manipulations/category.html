@@ -29,7 +29,7 @@
                         <th>מחיקת הפריט</th>
                         <th>עריכת הפריט</th>
                         <th>זמינות</th>
-                    {% else %}
+                    {% elif user_role == "student" or user_role == "lecturer" %}
                         <th>בקשת השאלה</th>
                     {% endif %}
                     <th>שם הפריט</th>
@@ -68,11 +68,13 @@
                             <td>{{ product.stock_num }}</td>
                         {% else %}
                             {% if product.is_available %}
-                                <td>
-                                    <div class="prod-buttons">
-                                        <a href="{% url 'add_request' product.id %}"    class="edit-btn">לשאול פריט</a>
-                                    </div>
-                                </td>
+                                {% if user_role == "student" or user_role == "lecturer" %}
+                                    <td>
+                                        <div class="prod-buttons">
+                                            <a href="{% url 'add_request' product.id %}"        class="edit-btn">לשאול פריט</a>
+                                        </div>
+                                    </td>
+                                {% endif %}
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.stock_num }}</td>
                             {% endif %}

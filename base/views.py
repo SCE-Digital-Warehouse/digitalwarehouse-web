@@ -234,15 +234,66 @@ def user(request, user_id):
 def moderators(request):
     user_type = get_user_type(request)
     if user_type == "admin":
-        mods = Moderator.objects.all()
         categories = Category.objects.all()
+        moderators = Moderator.objects.all()
+        users = User.objects.filter(moderator__in=moderators)
         context = {
             "user_type": user_type,
-            "mods": mods,
+            "moderators": users,
             "categories": categories,
         }
         return render(request, "base/user_manipulations/moderators.html", context)
     return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def add_moderator(request):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        creating_moderator = True
+        if request.method == "POST":
+            try:
+                user = User.objects.create(
+                    identity_num=request.POST.get("identity_num"),
+                    first_name=request.POST.get("first_name"),
+                    last_name=request.POST.get("last_name"),
+                    mobile_num=request.POST.get("mobile_num"),
+                    email=request.POST.get("email"),
+                    role=request.POST.get("role"),
+                    username=request.POST.get("email").split("@")[0],
+                    password=request.POST.get("identity_num")
+                )
+                moderator = user.promote()
+                moderator.add_product = request.POST.get("add_product")
+                moderator.edit_product = request.POST.get("edit_product")
+                moderator.delete_product = request.POST.get("delete_product")
+                moderator.approve_return = request.POST.get("approve_return")
+                moderator.approve_request = request.POST.get("approve_request")
+                moderator.reject_request = request.POST.get("reject_request")
+                moderator.finish_borrowing = request.POST.get("finish_borrowing")
+                moderator.save()
+            except Exception:
+                pass
+            finally:
+                return redirect("moderators")
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+            "creating_moderator": creating_moderator
+        }
+        return render(request, "base/user_manipulations/add_user.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def edit_moderator(request, moderator_id):
+    pass
+
+
+@login_required(login_url=LOGIN_URL)
+def delete_moderator(request, moderator_id):
+    pass
 
 
 @login_required(login_url=LOGIN_URL)
@@ -428,6 +479,7 @@ def category(request, cat_id):
     """Shows all products by specific category."""
     categories = Category.objects.all()
     user_type = get_user_type(request)
+    user = request.user
     products = Product.objects.all().filter(category_id=cat_id)
     try:
         category = Category.objects.get(pk=cat_id)
@@ -438,6 +490,7 @@ def category(request, cat_id):
     context = {
         "categories": categories,
         "user_type": user_type,
+        "user_role": user.role,
         "category": category,
         "products": products
     }
