@@ -177,12 +177,15 @@ def delete_user(request, user_id):
             user = User.objects.get(pk=user_id)
         except Exception:
             return redirect("home")
+        is_mod = user.is_mod
         if request.method == "POST":
             try:
                 user.delete()
             except Exception:
                 pass
             finally:
+                if is_mod:
+                    return redirect("moderators")
                 return redirect("users")
         context = {
             "user_type": user_type,
@@ -319,11 +322,6 @@ def edit_moderator(request, moderator_id):
         }
         return render(request, "base/user_manipulations/edit_user.html", context)
     return redirect("home")
-
-
-@login_required(login_url=LOGIN_URL)
-def delete_moderator(request, moderator_id):
-    pass
 
 
 @login_required(login_url=LOGIN_URL)

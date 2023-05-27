@@ -44,7 +44,6 @@ urlpatterns = [
     path("moderators/", moderators, name="moderators"),
     path("add-moderator/", add_moderator, name="add_moderator"),
     path("edit-moderator/<int:moderator_id>/", edit_moderator, name="edit_moderator"),
-    path("delete-moderator/<int:moderator_id>/", delete_moderator, name="delete_moderator"),
 
     path("personal-details/", personal_details, name="personal_details"),
     path("statistics/", statistics, name="statistics"),

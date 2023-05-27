@@ -60,11 +60,10 @@ class User(AbstractUser):
         except Moderator.DoesNotExist:
             moderator = None
         if not moderator and not self.is_admin:
-            moderator = Moderator(user=self)
-            moderator.save()
+            moderator = Moderator.objects.create(user=self)
             self.is_mod = True
             self.save(update_fields=["is_mod"])
-            return moderator
+        return moderator
 
     def demote(self):
         """Demotes a moderator to the regular user."""
