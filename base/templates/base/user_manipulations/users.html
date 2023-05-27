@@ -13,12 +13,12 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>מחיקת המשתמש</th>
-                    <th>עריכת המשתמש</th>
+                    <th>מחיקת משתמש</th>
+                    <th>עריכת פרטים</th>
                     <th>מינוי/הדחה</th>
                     <th>מנהל מחסן</th>
                     <th>מודרטור</th>
-                    <th>תפקיד</th>
+                    <th>סטטוס</th>
                     <th>מייל</th>
                     <th>מס' טלפון</th>
                     <th>שם משפחה</th>
@@ -44,9 +44,29 @@
                                 <a href="{% url 'prom_dem_user' user.id %}" class="edit-btn">למנות/להדיח</a>
                             </div>
                         </td>
-                        <td>{{ user.is_admin }}</td>
-                        <td>{{ user.is_mod }}</td>
-                        <td>{{ user.role }}</td>
+                        <td>
+                            {% if user.is_admin %}
+                                כן
+                            {% else %}
+                                לא
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.is_mod %}
+                                כן
+                            {% else %}
+                                לא
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.role == "student" %}
+                                סטודנט
+                            {% elif user.role == "lecturer" %}
+                                מרצה
+                            {% else %}
+                                אחר
+                            {% endif %}
+                        </td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.mobile_num }}</td>
                         <td>{{ user.last_name }}</td>

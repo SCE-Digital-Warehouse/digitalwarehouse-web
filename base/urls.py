@@ -41,6 +41,8 @@ urlpatterns = [
     path("users/", users, name="users"),
     path("user/<int:user_id>/", user, name="user"),
 
+    path("moderators/", moderators, name="moderators"),
+
     path("personal-details/", personal_details, name="personal_details"),
     path("statistics/", statistics, name="statistics"),
     path("contact-us/", contact_us, name="contact_us"),

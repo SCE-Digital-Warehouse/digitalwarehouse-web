@@ -231,6 +231,21 @@ def user(request, user_id):
 
 
 @login_required(login_url=LOGIN_URL)
+def moderators(request):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        mods = Moderator.objects.all()
+        categories = Category.objects.all()
+        context = {
+            "user_type": user_type,
+            "mods": mods,
+            "categories": categories,
+        }
+        return render(request, "base/user_manipulations/moderators.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def personal_details(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
