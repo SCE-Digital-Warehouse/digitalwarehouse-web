@@ -1,13 +1,24 @@
-""" from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete
 
-from .models import SpecialRequest
+from .models import User, Request, Borrowing, Repair
 
 
-@receiver(post_save, sender=SpecialRequest)
-def revert_extension_requested(sender, instance, created, **kwargs):
-    if created:
-        borrowing = instance.product.borrowing_set.first()
-        if borrowing:
-            borrowing.extension_requested = not borrowing.extension_requested
-            borrowing.save(update_fields=["extension_requested"]) """
+@receiver(pre_delete, sender=User)
+def user_pre_delete_handler(sender, instance, **kwargs):
+    try:
+        requests = Request.objects.filter(user=instance)
+        for request in requests:
+            request.product.change_availability()
+    except Exception:
+        try:
+            borrowings = Borrowing.objects.filter(user=instance)
+            for borrowing in borrowings:
+                borrowing.product.change_availability()
+        except Exception:
+            try:
+                repairs = Repair.objects.filter(user=instance)
+                for repair in repairs:
+                    repair.product.change_availability()
+            except Exception:
+                pass

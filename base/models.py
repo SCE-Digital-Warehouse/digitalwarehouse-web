@@ -220,6 +220,7 @@ class Request(models.Model):
         self.delete()
 
     def reject_request(self):
+        self.product.change_availability()
         self.delete()
 
 

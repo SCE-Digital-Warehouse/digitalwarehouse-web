@@ -65,6 +65,11 @@ urlpatterns = [
         name="requests_per_product"
     ),
     path(
+        "add-request/<int:product_id>/",
+        add_request,
+        name="add_request"
+    ),
+    path(
         "accept_request/<int:request_id>/",
         accept_request,
         name="accept_request"
