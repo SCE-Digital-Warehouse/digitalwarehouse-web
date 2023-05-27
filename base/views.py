@@ -12,7 +12,6 @@ from .forms import *
 from .models import *
 
 
-#! TO COMPLETE MODERATOR PAGE
 @login_required(login_url=LOGIN_URL)
 def index(request):
     user = request.user
@@ -23,8 +22,7 @@ def index(request):
         if (user_type == "user"):
             return render(request, "base/panels/user_panel.html", context)
         if (user_type == "moderator"):
-            #! TODO:
-            return HttpResponse("Moderator Panel at base/panels/moderator_panel.html")
+            return render(request, "base/panels/moderator_panel.html", context)
         if (user_type == "admin"):
             return render(request, "base/panels/admin_panel.html", context)
     return redirect("set_password")

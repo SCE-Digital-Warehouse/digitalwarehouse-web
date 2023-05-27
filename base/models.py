@@ -92,10 +92,10 @@ class Moderator(models.Model):
     add_product = models.BooleanField(default=True)
     edit_product = models.BooleanField(default=True)
     delete_product = models.BooleanField(default=True)
-    borrow_product = models.BooleanField(default=True)
     approve_return = models.BooleanField(default=True)
     approve_request = models.BooleanField(default=True)
     reject_request = models.BooleanField(default=True)
+    finish_borrowing = models.BooleanField(default=True)
     promoted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
