@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from config.settings import LOGIN_URL
-from .utils import get_user_type
+from .utils import get_user_type, get_previous_template
 from .forms import *
 from .models import *
 
@@ -204,11 +204,16 @@ def prom_dem_user(request, user_id):
             user = User.objects.get(pk=user_id)
         except Exception:
             return redirect("home")
+        previous_template = get_previous_template(
+            request.META.get("HTTP_REFERER"))
+        print(previous_template)
         if not user.is_mod:
             user.promote()
         else:
             user.demote()
-        return redirect("users")
+        if previous_template == "users":
+            return redirect("users")
+        return redirect("moderators")
     return redirect("home")
 
 
