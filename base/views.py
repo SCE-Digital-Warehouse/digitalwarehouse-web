@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from datetime import timedelta
 
 from config.settings import LOGIN_URL
 from .utils import get_user_type
@@ -285,7 +286,43 @@ def request(request, request_id):
 
 @login_required(login_url=LOGIN_URL)
 def add_request(request, product_id):
-    pass
+    user_type = get_user_type(request)
+    if user_type != "admin":
+        categories = Category.objects.all()
+        try:
+            product = Product.objects.get(pk=product_id)
+        except Exception:
+            return redirect("home")
+        user = request.user
+
+        now = timezone.localtime(timezone.now())
+        datetime_format = "%Y-%m-%dT%H:%M"
+        init_value = now.strftime(datetime_format)
+        max_value = (now + timedelta(days=14)).strftime(datetime_format)
+
+        if request.method == "POST":
+            try:
+                Request.objects.create(
+                    user=user,
+                    product=product,
+                    exp_date_to_borrow=request.POST.get("exp_date_to_borrow"),
+                    exp_date_to_return=request.POST.get("exp_date_to_return"),
+                    comments=request.POST.get("comments")
+                )
+            except Exception:
+                pass
+            finally:
+                return redirect("requests")
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+            "product": product,
+            "init_value": init_value,
+            "max_value": max_value,
+            "user_role": user.role
+        }
+        return render(request, "base/requests/add_request.html", context)
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)

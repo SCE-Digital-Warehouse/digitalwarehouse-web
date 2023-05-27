@@ -555,7 +555,8 @@ ADD CATEGORY PAGE
 .add-product-form input[type="text"],
 .add-product-form select,
 .borrowing_extention-form input[type="text"],
-.borrowing_extention-form input[type="number"] {
+.borrowing_extention-form input[type="number"],
+.borrowing_extention-form input[type="datetime-local"] {
     width: 60%;
     padding: 12px 20px;
     margin: 20px 0;

@@ -7,21 +7,22 @@
             <input type="text"
                    id="stock_num"
                    name="stock_num"
-                   value="{{ borrowing.product.stock_num }}"
+                   value="{{ product.stock_num }}"
                    readonly>
             <label for="product_name">שם הפריט</label>
             <input type="text"
                    id="product_name"
                    name="product_name"
-                   value="{{ borrowing.product.name }}"
+                   value="{{ product.name }}"
                    readonly>
             <label for="exp_date_to_borrow">תאריך השאלה רצוי</label>
             <input type="datetime-local"
-                   value="{input_value}"
-                   min="{min_value}"
-                   max="{max_value}"
+                   value="{{ init_value }}"
+                   min="{{ init_value }}"
+                   max="{{ max_value }}"
                    id="exp_date_to_borrow"
                    name="exp_date_to_borrow"
+                   data-variable="{{ user_role }}"
                    required>
             <label for="exp_date_to_return">תאריך החזרה רצוי</label>
             <input type="datetime-local"
@@ -40,6 +41,7 @@
     <script>
         const expDateToBorrow = document.getElementById('exp_date_to_borrow');
         const expDateToReturn = document.getElementById('exp_date_to_return');
+        const userRole = expDateToBorrow.getAttribute('data-variable');
 
         function roundMinutes(date) {
             const minutes = date.getMinutes();
@@ -55,23 +57,30 @@
         }
 
         expDateToBorrow.addEventListener('input', function() {
-            const selectedDate = new Date(expDateToBorrow.value);
-            const roundedDate = roundMinutes(selectedDate);
-            expDateToBorrow.value = getLocalDateTimeString(roundedDate);
+            const selectedDate = roundMinutes(new Date(expDateToBorrow.value));
+            const minValue = roundMinutes(new Date());
+
+            if (selectedDate < minValue) {
+                expDateToBorrow.value = getLocalDateTimeString(minValue);
+            }
+            else
+                expDateToBorrow.value = getLocalDateTimeString(selectedDate);
 
             expDateToReturn.disabled = false;
 
-            const min = new Date(roundedDate);
-            const max = new Date(roundedDate);
+            const min = new Date(selectedDate);
             min.setHours(min.getHours() + 1);
-            max.setDate(max.getDate() + 7);
+            const max = userRole === 'student' ?
+                new Date(selectedDate.setDate(selectedDate.getDate() + 7)) :
+                new Date(selectedDate.setHours(selectedDate.getHours() + 6));
+
             expDateToReturn.min = getLocalDateTimeString(min);
             expDateToReturn.max = getLocalDateTimeString(max);
             expDateToReturn.value = expDateToReturn.min;
         });
 
         expDateToReturn.addEventListener('input', function() {
-            const selectedDate = new Date(expDateToReturn.value);
+            const selectedDate = roundMinutes(new Date(expDateToReturn.value));
             const min = new Date(expDateToReturn.min);
             const max = new Date(expDateToReturn.max);
             if (selectedDate <= min) {
@@ -82,8 +91,7 @@
                 expDateToReturn.value = getLocalDateTimeString(max);
                 return;
             }
-            const roundedDate = roundMinutes(selectedDate);
-            expDateToReturn.value = getLocalDateTimeString(roundedDate);
+            expDateToReturn.value = getLocalDateTimeString(selectedDate);
         });
     </script>
 {% endblock content %}
