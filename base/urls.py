@@ -34,11 +34,11 @@ urlpatterns = [
         name="password_reset_complete"
     ),
 
+    path("users/", users, name="users"),
     path("add-user/", add_user, name="add_user"),
     path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
     path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
     path("prom-dem-user/<int:user_id>/", prom_dem_user, name="prom_dem_user"),
-    path("users/", users, name="users"),
     path("user/<int:user_id>/", user, name="user"),
 
     path("moderators/", moderators, name="moderators"),

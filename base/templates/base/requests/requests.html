@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% block content %}
     <div class="requests-page-admin">
-        {% if user_type == "admin" %}
+        {% if user_type == "admin" or user_type == "moderator" %}
             <form method="GET">
                 <button type="submit">חפש/י</button>
                 <input type="text" id="identity_num" name="identity_num">
@@ -10,7 +10,7 @@
         {% endif %}
         <table>
             <caption>
-                {% if user_type == "admin" %}
+                {% if user_type == "admin" or user_type == "moderator" %}
                     {{category}} מידע על בקשות של סטודנטים/מרצים
                     {% if category %} של קטגורית {% endif %}
                 {% else %}
@@ -21,13 +21,13 @@
                 <col span="8">
             </colgroup>
             <thead>
-                {% if user_type == "admin" %}
+                {% if user_type == "admin" or user_type == "moderator" %}
                     <tr>
                         <th>בקשת השאלה</th>
                         <th>תאריך החזרה רצוי</th>
                         <th>תאריך השאלה רצוי</th>
                         <th>תאריך בקשה</th>
-                        <th>תפקיד</th>
+                        <th>סטטוס</th>
                         <th>מייל</th>
                         <th>מס' טלפון</th>
                         <th>שם הפריט</th>
@@ -47,19 +47,27 @@
                 {% endif %}
             </thead>
             <tbody>
-                {% if user_type == "admin" %}
+                {% if user_type == "admin" or user_type == "moderator" %}
                     {% for req in requests %}
-                        <tr>
+                        <tr style="background-color: {% if req.user.is_mod %} rgb(0, 116, 217) {% endif %}">
                             <td>
                                 <div class="prod-buttons">
-                                    <a href="{% url 'request' req.id %}"
+                                    <a href="{% if req.user.pk != user.pk %}{% url 'request' req.id %}{% else %}#{% endif %}"
                                        class="edit-btn">לצפות</a>
                                 </div>
                             </td>
                             <td>{{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td>{{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>{{ req.user.role }}</td>
+                            <td>
+                                {% if req.user.role == "student" %}
+                                    סטודנט
+                                {% elif req.user.role == "lecturer" %}
+                                    מרצה
+                                {% else %}
+                                    אחר
+                                {% endif %}
+                            </td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ req.user.mobile_num }}</td>
                             <td>{{ req.product.name }}</td>

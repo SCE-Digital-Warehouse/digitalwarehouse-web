@@ -80,15 +80,17 @@ def change_password(request):
 def borrowings(request):
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    if user_type == "admin":
+    user = request.user
+    if user_type == "admin" or user_type == "moderator":
         borrowings = Borrowing.objects.all()
+    elif user_type == "user":
+        borrowings = Borrowing.objects.all().filter(user_id=user.pk)
+    if user_type == "admin":
         for borrowing in borrowings:
             borrowing.notify_user()
-    else:
-        user = request.user
-        borrowings = Borrowing.objects.all().filter(user_id=user.pk)
     context = {
         "user_type": user_type,
+        "user": user,
         "categories": categories,
         "borrowings": borrowings,
         "now": timezone.now()
@@ -177,16 +179,17 @@ def delete_user(request, user_id):
             user = User.objects.get(pk=user_id)
         except Exception:
             return redirect("home")
-        is_mod = user.is_mod
         if request.method == "POST":
+            previous_template = get_previous_template(
+                request.META.get("HTTP_REFERER"))
             try:
                 user.delete()
             except Exception:
                 pass
             finally:
-                if is_mod:
-                    return redirect("moderators")
-                return redirect("users")
+                if previous_template == "users":
+                    return redirect("users")
+                return redirect("moderators")
         context = {
             "user_type": user_type,
             "user": user,
@@ -206,7 +209,6 @@ def prom_dem_user(request, user_id):
             return redirect("home")
         previous_template = get_previous_template(
             request.META.get("HTTP_REFERER"))
-        print(previous_template)
         if not user.is_mod:
             user.promote()
         else:
@@ -345,22 +347,18 @@ def personal_details(request):
 @login_required(login_url=LOGIN_URL)
 def requests(request):
     user_type = get_user_type(request)
+    user = request.user
     categories = Category.objects.all()
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         requests = Request.objects.all()
-        context = {
-            "user_type": user_type,
-            "categories": categories,
-            "requests": requests
-        }
     else:
-        user = request.user
         requests = Request.objects.all().filter(user_id=user.pk)
-        context = {
-            "user_type": user_type,
-            "categories": categories,
-            "requests": requests
-        }
+    context = {
+        "user_type": user_type,
+        "user": user,
+        "categories": categories,
+        "requests": requests
+    }
     return render(request, "base/requests/requests.html", context)
 
 
@@ -368,7 +366,7 @@ def requests(request):
 def request(request, request_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             requezt = Request.objects.get(pk=request_id)
         except Exception:
@@ -395,6 +393,7 @@ def add_request(request, product_id):
         now = timezone.localtime(timezone.now())
         datetime_format = "%Y-%m-%dT%H:%M"
         init_value = now.strftime(datetime_format)
+        init_value2 = (now + timedelta(hours=1)).strftime(datetime_format)
         max_value = (now + timedelta(days=14)).strftime(datetime_format)
 
         if request.method == "POST":
@@ -415,6 +414,7 @@ def add_request(request, product_id):
             "categories": categories,
             "product": product,
             "init_value": init_value,
+            "init_value2": init_value2,
             "max_value": max_value,
             "user_role": user.role
         }
@@ -425,7 +425,7 @@ def add_request(request, product_id):
 @login_required(login_url=LOGIN_URL)
 def accept_request(request, request_id):
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             requezt = Request.objects.get(pk=request_id)
         except Exception:
@@ -438,7 +438,7 @@ def accept_request(request, request_id):
 @login_required(login_url=LOGIN_URL)
 def reject_request(request, request_id):
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             requezt = Request.objects.get(pk=request_id)
         except Exception:
@@ -536,7 +536,7 @@ def add_product(request, cat_id):
         category = Category.objects.get(pk=cat_id)
     except Exception:
         return redirect("home")
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         if request.method == "POST":
             try:
                 Product.objects.create(
@@ -566,7 +566,7 @@ def delete_product(request, prod_id):
         category = Category.objects.get(pk=product.category.id)
     except Exception:
         return redirect("home")
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         if request.method == "POST":
             try:
                 product.delete()
@@ -588,7 +588,7 @@ def delete_product(request, prod_id):
 def edit_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             product = Product.objects.get(pk=prod_id)
             category = Category.objects.get(pk=product.category.id)
@@ -638,8 +638,9 @@ def bad_product(request, prod_id):
 @login_required(login_url=LOGIN_URL)
 def requests_per_category(request, category_id):
     categories = Category.objects.all()
+    user = request.user
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             category = Category.objects.get(pk=category_id)
         except Exception:
@@ -649,6 +650,7 @@ def requests_per_category(request, category_id):
             "categories": categories,
             "category": category,
             "user_type": user_type,
+            "user": user,
             "requests": requests
         }
         return render(request, "base/requests/requests.html", context)
@@ -658,8 +660,9 @@ def requests_per_category(request, category_id):
 @login_required(login_url=LOGIN_URL)
 def borrowings_per_category(request, cat_id):
     categories = Category.objects.all()
+    user = request.user
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             category = Category.objects.get(pk=cat_id)
         except Exception:
@@ -671,6 +674,7 @@ def borrowings_per_category(request, cat_id):
             "categories": categories,
             "category": category,
             "user_type": user_type,
+            "user": user,
             "borrowings": borrowings,
             "now": timezone.now()
         }
@@ -752,7 +756,7 @@ def reject_extension(request, borrowing_id):
 @login_required(login_url=LOGIN_URL)
 def finish_borrowing(request, borrowing_id):
     user_type = get_user_type(request)
-    if user_type == "admin":
+    if user_type == "admin" or user_type == "moderator":
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
