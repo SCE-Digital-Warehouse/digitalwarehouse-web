@@ -18,8 +18,8 @@
             <label for="cat_parent">קטגוריה</label>
             <select id="cat_parent" name="cat_parent">
                 {% for category in categories %}
-                    <option value="{{ category }}">
-                        {{ category }}
+                    <option value="{{ category.pk }}">
+                        {{ category.name }}
                     </option>
                 {% endfor %}
             </select>

@@ -148,22 +148,17 @@ def edit_user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("users")
+            return redirect("home")
         if request.method == "POST":
-            try:
-                user.delete()
-                user = User.objects.create(
-                    identity_num=request.POST.get("identity_num"),
-                    first_name=request.POST.get("first_name"),
-                    last_name=request.POST.get("last_name"),
-                    mobile_num=request.POST.get("mobile_num"),
-                    email=request.POST.get("email"),
-                    role=request.POST.get("role"),
-                )
-            except Exception:
-                pass
-            finally:
-                return redirect("users")
+            user.identity_num = request.POST.get("identity_num")
+            user.first_name = request.POST.get("first_name")
+            user.last_name = request.POST.get("last_name")
+            user.mobile_num = request.POST.get("mobile_num")
+            user.email = request.POST.get("email")
+            user.role = request.POST.get("role")
+            user.username = request.POST.get("email").split("@")[0]
+            user.save()
+            return redirect("users")
         context = {
             "user_type": user_type,
             "user": user,
@@ -181,7 +176,7 @@ def delete_user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("users")
+            return redirect("home")
         if request.method == "POST":
             try:
                 user.delete()
@@ -205,7 +200,7 @@ def prom_dem_user(request, user_id):
         try:
             user = User.objects.get(pk=user_id)
         except Exception:
-            return redirect("users")
+            return redirect("home")
         if not user.is_mod:
             user.promote()
         else:
@@ -288,7 +283,42 @@ def add_moderator(request):
 
 @login_required(login_url=LOGIN_URL)
 def edit_moderator(request, moderator_id):
-    pass
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        categories = Category.objects.all()
+        editing_moderator = True
+        try:
+            user = User.objects.get(pk=moderator_id)
+            moderator = Moderator.objects.get(pk=moderator_id)
+        except Exception:
+            return redirect("home")
+        if request.method == "POST":
+            user.identity_num = request.POST.get("identity_num")
+            user.first_name = request.POST.get("first_name")
+            user.last_name = request.POST.get("last_name")
+            user.mobile_num = request.POST.get("mobile_num")
+            user.email = request.POST.get("email")
+            user.role = request.POST.get("role")
+            user.username = request.POST.get("email").split("@")[0]
+            user.save()
+            moderator.add_product = request.POST.get("add_product")
+            moderator.edit_product = request.POST.get("edit_product")
+            moderator.delete_product = request.POST.get("delete_product")
+            moderator.approve_return = request.POST.get("approve_return")
+            moderator.approve_request = request.POST.get("approve_request")
+            moderator.reject_request = request.POST.get("reject_request")
+            moderator.finish_borrowing = request.POST.get("finish_borrowing")
+            moderator.save()
+            return redirect("moderators")
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+            "editing_moderator": editing_moderator,
+            "user": user,
+            "moderator": moderator
+        }
+        return render(request, "base/user_manipulations/edit_user.html", context)
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -396,7 +426,7 @@ def accept_request(request, request_id):
         try:
             requezt = Request.objects.get(pk=request_id)
         except Exception:
-            return redirect("requests")
+            return redirect("home")
         requezt.accept_request()
         return redirect("requests")
     return redirect("home")
@@ -409,7 +439,7 @@ def reject_request(request, request_id):
         try:
             requezt = Request.objects.get(pk=request_id)
         except Exception:
-            return redirect("requests")
+            return redirect("home")
         requezt.reject_request()
         return redirect("requests")
     return redirect("home")
@@ -456,7 +486,7 @@ def add_category(request):
         if request.method == "POST":
             cat_parent = request.POST.get("cat_parent")
             try:
-                if cat_parent != "ללא קטגורית אב":
+                if cat_parent != "no_cat_parent":
                     Category.objects.create(
                         name=request.POST.get("cat_name"),
                         parent=Category.objects.get(name=cat_parent),
@@ -484,8 +514,6 @@ def category(request, cat_id):
     try:
         category = Category.objects.get(pk=cat_id)
     except Exception:
-        return redirect("home")
-    if category.children.exists():
         return redirect("home")
     context = {
         "categories": categories,
@@ -557,25 +585,19 @@ def delete_product(request, prod_id):
 def edit_product(request, prod_id):
     categories = Category.objects.all()
     user_type = get_user_type(request)
-    product = Product.objects.get(pk=prod_id)
-    try:
-        category = Category.objects.get(pk=product.category.id)
-    except Exception:
-        return redirect("home")
     if user_type == "admin":
+        try:
+            product = Product.objects.get(pk=prod_id)
+            category = Category.objects.get(pk=product.category.id)
+        except Exception:
+            return redirect("home")
         if request.method == "POST":
             cat_parent = request.POST.get("cat_parent")
-            try:
-                product.delete()
-                product = Product.objects.create(
-                    name=request.POST.get("prod_name"),
-                    stock_num=request.POST.get("stock_num"),
-                    category=Category.objects.get(name=cat_parent)
-                )
-            except Exception:
-                pass
-            finally:
-                return redirect("category", category.id)
+            product.name = request.POST.get("prod_name")
+            product.stock_num = request.POST.get("stock_num")
+            product.category = Category.objects.get(pk=cat_parent)
+            product.save()
+            return redirect("category", category.id)
         context = {
             "categories": categories,
             "user_type": user_type,
@@ -661,7 +683,7 @@ def add_borrowing_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings")
+            return redirect("home")
         user = request.user
         if request.method == "POST":
             additional_days = int(request.POST.get("additional_days"))
@@ -686,7 +708,7 @@ def borrowing_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings")
+            return redirect("home")
         upd_date_to_return = borrowing.date_to_return + \
             timedelta(days=borrowing.additional_days)
         context = {
@@ -705,7 +727,7 @@ def accept_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings")
+            return redirect("home")
         borrowing.accept_extension()
         return redirect("borrowings")
     return redirect("home")
@@ -718,7 +740,7 @@ def reject_extension(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings")
+            return redirect("home")
         borrowing.reject_extension()
         return redirect("borrowings")
     return redirect("home")
@@ -731,7 +753,7 @@ def finish_borrowing(request, borrowing_id):
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
-            return redirect("borrowings")
+            return redirect("home")
         borrowing.finish_borrowing()
         return redirect("borrowings")
     return redirect("home")

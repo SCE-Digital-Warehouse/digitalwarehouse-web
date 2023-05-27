@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
-    <div class="add_user" style="height: 135em;">
+    <div class="add_user" {% if creating_moderator %} style="height: 135em;" {% endif %}>
         <form action="" method="POST" class="add-user-form">
             {% csrf_token %}
             <label for="identity_num">ת.ז</label>
@@ -36,9 +36,11 @@
                 <option value="lecturer" required>
                     מרצה
                 </option>
-                <option value="" required>
-                    אחר
-                </option>
+                {% if creating_moderator %}
+                    <option value="" required>
+                        אחר
+                    </option>
+                {% endif %}
             </select>
             {% if creating_moderator %}
                 <label>הרשאות</label>
