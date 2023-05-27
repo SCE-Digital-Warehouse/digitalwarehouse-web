@@ -8,6 +8,8 @@
                     <div class="prod-buttons">
                         <a href="#" class="edit-btn">עריכת קטגוריה</a>
                     </div>
+                {% endif %}
+                {% if user_type == "admin" or user_type == "moderator" %}
                     <div class="prod-buttons">
                         <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
                     </div>
@@ -25,12 +27,15 @@
             </colgroup>
             <thead>
                 <tr>
-                    {% if user_type == "admin" %}
+                    {% if user_type == "admin" or user_type == "moderator" %}
                         <th>מחיקת הפריט</th>
                         <th>עריכת הפריט</th>
                         <th>זמינות</th>
-                    {% else %}
-                        <th>בקשת השאלה</th>
+                    {% endif %}
+                    {% if user_type == "moderator" or user_type == "user" %}
+                        {% if user_role == "student" or user_role == "lecturer" %}
+                            <th>בקשת השאלה</th>
+                        {% endif %}
                     {% endif %}
                     <th>שם הפריט</th>
                     <th>מק''ט הפריט</th>
@@ -39,7 +44,7 @@
             <tbody>
                 {% for product in products %}
                     <tr>
-                        {% if user_type == "admin" %}
+                        {% if user_type == "admin" or user_type == "moderator" %}
                             <td>
                                 <div class="prod-buttons">
                                     <a href="{% if product.is_available %}{% url 'delete_product' product.id %}{% else %}#{% endif %}"
@@ -64,13 +69,25 @@
                                     לא זמין
                                 {% endif %}
                             </td>
+
+                            {% if user_type == "moderator" %}
+                                {% if user_role == "student" or user_role == "lecturer" %}
+                                    <td>
+                                        <div class="prod-buttons">
+                                            <a href="{% if product.is_available %}{% url 'add_request'  product.id %}{% else %}#{% endif %}" class="edit-btn">לשאול פריט</a>
+                                        </div>
+                                    </td>
+                                {% endif %}
+                            {% endif %}
                             <td>{{ product.name }}</td>
                             <td>{{ product.stock_num }}</td>
-                        {% else %}
+                        {% endif %}
+
+                        {% if user_type == "user" %}
                             {% if product.is_available %}
                                 <td>
                                     <div class="prod-buttons">
-                                        <a href="{% url 'add_request' product.id %}"    class="edit-btn">לשאול פריט</a>
+                                        <a href="{% url 'add_request' product.id %}"       class="edit-btn">לשאול פריט</a>
                                     </div>
                                 </td>
                                 <td>{{ product.name }}</td>

@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="product-page">
+        <table>
+            <caption>
+                מודרטורים
+                <div class="prod-buttons">
+                    <a href="{% url 'add_moderator' %}" class="edit-btn">הוספת מודרטור</a>
+                </div>
+            </caption>
+            <colgroup>
+                <col span="8">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>מחיקת מודרטור</th>
+                    <th>הדחת מודרטור</th>
+                    <th>צפיה בפרטים / עריכת פרטים</th>
+                    <th>סטטוס</th>
+                    <th>מייל</th>
+                    <th>מס' טלפון</th>
+                    <th>שם משפחה</th>
+                    <th>שם פרטי</th>
+                    <th>ת.ז</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for moderator in moderators %}
+                    <tr>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'delete_user' moderator.pk %}" class="edit-btn">למחוק</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'prom_dem_user' moderator.pk %}" class="edit-btn">להדיח</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'edit_moderator' moderator.pk %}" class="edit-btn">לצפות/לערוך</a>
+                            </div>
+                        </td>
+                        <td>
+                            {% if moderator.role == "student" %}
+                                סטודנט
+                            {% elif moderator.role == "lecturer" %}
+                                מרצה
+                            {% else %}
+                                אחר
+                            {% endif %}
+                        </td>
+                        <td>{{ moderator.email }}</td>
+                        <td>{{ moderator.mobile_num }}</td>
+                        <td>{{ moderator.last_name }}</td>
+                        <td>{{ moderator.first_name }}</td>
+                        <td>{{ moderator.identity_num }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

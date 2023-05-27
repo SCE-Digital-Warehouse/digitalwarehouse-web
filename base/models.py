@@ -60,11 +60,10 @@ class User(AbstractUser):
         except Moderator.DoesNotExist:
             moderator = None
         if not moderator and not self.is_admin:
-            moderator = Moderator(user=self)
-            moderator.save()
+            moderator = Moderator.objects.create(user=self)
             self.is_mod = True
             self.save(update_fields=["is_mod"])
-            return moderator
+        return moderator
 
     def demote(self):
         """Demotes a moderator to the regular user."""
@@ -92,10 +91,9 @@ class Moderator(models.Model):
     add_product = models.BooleanField(default=True)
     edit_product = models.BooleanField(default=True)
     delete_product = models.BooleanField(default=True)
-    borrow_product = models.BooleanField(default=True)
-    approve_return = models.BooleanField(default=True)
-    approve_request = models.BooleanField(default=True)
+    accept_request = models.BooleanField(default=True)
     reject_request = models.BooleanField(default=True)
+    finish_borrowing = models.BooleanField(default=True)
     promoted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
