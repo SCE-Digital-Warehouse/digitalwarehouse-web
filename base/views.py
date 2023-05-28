@@ -802,12 +802,24 @@ def bad_product(request, prod_id):
 @login_required(login_url=LOGIN_URL)
 def in_repair(request):
     user_type = get_user_type(request)
-    if user_type == "admin":
+    user = request.user
+    if user_type in ["admin", "moderator"]:
         categories = Category.objects.all()
         products_in_repair = Repair.objects.all()
         context = {
             "user_type": user_type,
+            "user": user,
             "categories": categories,
             "products_in_repair": products_in_repair
         }
     return render(request, "base/in_repair_manipulations/in_repair.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def breakage(request, breakage_id):
+    pass
+
+
+@login_required(login_url=LOGIN_URL)
+def mark_repaired(request, breakage_id):
+    pass

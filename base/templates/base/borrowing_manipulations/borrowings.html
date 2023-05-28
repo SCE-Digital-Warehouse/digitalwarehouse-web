@@ -59,15 +59,14 @@
                             {% if user_type == "admin" or mod_finish_borrowing %}
                                 <td>
                                     <div class="prod-buttons">
-                                        <a href="{% if borrowing.user.pk != user.pk %}{url        'finish_borrowing' borrowing.id %}{% else %}#{% endif %}"
-                                       class="edit-btn">לסיים</a>
+                                        <a href="{% if borrowing.user.pk != user.pk %}{% url 'finish_borrowing' borrowing.pk %}{% else %}#{% endif %}" class="edit-btn">לסיים</a>
                                     </div>
                                 </td>
                             {% endif %}
                             {% if user_type == "admin" %}
                                 <td>
                                     <div class="prod-buttons">
-                                        <a href="{% if borrowing.extension_requested %}{% url   'borrowing_extension' borrowing.id %}{% else %}#{% endif %}"
+                                        <a href="{% if borrowing.extension_requested %}{% url   'borrowing_extension' borrowing.pk %}{% else %}#{% endif %}"
                                            class="edit-btn" >לצפות</a>
                                     </div>
                                 </td>
@@ -76,7 +75,7 @@
                                 <td>
                                     {% if not borrowing.extension_requested %}
                                         <div class="prod-buttons">
-                                            <a href="{% if borrowing.user.pk == user.pk %}{% url 'add_borrowing_extension' borrowing.id %}{% else %}#{% endif %}"
+                                            <a href="{% if borrowing.user.pk == user.pk %}{% url 'add_borrowing_extension' borrowing.pk %}{% else %}#{% endif %}"
                                                class="edit-btn">בקשה להארכה</a>
                                         </div>
                                     {% else %}

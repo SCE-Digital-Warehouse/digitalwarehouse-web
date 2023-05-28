@@ -259,8 +259,8 @@ class Borrowing(models.Model):
     
                 שם המוצר: {self.product.name}
                 מק''ט: {self.product.stock_num}
-                תאריך השאלה: {self.borrowed_at.strftime("%d/%m/%Y %H:%M")}
-                תאריך החזרה הנקבע: {self.date_to_return.strftime("%d/%m/%Y %H:%M")}
+                תאריך השאלה: {timezone.localtime(self.borrowed_at).strftime("%d/%m/%Y %H:%M")}
+                תאריך החזרה הנקבע: {timezone.localtime(self.date_to_return).strftime("%d/%m/%Y %H:%M")}
     
                 את/ה מתבקש/ת להחזיר את המוצר בדחיפות, אחרת תיקנס/י.
     
@@ -333,5 +333,8 @@ class Repair(models.Model):
         if self.pk is None:
             self.product.change_availability()
             self.product.increase_times_broken()
-
         super().save(*args, **kwargs)
+
+    def mark_repaired(self):
+        self.product.change_availability()
+        self.delete()

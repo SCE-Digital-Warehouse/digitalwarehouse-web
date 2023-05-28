@@ -45,7 +45,7 @@ def create_users(self):
     Creating manager (מנהל מחסן)
     """
     User.objects.create_user(
-        username="manager",
+        username="manager_dht",
         password="sce123456",
         first_name="Shai",
         last_name="Kohen",
@@ -61,7 +61,7 @@ def create_users(self):
     Creating moderator
     """
     regular_user_that_will_be_promoted = User.objects.create_user(
-        username="moderator",
+        username="mod_dht",
         password="111111111",
         first_name="Lol",
         last_name="Kek",

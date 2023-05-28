@@ -1,0 +1,70 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="borrowings-page-admin">
+        <form method="GET">
+            <button type="submit">חפש/י</button>
+            <input type="text" id="identity_num" name="identity_num">
+            <label for="identity_num">חיפוש לפי ת.ז</label>
+        </form>
+        <table>
+            <caption>
+                {{ category }} מידע על פריטים בתיקון
+                {% if category %}של קטגורית{% endif %}
+            </caption>
+            <colgroup>
+                <col span="8">
+            </colgroup>
+            <thead>
+                <tr>
+                    {% if mod_mark_repaired %}<th>תיקון הפריט</th>{% endif %}
+                    <th>פרטי תקלה</th>
+                    <th>תאריך תקלה</th>
+                    <th>סטטוס</th>
+                    <th>מייל</th>
+                    <th>מס' טלפון</th>
+                    <th>שם הפריט</th>
+                    <th>מק''ט הפריט</th>
+                    <th>שם משפחה</th>
+                    <th>שם פרטי</th>
+                    <th>ת.ז</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for breakage in breakages %}
+                    <tr>
+                        {% if mod_mark_repaired %}
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% if breakage.user.pk != user.pk %}{% url 'mark_repaired' breakage.pk %}{% else %}#{% endif %}"
+                                       class="edit-btn">לסמן כתוקן</a>
+                                </div>
+                            </td>
+                        {% endif %}
+                        <td>
+                            <div class="prod-buttons">
+                                <a href="{% url 'breakage' breakage.pk %}" class="edit-btn">לצפות</a>
+                            </div>
+                        </td>
+                        <td>{{ breakage.broke_ats|date:"SHORT_DATETIME_FORMAT" }}</td>
+                        <td>
+                            {% if breakage.user.role == "student" %}
+                                סטודנט
+                            {% elif breakage.user.role == "lecturer" %}
+                                מרצה
+                            {% else %}
+                                אחר
+                            {% endif %}
+                        </td>
+                        <td>{{ breakage.user.email }}</td>
+                        <td>{{ breakage.user.mobile_num }}</td>
+                        <td>{{ breakage.product.name }}</td>
+                        <td>{{ breakage.product.stock_num }}</td>
+                        <td>{{ breakage.user.last_name }}</td>
+                        <td>{{ breakage.user.first_name }}</td>
+                        <td>{{ breakage.user.identity_num }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
