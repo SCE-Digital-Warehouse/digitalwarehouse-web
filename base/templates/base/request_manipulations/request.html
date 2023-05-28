@@ -41,10 +41,14 @@
                        readonly>
             {% endif %}
             <div class="prod-buttons">
+              {% if user_type == "admin" or mod_accept_request %}
                 <a href="{% url 'accept_request' requezt.id %}"
                 class="edit-btn">לאשר</a>
+              {% endif %}
+              {% if user_type == "admin" or mod_reject_request %}
                 <a href="{% url 'reject_request' requezt.id %}"
                 class="edit-btn">לדחות</a>
+              {% endif %}
             </div>
         </form>
     </div>

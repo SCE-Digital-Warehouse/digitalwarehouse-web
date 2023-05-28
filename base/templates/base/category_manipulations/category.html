@@ -9,16 +9,18 @@
                         <a href="#" class="edit-btn">עריכת קטגוריה</a>
                     </div>
                 {% endif %}
-                {% if user_type == "admin" or user_type == "moderator" %}
+                {% if user_type == "admin" or mod_add_product %}
                     <div class="prod-buttons">
                         <a href="{% url 'add_product' category.id %}" class="edit-btn">הוספת פריט</a>
                     </div>
+                {% endif %}
+                {% if user_type == "admin" or user_type == "moderator" %}
                     <div class="prod-buttons">
                         <a href="{% url 'borrowings_per_category' category.id %}"
                            class="edit-btn">השאלות</a>
                     </div>
                     <div class="prod-buttons">
-                        <a href="{% url 'requests_per_product' category.id %}" class="edit-btn">בקשות</a>
+                        <a href="{% url 'requests_per_category' category.id %}" class="edit-btn">בקשות</a>
                     </div>
                 {% endif %}
             </caption>
@@ -27,13 +29,17 @@
             </colgroup>
             <thead>
                 <tr>
-                    {% if user_type == "admin" or user_type == "moderator" %}
+                    {% if user_type == "admin" or mod_delete_product %}
                         <th>מחיקת הפריט</th>
+                    {% endif %}
+                    {% if user_type == "admin" or mod_edit_product %}
                         <th>עריכת הפריט</th>
+                    {% endif %}
+                    {% if user_type == "admin" or user_type == "moderator" %}
                         <th>זמינות</th>
                     {% endif %}
-                    {% if user_type == "moderator" or user_type == "user" %}
-                        {% if user_role == "student" or user_role == "lecturer" %}
+                    {% if user_type == "user" or user_type == "moderator" %}
+                        {% if user.role == "student" or user.role == "lecturer" %}
                             <th>בקשת השאלה</th>
                         {% endif %}
                     {% endif %}
@@ -44,24 +50,28 @@
             <tbody>
                 {% for product in products %}
                     <tr>
-                        {% if user_type == "admin" or user_type == "moderator" %}
+                        {% if user_type == "admin" or mod_delete_product %}
                             <td>
                                 <div class="prod-buttons">
                                     <a href="{% if product.is_available %}{% url 'delete_product' product.id %}{% else %}#{% endif %}"
                                        class="edit-btn">למחוק</a>
                                 </div>
                             </td>
+                        {% endif %}
+                        {% if user_type == "admin" or mod_edit_product %}
                             <td>
                                 <div class="prod-buttons">
                                     <a href="{% if product.is_available %}{% url 'edit_product' product.id %}{% else %}#{% endif %}"
                                        class="edit-btn">לערוך</a>
                                 </div>
                             </td>
+                        {% endif %}
                             {% comment %} <td>
                                 <div class="prod-buttons">
                                     <a href="{% url 'bad_product' product.id %}"    class="edit-btn">לשנות תקינות</a>
                                 </div>
                             </td> {% endcomment %}
+                        {% if user_type == "admin" or user_type == "moderator" %}
                             <td>
                                 {% if product.is_available %}
                                     זמין
@@ -69,9 +79,8 @@
                                     לא זמין
                                 {% endif %}
                             </td>
-
                             {% if user_type == "moderator" %}
-                                {% if user_role == "student" or user_role == "lecturer" %}
+                                {% if user.role == "student" or user.role == "lecturer" %}
                                     <td>
                                         <div class="prod-buttons">
                                             <a href="{% if product.is_available %}{% url 'add_request'  product.id %}{% else %}#{% endif %}" class="edit-btn">לשאול פריט</a>
@@ -82,7 +91,6 @@
                             <td>{{ product.name }}</td>
                             <td>{{ product.stock_num }}</td>
                         {% endif %}
-
                         {% if user_type == "user" %}
                             {% if product.is_available %}
                                 <td>

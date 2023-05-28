@@ -23,7 +23,9 @@
             <thead>
                 {% if user_type == "admin" or user_type == "moderator" %}
                     <tr>
-                        <th>סיום השאלה</th>
+                        {% if user_type == "admin" or mod_finish_borrowing %}
+                            <th>סיום השאלה</th>
+                        {% endif %}
                         <th>בקשת הארכה</th>
                         <th>תאריך החזרה</th>
                         <th>תאריך השאלה</th>
@@ -54,12 +56,14 @@
                             {% elif borrowing.extension_requested %} rgb(255, 171, 0)
                             {% elif borrowing.user.is_mod %} rgb(0, 116, 217)
                             {% endif %}">
-                            <td>
-                                <div class="prod-buttons">
-                                    <a href="{% if borrowing.user.pk != user.pk %}{% url 'finish_borrowing' borrowing.id %}{% else %}#{% endif %}"
+                            {% if user_type == "admin" or mod_finish_borrowing %}
+                                <td>
+                                    <div class="prod-buttons">
+                                        <a href="{% if borrowing.user.pk != user.pk %}{url        'finish_borrowing' borrowing.id %}{% else %}#{% endif %}"
                                        class="edit-btn">לסיים</a>
-                                </div>
-                            </td>
+                                    </div>
+                                </td>
+                            {% endif %}
                             {% if user_type == "admin" %}
                                 <td>
                                     <div class="prod-buttons">

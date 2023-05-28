@@ -77,21 +77,12 @@
                         לא
                     </option>
                 </select>
-                <label for="approve_return">אישור החזרת פריט</label>
-                <select name="approve_return" id="approve_return">
-                    <option value="1" {% if moderator.approve_return %}selected{% endif %} required>
+                <label for="accept_request">אישור בקשת השאלה</label>
+                <select name="accept_request" id="accept_request">
+                    <option value="1" {% if moderator.accept_request %}selected{% endif %} required>
                         כן
                     </option>
-                    <option value="0" {% if not moderator.approve_return %}selected{% endif %} required>
-                        לא
-                    </option>
-                </select>
-                <label for="approve_request">אישור בקשת השאלה</label>
-                <select name="approve_request" id="approve_request">
-                    <option value="1" {% if moderator.approve_request %}selected{% endif %} required>
-                        כן
-                    </option>
-                    <option value="0" {% if not moderator.approve_request %}selected{% endif %} required>
+                    <option value="0" {% if not moderator.accept_request %}selected{% endif %} required>
                         לא
                     </option>
                 </select>
