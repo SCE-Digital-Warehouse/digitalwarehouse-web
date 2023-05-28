@@ -150,6 +150,7 @@ class Product(models.Model):
     times_borrowed = models.IntegerField(default=0)
     times_broken = models.IntegerField(default=0)
     is_available = models.BooleanField(default=True)
+    in_repair = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.stock_num} {self.name}"
@@ -172,6 +173,12 @@ class Product(models.Model):
     def change_availability(self):
         self.is_available = not self.is_available
         self.save(update_fields=["is_available"])
+
+    def change_condition(self):
+        """Changes the condition of a product."""
+        self.in_repair = not self.in_repair
+        self.is_available = not self.is_available
+        self.save(update_fields=["in_repair", "is_available"])
 
 
 class Request(models.Model):
@@ -332,10 +339,10 @@ class Repair(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.product.change_availability()
+            self.product.change_condition()
             self.product.increase_times_broken()
         super().save(*args, **kwargs)
 
     def mark_repaired(self):
-        self.product.change_availability()
+        self.product.change_condition()
         self.delete()

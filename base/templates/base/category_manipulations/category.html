@@ -32,6 +32,9 @@
             </colgroup>
             <thead>
                 <tr>
+                    {% if user_type == "admin" %}
+                        <th>שליחת הפריט לתיקון</th>
+                    {% endif %}
                     {% if user_type == "admin" or mod_delete_product %}
                         <th>מחיקת הפריט</th>
                     {% endif %}
@@ -52,7 +55,15 @@
             </thead>
             <tbody>
                 {% for product in products %}
-                    <tr>
+                    <tr style="background-color: {% if user_type == 'admin' and product.in_repair %}rgb(254, 100, 100){% endif %}">
+                        {% if user_type == "admin" %}
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% if product.is_available and not product.in_repair %}{% url 'send_for_repair' product.id %}{% else %}#{% endif %}"
+                                       class="edit-btn">לשלוח לתיקון</a>
+                                </div>
+                            </td>
+                        {% endif %}
                         {% if user_type == "admin" or mod_delete_product %}
                             <td>
                                 <div class="prod-buttons">

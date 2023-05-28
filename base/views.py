@@ -110,8 +110,7 @@ def add_user(request):
                 )
             except Exception:
                 pass
-            finally:
-                return redirect("users")
+            return redirect("users")
         context = {
             "user_type": user_type,
             "categories": categories,
@@ -164,10 +163,9 @@ def delete_user(request, user_id):
                 user.delete()
             except Exception:
                 pass
-            finally:
-                if previous_template == "users":
-                    return redirect("users")
-                return redirect("moderators")
+            if previous_template == "users":
+                return redirect("users")
+            return redirect("moderators")
         context = {
             "user_type": user_type,
             "user": user,
@@ -257,8 +255,7 @@ def add_moderator(request):
                 moderator.save()
             except Exception:
                 pass
-            finally:
-                return redirect("moderators")
+            return redirect("moderators")
         context = {
             "user_type": user_type,
             "categories": categories,
@@ -410,6 +407,7 @@ def request(request, request_id):
         categories = Category.objects.all()
         context = {
             "categories": categories,
+            "user_type": user_type,
             "user": user,
             "mod_accept_request": mod_accept_request,
             "mod_reject_request": mod_reject_request,
@@ -427,6 +425,9 @@ def add_request(request, product_id):
             product = Product.objects.get(pk=product_id)
         except Exception:
             return redirect("home")
+        if not product.is_available:
+            return redirect("home")
+
         categories = Category.objects.all()
         user = request.user
 
@@ -446,9 +447,9 @@ def add_request(request, product_id):
                     comments=request.POST.get("comments")
                 )
             except Exception:
-                pass
-            finally:
-                return redirect("requests")
+                product.change_availability()
+                return redirect("add_request", product_id)
+            return redirect("requests")
         context = {
             "user_type": user_type,
             "categories": categories,
@@ -708,8 +709,7 @@ def add_product(request, cat_id):
                 )
             except Exception:
                 pass
-            finally:
-                return redirect("category", cat_id)
+            return redirect("category", cat_id)
         context = {
             "categories": categories,
             "user_type": user_type,
@@ -765,8 +765,7 @@ def delete_product(request, prod_id):
                 product.delete()
             except Exception:
                 pass
-            finally:
-                return redirect("category", category.id)
+            return redirect("category", category.id)
         context = {
             "categories": categories,
             "user_type": user_type,
@@ -775,30 +774,6 @@ def delete_product(request, prod_id):
         }
         return render(request, "base/product_manipulations/delete_product.html", context)
     return redirect("home")
-
-
-""" @login_required(login_url=LOGIN_URL)
-def bad_product(request, prod_id):
-    categories = Category.objects.all()
-    user_type = get_user_type(request)
-    product = Product.objects.get(pk=prod_id)
-    if user_type == "admin":
-        try:
-            category = Category.objects.get(pk=product.category.id)
-        except Exception:
-            return redirect("home")
-        try:
-            product.is_available = False
-            product.save()
-        except:
-            return render("home")
-    context = {
-        "categories": categories,
-        "user_type": user_type,
-        "category": category,
-        "product": product
-    }
-    return render(request, "base/category_manipulations/category.html", context) """
 
 
 @login_required(login_url=LOGIN_URL)
@@ -818,11 +793,11 @@ def in_repair(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def in_repair_per_category(request, cat_id):
+def in_repair_per_category(request, category_id):
     user_type = get_user_type(request)
     if user_type in ["admin", "moderator"]:
         try:
-            category = Category.objects.get(pk=cat_id)
+            category = Category.objects.get(pk=category_id)
         except Exception:
             return redirect("home")
         user = request.user
@@ -842,6 +817,45 @@ def in_repair_per_category(request, cat_id):
 @login_required(login_url=LOGIN_URL)
 def breakage(request, breakage_id):
     pass
+
+
+@login_required(login_url=LOGIN_URL)
+def send_for_repair(request, product_id):
+    user_type = get_user_type(request)
+    try:
+        product = Product.objects.get(pk=product_id)
+    except Exception:
+        return redirect("home")
+    previous_template = get_previous_template(
+        request.META.get("HTTP_REFERER"))
+    if not product.is_available or product.in_repair:
+        if previous_template == "category":
+            return redirect("category", product.category.pk)
+        elif previous_template == "borrowings":
+            return redirect("borrowings")
+        return redirect("home")
+    categories = Category.objects.all()
+    user = request.user
+    if request.method == "POST":
+        try:
+            Repair.objects.create(
+                user=user,
+                product=product,
+                comments=request.POST.get("comments")
+            )
+        except Exception:
+            pass
+        if previous_template == "category":
+            return redirect("category", product.category.pk)
+        elif previous_template == "borrowings":
+            return redirect("borrowings")
+        return redirect("home")
+    context = {
+        "user_type": user_type,
+        "categories": categories,
+        "product": product
+    }
+    return render(request, "base/in_repair_manipulations/send_for_repair.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
