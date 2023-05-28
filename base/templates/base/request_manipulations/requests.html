@@ -30,11 +30,11 @@
                         <th>סטטוס</th>
                         <th>מייל</th>
                         <th>מס' טלפון</th>
-                        <th>שם הפריט</th>
-                        <th>מק''ט הפריט</th>
                         <th>שם משפחה</th>
                         <th>שפ פרטי</th>
                         <th>ת.ז</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
                     </tr>
                 {% else %}
                     <tr>
@@ -70,11 +70,11 @@
                             </td>
                             <td>{{ req.user.email }}</td>
                             <td>{{ req.user.mobile_num }}</td>
-                            <td>{{ req.product.name }}</td>
-                            <td>{{ req.product.stock_num }}</td>
                             <td>{{ req.user.last_name }}</td>
                             <td>{{ req.user.first_name }}</td>
                             <td>{{ req.user.identity_num }}</td>
+                            <td>{{ req.product.name }}</td>
+                            <td>{{ req.product.stock_num }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}

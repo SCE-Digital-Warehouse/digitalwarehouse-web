@@ -55,7 +55,7 @@
             </thead>
             <tbody>
                 {% for product in products %}
-                    <tr style="background-color: {% if user_type == 'admin' and product.in_repair %}rgb(254, 100, 100){% endif %}">
+                    <tr style="background-color: {% if user_type == 'admin' and product.in_repair %}rgb(112,128,144){% endif %}">
                         {% if user_type == "admin" %}
                             <td>
                                 <div class="prod-buttons">

@@ -32,11 +32,11 @@
                         <th>סטטוס</th>
                         <th>מייל</th>
                         <th>מס' טלפון</th>
-                        <th>שם הפריט</th>
-                        <th>מק''ט הפריט</th>
                         <th>שם משפחה</th>
                         <th>שם פרטי</th>
                         <th>ת.ז</th>
+                        <th>שם הפריט</th>
+                        <th>מק''ט הפריט</th>
                     </tr>
                 {% else %}
                     <tr>
@@ -101,11 +101,11 @@
                             </td>
                             <td>{{ borrowing.user.email }}</td>
                             <td>{{ borrowing.user.mobile_num }}</td>
-                            <td>{{ borrowing.product.name }}</td>
-                            <td>{{ borrowing.product.stock_num }}</td>
                             <td>{{ borrowing.user.last_name }}</td>
                             <td>{{ borrowing.user.first_name }}</td>
                             <td>{{ borrowing.user.identity_num }}</td>
+                            <td>{{ borrowing.product.name }}</td>
+                            <td>{{ borrowing.product.stock_num }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
