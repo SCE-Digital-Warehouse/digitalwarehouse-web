@@ -618,8 +618,10 @@ def reject_extension(request, borrowing_id):
 def finish_borrowing(request, borrowing_id):
     user_type = get_user_type(request)
     user = request.user
-    if user_type == "admin" or \
-            (user_type == "moderator" and user.moderator.finish_borrowing):
+    moderator = getattr(user, "moderator", None)
+    mod_finish_borrowing = user_type == "moderator" and \
+        moderator is not None and moderator.finish_borrowing
+    if user_type == "admin" or mod_finish_borrowing:
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
@@ -816,10 +818,44 @@ def in_repair(request):
 
 
 @login_required(login_url=LOGIN_URL)
+def in_repair_per_category(request, cat_id):
+    user_type = get_user_type(request)
+    if user_type in ["admin", "moderator"]:
+        try:
+            category = Category.objects.get(pk=cat_id)
+        except Exception:
+            return redirect("home")
+        user = request.user
+        categories = Category.objects.all()
+        products_in_repair = Repair.objects.filter(product__category=category)
+        context = {
+            "categories": categories,
+            "category": category,
+            "user_type": user_type,
+            "user": user,
+            "products_in_repair": products_in_repair
+        }
+        return render(request, "base/in_repair_manipulations/in_repair.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def breakage(request, breakage_id):
     pass
 
 
 @login_required(login_url=LOGIN_URL)
 def mark_repaired(request, breakage_id):
-    pass
+    user_type = get_user_type(request)
+    user = request.user
+    moderator = getattr(user, "moderator", None)
+    mod_mark_repaired = user_type == "moderator" and \
+        moderator is not None and moderator.mark_repaired
+    if user_type == "admin" or mod_mark_repaired:
+        try:
+            breakage = Repair.objects.get(pk=breakage_id)
+        except Exception:
+            return redirect("home")
+        breakage.mark_repaired()
+        return redirect("in_repair")
+    return redirect("home")

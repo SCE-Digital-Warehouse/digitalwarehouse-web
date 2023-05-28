@@ -22,6 +22,9 @@
                     <div class="prod-buttons">
                         <a href="{% url 'requests_per_category' category.id %}" class="edit-btn">בקשות</a>
                     </div>
+                    <div class="prod-buttons">
+                        <a href="{% url 'in_repair_per_category' category.id %}" class="edit-btn">פריטים בתיקון</a>
+                    </div>
                 {% endif %}
             </caption>
             <colgroup>

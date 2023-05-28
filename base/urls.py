@@ -58,7 +58,8 @@ urlpatterns = [
     path("finish-borrowing/<int:borrowing_id>/", finish_borrowing, name="finish_borrowing"),
 
     path("in-repair/", in_repair, name="in_repair"),
+    path("in-repair/<int:cat_id>", in_repair_per_category, name="in_repair_per_category"),
     path("breakage/<int:breakage_id>/", breakage, name="breakage"),
     path("mark-repaired/<int:breakage_id>/", mark_repaired, name="mark_repaired"),
-    
+
 ]

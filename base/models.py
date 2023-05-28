@@ -94,6 +94,7 @@ class Moderator(models.Model):
     accept_request = models.BooleanField(default=True)
     reject_request = models.BooleanField(default=True)
     finish_borrowing = models.BooleanField(default=True)
+    mark_repaired = models.BooleanField(default=True)
     promoted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
