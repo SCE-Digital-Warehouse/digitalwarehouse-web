@@ -38,7 +38,6 @@ urlpatterns = [
     path("add-product/<int:cat_id>/", add_product, name="add_product"),
     path("edit-product/<int:prod_id>/", edit_product, name="edit_product"),
     path("delete-product/<int:prod_id>/", delete_product, name="delete_product"),
-    # path("bad-product/<int:prod_id>/", bad_product, name="bad_product"),
 
     path("requests/", requests, name="requests"),
     path("requests/<int:category_id>/", requests_per_category, name="requests_per_category"),

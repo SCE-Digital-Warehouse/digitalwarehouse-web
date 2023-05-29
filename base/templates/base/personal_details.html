@@ -1,38 +1,43 @@
 {% extends "main.html" %}
 {% block content %}
-    <h1>פרטים אישיים</h1>
-    <div class="personal-info">
-        <form class="personal-info-form">
-            <label for="name-personal">שם פרטי</label>
-            <input type="text"
-                   id="name-personal"
-                   name="name"
-                   value="{{ user.first_name }}"
-                   readonly>
-            <label for="name-personal">שם משפחה</label>
-            <input type="text"
-                   id="name-personal"
-                   name="name"
-                   value="{{ user.last_name }}"
-                   readonly>
-            <label for="name-personal">תעודת זהות</label>
-            <input type="text"
-                   id="name-personal"
-                   name="name"
-                   value="{{ user.identity_num }}"
-                   readonly>
-            <label for="email-personal">מייל</label>
-            <input type="email"
-                   id="email-personal"
-                   name="email"
-                   value="{{user.email}}"
-                   readonly>
-            <label for="telephone-personal">נייד</label>
-            <input type="tel"
-                   id="telephone-personal"
-                   name="telephone"
-                   value="{{user.mobile_num}}"
-                   readonly>
-        </form>
-    </div>
+       <h1>פרטים אישיים</h1>
+       <div class="personal-info">
+              <form class="personal-info-form">
+                     <label for="name-personal">שם פרטי</label>
+                     <input type="text"
+                            id="name-personal"
+                            name="name"
+                            value="{{ user.first_name }}"
+                            readonly>
+                     <label for="name-personal">שם משפחה</label>
+                     <input type="text"
+                            id="name-personal"
+                            name="name"
+                            value="{{ user.last_name }}"
+                            readonly>
+                     <label for="name-personal">תעודת זהות</label>
+                     <input type="text"
+                            id="name-personal"
+                            name="name"
+                            value="{{ user.identity_num }}"
+                            readonly>
+                     <label for="email-personal">מייל</label>
+                     <input type="email"
+                            id="email-personal"
+                            name="email"
+                            value="{{ user.email }}"
+                            readonly>
+                     <label for="telephone-personal">מס' טלפון</label>
+                     <input type="tel"
+                            id="telephone-personal"
+                            name="telephone"
+                            value="{{ user.mobile_num }}"
+                            readonly>
+              </form>
+              <div class="prod-buttons">
+                     <a href="{% url 'change_password' %}" class="edit-btn">
+                            לשנות סיסמה
+                     </a>
+              </div>
+       </div>
 {% endblock content %}
