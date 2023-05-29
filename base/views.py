@@ -913,12 +913,12 @@ def send_for_repair(request, breakage_id):
         if product.in_repair:
             return redirect("home")
         try:
-            borrowing = Borrowing.objects.get(product=product, user=user)
+            borrowing = Borrowing.objects.get(product=product)
         except Exception:
             pass
         else:
             if borrowing:
-                borrowing.reject_extension()
+                borrowing.finish_borrowing()
         breakage.send_for_repair()
         return redirect("breakages")
     return redirect("home")
