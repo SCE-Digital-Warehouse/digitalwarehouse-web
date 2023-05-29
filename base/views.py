@@ -408,7 +408,6 @@ def request(request, request_id):
         context = {
             "categories": categories,
             "user_type": user_type,
-            "user": user,
             "mod_accept_request": mod_accept_request,
             "mod_reject_request": mod_reject_request,
             "requezt": requezt
@@ -829,7 +828,25 @@ def breakages_per_category(request, category_id):
 
 @login_required(login_url=LOGIN_URL)
 def breakage(request, breakage_id):
-    pass
+    user_type = get_user_type(request)
+    if user_type in ["admin", "moderator"]:
+        try:
+            breakage = Breakage.objects.get(pk=breakage_id)
+        except Exception:
+            return redirect("breakages")
+        user = request.user
+        moderator = getattr(user, "moderator", None)
+        mod_mark_repaired = user_type == "moderator" and \
+            moderator is not None and moderator.mark_repaired
+        categories = Category.objects.all()
+        context = {
+            "categories": categories,
+            "user_type": user_type,
+            "mod_mark_repaired": mod_mark_repaired,
+            "breakage": breakage
+        }
+        return render(request, "base/breakage_manipulations/breakage.html", context)
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
