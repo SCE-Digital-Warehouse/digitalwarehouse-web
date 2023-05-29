@@ -176,7 +176,7 @@ class Product(models.Model):
         self.save(update_fields=["is_available"])
 
     def set_breakage_reported(self):
-        self.breakage_reported = True
+        self.breakage_reported = not self.breakage_reported
         self.save(update_fields=["breakage_reported"])
 
     def change_condition(self):
@@ -356,6 +356,10 @@ class Breakage(models.Model):
     def send_for_repair(self):
         self.product.increase_times_broken()
         self.product.change_condition()
+
+    def reject_report(self):
+        self.product.set_breakage_reported()
+        self.delete()
 
     def mark_repaired(self):
         self.product.change_condition()

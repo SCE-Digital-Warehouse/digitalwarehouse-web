@@ -29,8 +29,8 @@
                        readonly>
             {% endif %}
             <div class="prod-buttons">
-              {% if user_type == "admin" or mod_mark_repaired %}
-                <a href="#"
+              {% if user_type == "admin" and not breakage.product.in_repair %}
+                <a href="{% url 'reject_report' breakage.pk %}"
                 class="edit-btn">לדחות דיווח</a>
               {% endif %}
             </div>

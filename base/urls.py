@@ -63,5 +63,6 @@ urlpatterns = [
     path("send-for-repair/<int:breakage_id>/", send_for_repair, name="send_for_repair"),
     path("report-breakage/<int:product_id>/", report_breakage, name="report_breakage"),
     path("mark-repaired/<int:breakage_id>/", mark_repaired, name="mark_repaired"),
+    path("reject-report/<int:breakage_id>/", reject_report, name="reject_report"),
 
 ]

@@ -887,6 +887,21 @@ def report_breakage(request, product_id):
 
 
 @login_required(login_url=LOGIN_URL)
+def reject_report(request, breakage_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            breakage = Breakage.objects.get(pk=breakage_id)
+        except Exception:
+            return redirect("home")
+        if breakage.product.in_repair:
+            return redirect("breakages")
+        breakage.reject_report()
+        return redirect("breakages")
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def send_for_repair(request, breakage_id):
     user_type = get_user_type(request)
     if user_type == "admin":
