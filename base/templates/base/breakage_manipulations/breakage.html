@@ -1,0 +1,39 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="borrowing_extention">
+        <form method="GET" class="borrowing_extention-form">
+            <label for="stock_num">מק''ט הפריט</label>
+            <input type="text"
+                   id="stock_num"
+                   name="stock_num"
+                   value="{{ breakage.product.stock_num }}"
+                   readonly>
+            <label for="product_name">שם הפריט</label>
+            <input type="text"
+                   id="product_name"
+                   name="product_name"
+                   value="{{ breakage.product.name }}"
+                   readonly>
+            <label for="broke_at">תאריך תקלה</label>
+            <input type="text"
+                   id="broke_at"
+                   name="broke_at"
+                   value="{{ breakage.broke_at|date:'SHORT_DATETIME_FORMAT' }}"
+                   readonly>
+            {% if breakage.comments %}
+                <label for="comments">הערות</label>
+                <input type="text"
+                       id="comments"
+                       name="comments"
+                       value="{{ breakage.comments }}"
+                       readonly>
+            {% endif %}
+            <div class="prod-buttons">
+              {% if user_type == "admin" and not breakage.product.in_repair %}
+                <a href="{% url 'reject_report' breakage.pk %}"
+                class="edit-btn">לדחות דיווח</a>
+              {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

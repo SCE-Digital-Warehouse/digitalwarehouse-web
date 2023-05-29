@@ -77,25 +77,16 @@
                         לא
                     </option>
                 </select>
-                <label for="approve_return">אישור החזרת פריט</label>
-                <select name="approve_return" id="approve_return">
-                    <option value="1" {% if moderator.approve_return %}selected{% endif %} required>
+                <label for="accept_request">אישור בקשת השאלה</label>
+                <select name="accept_request" id="accept_request">
+                    <option value="1" {% if moderator.accept_request %}selected{% endif %} required>
                         כן
                     </option>
-                    <option value="0" {% if not moderator.approve_return %}selected{% endif %} required>
+                    <option value="0" {% if not moderator.accept_request %}selected{% endif %} required>
                         לא
                     </option>
                 </select>
-                <label for="approve_request">אישור בקשת השאלה</label>
-                <select name="approve_request" id="approve_request">
-                    <option value="1" {% if moderator.approve_request %}selected{% endif %} required>
-                        כן
-                    </option>
-                    <option value="0" {% if not moderator.approve_request %}selected{% endif %} required>
-                        לא
-                    </option>
-                </select>
-                <label for="reject_request">דחית בקשת השאלה</label>
+                <label for="reject_request">דחיית בקשת השאלה</label>
                 <select name="reject_request" id="reject_request">
                     <option value="1" {% if moderator.reject_request %}selected{% endif %} required>
                         כן
@@ -110,6 +101,15 @@
                         כן
                     </option>
                     <option value="0" {% if not moderator.finish_borrowing %}selected{% endif %} required>
+                        לא
+                    </option>
+                </select>
+                <label for="mark_repaired">סימון פריט כתוקן</label>
+                <select name="mark_repaired" id="mark_repaired">
+                    <option value="1" {% if not moderator.mark_repaired %}selected{% endif %} required>
+                        כן
+                    </option>
+                    <option value="0" {% if not moderator.mark_repaired %}selected{% endif %} required>
                         לא
                     </option>
                 </select>
