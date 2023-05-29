@@ -62,13 +62,14 @@ def create_users(self):
     """
     regular_user_that_will_be_promoted = User.objects.create_user(
         username="mod_dht",
-        password="111111111",
+        password="sce123456",
         first_name="Lol",
         last_name="Kek",
         email="mod_dht@mail.com",
         identity_num="111111111",
         role="student",
-        mobile_num="0511111111"
+        mobile_num="0511111111",
+        is_first_login=False,
     )
     regular_user_that_will_be_promoted.save()
     regular_user_that_will_be_promoted.promote()
@@ -79,7 +80,7 @@ def create_users(self):
     """
     User.objects.create_user(
         username="regular_user",
-        password="123456789",
+        password="sce123456",
         first_name="John",
         last_name="Doe",
         email="regular_user@mail.com",

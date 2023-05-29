@@ -326,7 +326,7 @@ def statistics(request):
         total_mods = Moderator.objects.count()
         total_requests = Request.objects.count()
         total_borrowings = Borrowing.objects.count()
-        total_in_repair = Repair.objects.count()
+        total_in_repair = Breakage.objects.count()
         total_products = Product.objects.count()
         context = {
             "user_type": user_type,
@@ -572,6 +572,8 @@ def add_borrowing_extension(request, borrowing_id):
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
             return redirect("home")
+        if borrowing.product.in_repair:
+            return redirect("borrowings")
         user = request.user
         categories = Category.objects.all()
         if request.method == "POST":
@@ -627,7 +629,10 @@ def finish_borrowing(request, borrowing_id):
             borrowing = Borrowing.objects.get(pk=borrowing_id)
         except Exception:
             return redirect("home")
+        product = borrowing.product
         borrowing.finish_borrowing()
+        if product.breakage_reported:
+            product.change_availability()
         return redirect("borrowings")
     return redirect("home")
 
@@ -777,23 +782,27 @@ def delete_product(request, prod_id):
 
 
 @login_required(login_url=LOGIN_URL)
-def in_repair(request):
+def breakages(request):
     user_type = get_user_type(request)
     user = request.user
     if user_type in ["admin", "moderator"]:
         categories = Category.objects.all()
-        products_in_repair = Repair.objects.all()
+        products_in_repair = Breakage.objects.all()
+        moderator = getattr(user, "moderator", None)
+        mod_mark_repaired = user_type == "moderator" and \
+            moderator is not None and moderator.mark_repaired
         context = {
             "user_type": user_type,
             "user": user,
+            "mod_mark_repaired": mod_mark_repaired,
             "categories": categories,
             "products_in_repair": products_in_repair
         }
-    return render(request, "base/in_repair_manipulations/in_repair.html", context)
+    return render(request, "base/breakage_manipulations/breakages.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
-def in_repair_per_category(request, category_id):
+def breakages_per_category(request, category_id):
     user_type = get_user_type(request)
     if user_type in ["admin", "moderator"]:
         try:
@@ -802,15 +811,19 @@ def in_repair_per_category(request, category_id):
             return redirect("home")
         user = request.user
         categories = Category.objects.all()
-        products_in_repair = Repair.objects.filter(product__category=category)
+        products_in_repair = Breakage.objects.filter(product__category=category)
+        moderator = getattr(user, "moderator", None)
+        mod_mark_repaired = user_type == "moderator" and \
+            moderator is not None and moderator.mark_repaired
         context = {
             "categories": categories,
             "category": category,
             "user_type": user_type,
             "user": user,
+            "mod_mark_repaired": mod_mark_repaired,
             "products_in_repair": products_in_repair
         }
-        return render(request, "base/in_repair_manipulations/in_repair.html", context)
+        return render(request, "base/breakage_manipulations/breakages.html", context)
     return redirect("home")
 
 
@@ -820,42 +833,63 @@ def breakage(request, breakage_id):
 
 
 @login_required(login_url=LOGIN_URL)
-def send_for_repair(request, product_id):
+def report_breakage(request, product_id):
     user_type = get_user_type(request)
     try:
         product = Product.objects.get(pk=product_id)
     except Exception:
         return redirect("home")
-    previous_template = get_previous_template(
-        request.META.get("HTTP_REFERER"))
-    if not product.is_available or product.in_repair:
-        if previous_template == "category":
-            return redirect("category", product.category.pk)
-        elif previous_template == "borrowings":
-            return redirect("borrowings")
+    if (product.breakage_reported or product.in_repair) or \
+            (not product.is_available and user_type == "admin"):
         return redirect("home")
+    try:
+        borrowing = Borrowing.objects.get(product=product, user=user)
+    except Exception:
+        pass
+    else:
+        if borrowing.extension_requested:
+            borrowing.reject_extension()
     categories = Category.objects.all()
     user = request.user
     if request.method == "POST":
-        try:
-            Repair.objects.create(
-                user=user,
-                product=product,
-                comments=request.POST.get("comments")
-            )
-        except Exception:
-            pass
-        if previous_template == "category":
+        breakage = Breakage.objects.create(
+            user=user,
+            product=product,
+            comments=request.POST.get("comments")
+        )
+        if user_type == "admin":
+            breakage.send_for_repair()
             return redirect("category", product.category.pk)
-        elif previous_template == "borrowings":
-            return redirect("borrowings")
-        return redirect("home")
+        return redirect("borrowings")
     context = {
         "user_type": user_type,
         "categories": categories,
         "product": product
     }
-    return render(request, "base/in_repair_manipulations/send_for_repair.html", context)
+    return render(request, "base/breakage_manipulations/report_breakage.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def send_for_repair(request, breakage_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            breakage = Breakage.objects.get(pk=breakage_id)
+        except Exception:
+            return redirect("home")
+        product = breakage.product
+        if product.in_repair:
+            return redirect("home")
+        try:
+            borrowing = Borrowing.objects.get(product=product, user=user)
+        except Exception:
+            pass
+        else:
+            if borrowing:
+                borrowing.reject_extension()
+        breakage.send_for_repair()
+        return redirect("breakages")
+    return redirect("home")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -867,9 +901,9 @@ def mark_repaired(request, breakage_id):
         moderator is not None and moderator.mark_repaired
     if user_type == "admin" or mod_mark_repaired:
         try:
-            breakage = Repair.objects.get(pk=breakage_id)
+            breakage = Breakage.objects.get(pk=breakage_id)
         except Exception:
             return redirect("home")
         breakage.mark_repaired()
-        return redirect("in_repair")
+        return redirect("breakages")
     return redirect("home")

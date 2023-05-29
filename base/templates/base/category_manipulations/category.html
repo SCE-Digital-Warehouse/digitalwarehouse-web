@@ -23,7 +23,7 @@
                         <a href="{% url 'requests_per_category' category.id %}" class="edit-btn">בקשות</a>
                     </div>
                     <div class="prod-buttons">
-                        <a href="{% url 'in_repair_per_category' category.id %}" class="edit-btn">פריטים בתיקון</a>
+                        <a href="{% url 'breakages_per_category' category.id %}" class="edit-btn">פריטים בתיקון</a>
                     </div>
                 {% endif %}
             </caption>
@@ -55,11 +55,11 @@
             </thead>
             <tbody>
                 {% for product in products %}
-                    <tr style="background-color: {% if user_type == 'admin' and product.in_repair %}rgb(112,128,144){% endif %}">
+                    <tr style="background-color: {% if user_type == 'admin' and product.in_repair %}rgb(112, 128, 144){% endif %}">
                         {% if user_type == "admin" %}
                             <td>
                                 <div class="prod-buttons">
-                                    <a href="{% if product.is_available and not product.in_repair %}{% url 'send_for_repair' product.id %}{% else %}#{% endif %}"
+                                    <a href="{% if product.is_available and not product.in_repair %}{% url 'report_breakage' product.id %}{% else %}#{% endif %}"
                                        class="edit-btn">לשלוח לתיקון</a>
                                 </div>
                             </td>

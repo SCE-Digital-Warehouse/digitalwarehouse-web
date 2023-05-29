@@ -150,6 +150,7 @@ class Product(models.Model):
     times_borrowed = models.IntegerField(default=0)
     times_broken = models.IntegerField(default=0)
     is_available = models.BooleanField(default=True)
+    breakage_reported = models.BooleanField(default=False)
     in_repair = models.BooleanField(default=False)
 
     def __str__(self):
@@ -174,11 +175,20 @@ class Product(models.Model):
         self.is_available = not self.is_available
         self.save(update_fields=["is_available"])
 
+    def set_breakage_reported(self):
+        self.breakage_reported = True
+        self.save(update_fields=["breakage_reported"])
+
     def change_condition(self):
         """Changes the condition of a product."""
         self.in_repair = not self.in_repair
-        self.is_available = not self.is_available
-        self.save(update_fields=["in_repair", "is_available"])
+        if self.in_repair:
+            self.is_available = False
+            self.breakage_reported = False
+        else:
+            self.is_available = True
+        self.save(update_fields=["in_repair",
+                  "is_available", "breakage_reported"])
 
 
 class Request(models.Model):
@@ -221,6 +231,7 @@ class Request(models.Model):
         Borrowing.objects.create(
             user=self.user,
             product=self.product,
+            borrowed_at=self.exp_date_to_borrow,
             date_to_return=self.exp_date_to_return,
         )
         self.delete()
@@ -325,7 +336,7 @@ class Borrowing(models.Model):
         self.delete()
 
 
-class Repair(models.Model):
+class Breakage(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     product = models.ForeignKey(
         "Product", on_delete=models.PROTECT)
@@ -339,9 +350,12 @@ class Repair(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            self.product.change_condition()
-            self.product.increase_times_broken()
+            self.product.set_breakage_reported()
         super().save(*args, **kwargs)
+
+    def send_for_repair(self):
+        self.product.increase_times_broken()
+        self.product.change_condition()
 
     def mark_repaired(self):
         self.product.change_condition()

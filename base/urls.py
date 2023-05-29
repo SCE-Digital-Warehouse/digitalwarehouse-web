@@ -57,10 +57,11 @@ urlpatterns = [
     path("reject-extension/<int:borrowing_id>/", reject_extension, name="reject_extension"),
     path("finish-borrowing/<int:borrowing_id>/", finish_borrowing, name="finish_borrowing"),
 
-    path("in-repair/", in_repair, name="in_repair"),
-    path("in-repair/<int:category_id>", in_repair_per_category, name="in_repair_per_category"),
+    path("breakages/", breakages, name="breakages"),
+    path("breakages/<int:category_id>", breakages_per_category, name="breakages_per_category"),
     path("breakage/<int:breakage_id>/", breakage, name="breakage"),
-    path("send-for-repair/<int:product_id>/", send_for_repair, name="send_for_repair"),
+    path("send-for-repair/<int:breakage_id>/", send_for_repair, name="send_for_repair"),
+    path("report-breakage/<int:product_id>/", report_breakage, name="report_breakage"),
     path("mark-repaired/<int:breakage_id>/", mark_repaired, name="mark_repaired"),
 
 ]
