@@ -1,3 +1,4 @@
+from dataclasses import field
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -135,6 +136,54 @@ def add_user(request):
             "categories": categories,
         }
         return render(request, "base/user_manipulations/add_user.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def add_users(request):
+    user_type = get_user_type(request)
+    if user_type == "admin" and request.method == "POST":
+        from django.core.validators import validate_email
+        from django.core.exceptions import ValidationError
+        import csv
+        import re
+        file = request.FILES.get("file")
+        file_contents = file.read().decode("utf-8").splitlines()
+        reader = csv.reader(file_contents)
+        next(reader)
+        for row in reader:
+            fields = ["identity_num", "first_name",
+                      "last_name", "mobile_num", "email", "role"]
+            data = {}
+            for i, field in enumerate(fields):
+                data[field] = row[i]
+            data["username"] = data["email"].split("@")[0]
+            digit_pattern = r'^\d+$'
+
+            if (not data["identity_num"].isdigit() or len(data["identity_num"]) != 9) or \
+                    (not data["mobile_num"].isdigit() or len(data["mobile_num"]) != 10 or
+                     not data["mobile_num"].startswith("05")) or \
+            (not data["role"] in ["student", "lecturer"]) or \
+                    re.match(digit_pattern, data["first_name"]) or \
+            re.match(digit_pattern, data["last_name"]) or \
+                (not data["email"].endswith("@ac.sce.ac.il") \
+                    and not data["email"].endswith("@sce.ac.il")):
+                return redirect("users")
+            try:
+                validate_email(data["email"])
+            except ValidationError:
+                print("Validation2")
+                return redirect("users")
+            
+            if User.objects.filter(
+                username=data["username"],
+                email=data["email"],
+                mobile_num=data["mobile_num"],
+                identity_num=data["identity_num"]
+            ).exists():
+                return redirect("users")
+            
+            User.objects.create_user(**data)
     return redirect("home")
 
 
