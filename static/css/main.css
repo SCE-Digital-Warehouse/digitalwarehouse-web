@@ -218,6 +218,78 @@ Login Page
 
 
 /*==================
+Change Password Page
+==================*/
+
+.change-password {
+    width: 40em;
+    height: 27em;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 200px 100px 200px 600px;
+    box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+    text-align: right;
+}
+
+.change-password form {
+    padding: 50px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.change-password label {
+    display: block;
+    margin-right: 90px;
+    margin-bottom: 10px;
+}
+
+.change-password input[type="text"],
+.change-password input[type="email"],
+.change-password input[type="password"] {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-right: 90px;
+}
+
+.change-password input[type="submit"] {
+    display: block;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 20px;
+    padding: 10px;
+    margin-left: 340px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 20%;
+}
+
+.change-password button {
+    display: block;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 19px;
+    padding: 10px;
+    margin-left: 105px;
+    margin-top: -46px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+}
+
+.change-password input[type="submit"]:hover {
+    background-color: #33ccff;
+}
+
+.change-password button:hover {
+    background-color: #33ccff;
+}
+
+
+/*==================
 NAVBAR
 ==================*/
 
