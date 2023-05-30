@@ -72,8 +72,27 @@ def set_password(request):
     return redirect("home")
 
 
+@login_required(login_url=LOGIN_URL)
 def change_password(request):
-    pass
+    user = request.user
+    user_type = get_user_type(request)
+    categories = Category.objects.all()
+    if request.method == "POST":
+        form = PasswordChange(user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect("personal_details")
+        else:
+            messages.error(request, "סיסמאות לא תואמות")
+    else:
+        form = PasswordChange(user)
+    context = {
+        "user_type": user_type,
+        "form": form,
+        "categories": categories,
+    }
+    return render(request, "base/change_password.html", context)
 
 
 @login_required(login_url=LOGIN_URL)

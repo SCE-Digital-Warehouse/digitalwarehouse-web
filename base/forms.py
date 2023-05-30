@@ -44,3 +44,20 @@ class PasswordSetForm(SetPasswordForm):
         label="אמת/י את הסיסמה",
         strip=False,
         widget=forms.PasswordInput())
+
+
+class PasswordChange(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="סיסמה ישנה",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autofocus": True}),
+        help_text=password_validation.password_validators_help_text_html())
+    new_password1 = forms.CharField(
+        label="בחר/י סיסמה חדשה",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autofocus": True}),
+        help_text=password_validation.password_validators_help_text_html())
+    new_password2 = forms.CharField(
+        label="אמת/י את הסיסמה",
+        strip=False,
+        widget=forms.PasswordInput())
