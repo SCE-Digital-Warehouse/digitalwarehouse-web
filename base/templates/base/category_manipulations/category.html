@@ -6,7 +6,7 @@
                 {{ category.name }}
                 {% if user_type == "admin" %}
                     <div class="prod-buttons">
-                        <a href="#" class="edit-btn">עריכת קטגוריה</a>
+                        <a href="{% url 'edit_category' category.id %}" class="edit-btn">עריכת קטגוריה</a>
                     </div>
                 {% endif %}
                 {% if user_type == "admin" or mod_add_product %}
