@@ -1,4 +1,3 @@
-from dataclasses import field
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -742,22 +741,50 @@ def add_category(request):
         categories = Category.objects.all()
         if request.method == "POST":
             cat_parent = request.POST.get("cat_parent")
-            try:
-                if cat_parent != "no_cat_parent":
+            if cat_parent == "no_cat_parent":
+                Category.objects.create(
+                    name=request.POST.get("cat_name"),
+                    image_url=request.POST.get("cat_image")
+                )
+            else:
+                try:
                     Category.objects.create(
                         name=request.POST.get("cat_name"),
                         parent=Category.objects.get(name=cat_parent),
                         image_url=request.POST.get("cat_image")
                     )
-                else:
-                    Category.objects.create(
-                        name=request.POST.get("cat_name"),
-                        image_url=request.POST.get("cat_image")
-                    )
-            except Exception:
-                return redirect("add_category")
+                except Exception:
+                    return redirect("add_category")
         context = {"categories": categories, "user_type": user_type}
         return render(request, "base/category_manipulations/add_category.html", context)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
+def edit_category(request, cat_id):
+    user_type = get_user_type(request)
+    if user_type == "admin":
+        try:
+            category = Category.objects.get(pk=cat_id)
+        except Exception:
+            return redirect("home")
+        categories = Category.objects.all()
+        if request.method == "POST":
+            cat_parent = request.POST.get("cat_parent")
+            if cat_parent == "no_cat_parent":
+                category.name = request.POST.get("cat_name"),
+                category.image_url = request.POST.get("cat_image")
+            else:
+                try:
+                    category.name = request.POST.get("cat_name"),
+                    category.parent = Category.objects.get(name=cat_parent),
+                    category.image_url = request.POST.get("cat_image")
+                except Exception:
+                    return redirect("category", cat_id)
+            category.save()
+            return redirect("category", cat_id)
+        context = {"user_type": user_type, "categories": categories}
+        return render(request, "base/category_manipulations/edit_category.html", context)
     return redirect("home")
 
 
