@@ -5,10 +5,21 @@
             <caption>
                 משתמשי האתר
                 <div class="prod-buttons">
-                    <a href="{% url 'add_user' %}" class="edit-btn">הוספת משתמש בודד</a>
+                    <a href="{% url 'add_users' %}" class="edit-btn">הוספת משתמש בודד</a>
                 </div>
                 <div class="prod-buttons">
-                    <a href="#" class="edit-btn">הוספת משתמשים</a>
+                    <form enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <a href="#" onclick="openFileExplorer()" class="edit-btn">
+                            הוספת כמות משתמשים
+                        </a>
+                        <input type="file"
+                               id="file_input"
+                               name="file"
+                               accept=".csv"
+                               style="display: none"
+                               onchange="handleFileInputChange()">
+                    </form>
                 </div>
             </caption>
             <colgroup>
@@ -80,4 +91,48 @@
             </tbody>
         </table>
     </div>
+    <script>
+        function openFileExplorer() {
+            document.getElementById('file_input').click();
+        }
+
+        function handleFileInputChange() {
+            var fileInput = document.getElementById('file_input');
+            var file = fileInput.files[0];
+            var allowedExtensions = /(\.csv)$/i;
+            if (file && allowedExtensions.test(file.name)) {
+                uploadFile(file);
+            }
+        }
+
+        function uploadFile(file) {
+            var formData = new FormData();
+            formData.append('file', file);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{% url 'add_users' %}', true);
+            var csrftoken = getCookie('csrftoken');
+            xhr.setRequestHeader('X-CSRFToken', csrftoken);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    location.reload();
+                }
+            };
+            xhr.send(formData);
+        }
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 {% endblock content %}

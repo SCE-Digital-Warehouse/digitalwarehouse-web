@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% block content %}
     <div class="add_category">
-        <form action="" method="POST" class="add-category-form">
+        <form action="" method="POST" class="add-category-form" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="cat_name">שם הקטגוריה</label>
             <input type="text" id="cat_name" name="cat_name" required>

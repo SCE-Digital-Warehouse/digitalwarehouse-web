@@ -20,6 +20,7 @@ urlpatterns = [
 
     path("users/", users, name="users"),
     path("add-user/", add_user, name="add_user"),
+    path("add-users/", add_users, name="add_users"),
     path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
     path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
     path("prom-dem-user/<int:user_id>/", prom_dem_user, name="prom_dem_user"),
