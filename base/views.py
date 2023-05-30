@@ -501,7 +501,7 @@ def add_request(request, product_id):
         now = timezone.localtime(timezone.now())
         datetime_format = "%Y-%m-%dT%H:%M"
         init_value = now.strftime(datetime_format)
-        init_value2 = (now + timedelta(hours=1)).strftime(datetime_format)
+        # init_value2 = (now + timedelta(hours=1)).strftime(datetime_format)
         max_value = (now + timedelta(days=14)).strftime(datetime_format)
 
         if request.method == "POST":
@@ -522,7 +522,7 @@ def add_request(request, product_id):
             "categories": categories,
             "product": product,
             "init_value": init_value,
-            "init_value2": init_value2,
+            # "init_value2": init_value2,
             "max_value": max_value,
             "user_role": user.role
         }
