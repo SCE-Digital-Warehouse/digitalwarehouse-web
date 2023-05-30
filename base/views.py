@@ -772,18 +772,23 @@ def edit_category(request, cat_id):
         if request.method == "POST":
             cat_parent = request.POST.get("cat_parent")
             if cat_parent == "no_cat_parent":
-                category.name = request.POST.get("cat_name"),
+                category.name = request.POST.get("cat_name")
                 category.image_url = request.POST.get("cat_image")
+                category.parent = None
             else:
                 try:
-                    category.name = request.POST.get("cat_name"),
-                    category.parent = Category.objects.get(name=cat_parent),
+                    category.name = request.POST.get("cat_name")
+                    category.parent = Category.objects.get(name=cat_parent)
                     category.image_url = request.POST.get("cat_image")
                 except Exception:
                     return redirect("category", cat_id)
             category.save()
             return redirect("category", cat_id)
-        context = {"user_type": user_type, "categories": categories}
+        context = {
+            "user_type": user_type,
+            "categories": categories,
+            "category": category
+        }
         return render(request, "base/category_manipulations/edit_category.html", context)
     return redirect("home")
 
