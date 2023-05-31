@@ -55,8 +55,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django_cprofile_middleware.middleware.ProfilerMiddleware",
 ]
+
+DJANGO_CPROFILE_MIDDLEWARE_REQUIRE_STAFF = False
 
 ROOT_URLCONF = "config.urls"
 
@@ -73,8 +77,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'base.context_processors.project_name',
-                'base.context_processors.current_year',
+
+                "base.context_processors.project_name",
+                "base.context_processors.current_year",
             ],
         },
     },
@@ -135,7 +140,7 @@ STATIC_URL = "/static/"
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / "static"
 ]
 
 

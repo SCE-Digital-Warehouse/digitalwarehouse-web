@@ -6,7 +6,7 @@
             <label for="cat_name">שם הקטגוריה</label>
             <input type="text" id="cat_name" name="cat_name" required>
             <label for="cat_image">תמונה</label>
-            <input type="file" id="cat_image" name="cat_image">
+            <input type="file" id="cat_image" name="cat_image" accept=".png, .jpg, .jpeg, .bmp">
             <label for="cat_parent">קטגורית האב</label>
             <select id="cat_parent" name="cat_parent">
                 {% for category in categories %}
