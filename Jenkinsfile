@@ -1,6 +1,20 @@
 pipeline{
-    agent none
+    agent any
     stages{
+        stage('Checkout'){
+            steps{
+                cleanWs()
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'Jenkins', url: 'https://github.com/BS-PMC-2023/BS-PMC-2023-Team8']])
+
+            }
+        }
+
+        stage('Build'){
+            steps{
+                sh 'docker build -t test1 .'
+            }
+        }
+
        stage('Testing urls and views for sprint 1') {
              agent{
                 docker{
