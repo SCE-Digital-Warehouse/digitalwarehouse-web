@@ -69,7 +69,6 @@ def create_users(self):
         identity_num="111111111",
         role="student",
         mobile_num="0511111111",
-        is_first_login=False,
     )
     regular_user_that_will_be_promoted.save()
     regular_user_that_will_be_promoted.promote()
