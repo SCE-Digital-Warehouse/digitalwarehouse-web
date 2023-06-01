@@ -62,6 +62,8 @@
 
 ## Testing
 
-#### In order to run tests, run this command in terminal (open it from the project folder): `python manage.py test base`
+#### In order to run tests:
+1. `python manage.py runserver`
+2. `python manage.py test base`
 
 ##### Note: you have the virtual environment to be activated: `.\.venv\Scripts\Activate`
