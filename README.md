@@ -6,7 +6,7 @@
 
 ## Project installation and configuration:
 
-#### Note: the project was tested on *Windows 10*
+#### Note: the project was tested on *Windows 10* with *Python v3.11* and *Django 4.1.7*
 
 1. Install the latest version of Python on your environment ([instructions](https://docs.python.org/3/using/windows.html))
 2. Open *Git Bash* and run the commands (you have to have permissions):
@@ -37,3 +37,31 @@
    - **Regular User:**
         - username: `regular_user`
         - password: `sce123456`
+  
+## Adding amount of users from the `.csv` file
+
+##### You can add amount of users from your `.csv` file, to do so:
+
+1. Create a `.csv` file and add the data of the format:
+
+    `"identity_num","first_name","last_name","mobile_num","email","role"`
+
+    ##### Example of the `.csv` file:
+
+    `"identity_num","first_name","last_name","mobile_num",  "email","role"
+    "372047254","John","Kek","0547382956","kek@ac.sce.ac.il",   "student"
+    "235513229","Rar","Sas","0532145219","lol@ac.sce.ac.il",    "student"
+    "925345765","Ch","Zh","0521245563","fp@sce.ac.il","lecturer"
+    "284760485","Avh","Droc","0591537859","rey@ac.sce.ac.il",   "student"
+    "865612168","Irvin","Rer","0591235497","yhk@ac.sce.ac.il",  "student"`
+
+2. Go to [users](http://127.0.0.1:8000/users/) page and click on the `הוספת כמות משתמשים` button
+3. Then choose your `.csv` file
+
+##### If the provided data is correct, the user entries will be created and added to the db and you will see the updated list of users.
+
+## Testing
+
+#### In order to run tests, run this command in terminal (open it from the project folder): `python manage.py test base`
+
+##### Note: you have the virtual environment to be activated: `.\.venv\Scripts\Activate`
