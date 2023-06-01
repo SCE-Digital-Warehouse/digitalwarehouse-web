@@ -7,7 +7,7 @@
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
             {% endfor %}
-            <input type="submit" value="כניסה"/>
+            <input type="submit" value="כניסה" id="submit"/>
             <button type="button"
                     class="btn"
                     onclick="location.href='{% url 'reset_password' %}'">שכחתי סיסמה</button>
