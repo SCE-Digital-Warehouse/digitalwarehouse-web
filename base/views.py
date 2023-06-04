@@ -171,7 +171,6 @@ def add_users(request):
             try:
                 validate_email(data["email"])
             except ValidationError:
-                print("Validation2")
                 return redirect("users")
             
             if User.objects.filter(
@@ -182,6 +181,8 @@ def add_users(request):
             ).exists():
                 return redirect("users")
             
+            data["password"] = data["identity_num"]
+
             User.objects.create_user(**data)
     return redirect("home")
 
