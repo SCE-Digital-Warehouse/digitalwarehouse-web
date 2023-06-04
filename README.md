@@ -14,9 +14,9 @@
    - `cd BS-PMC-2023-Team8`
    - `explorer .`
 3. Now open a terminal inside the opened folder and run the commands:
+   - `pip install --upgrade pip`
    - `python -m venv .venv`
    - `.\.venv\Scripts\Activate`
-   - `pip install --upgrade pip`
    - `pip install -r requirements.txt`
 4. Now you are ready to start, the last step is to create a db and seed it, run these commands:
     - `python manage.py makemigrations`

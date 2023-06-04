@@ -5,10 +5,10 @@
             <caption>
                 משתמשי האתר
                 <div class="prod-buttons">
-                    <a href="{% url 'add_users' %}" class="edit-btn">הוספת משתמש בודד</a>
+                    <a href="{% url 'add_user' %}" class="edit-btn">הוספת משתמש בודד</a>
                 </div>
                 <div class="prod-buttons">
-                    <form enctype="multipart/form-data">
+                    <form enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                         <a href="#" onclick="openFileExplorer()" class="edit-btn">
                             הוספת כמות משתמשים

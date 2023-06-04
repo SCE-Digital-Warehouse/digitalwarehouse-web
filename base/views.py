@@ -117,7 +117,7 @@ def add_user(request):
         categories = Category.objects.all()
         if request.method == "POST":
             try:
-                User.objects.create(
+                User.objects.create_user(
                     identity_num=request.POST.get("identity_num"),
                     first_name=request.POST.get("first_name"),
                     last_name=request.POST.get("last_name"),
