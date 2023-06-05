@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+import datetime
 from datetime import timedelta
 
 from config.settings import LOGIN_URL
@@ -30,12 +31,24 @@ def index(request):
     requests_counter = requests.count()
     borrowings_counter = borrowings.count()
 
+    now = datetime.datetime.now().time()
+    if datetime.time(5, 0) <= now < datetime.time(12, 0):
+        greeting = "בוקר טוב, "
+    elif datetime.time(12, 0) <= now < datetime.time(17, 0):
+        greeting = "צהריים טובים, "
+    elif datetime.time(17, 0) <= now < datetime.time(22, 0):
+        greeting = "ערב טוב, "
+    else:
+        greeting = "לילה טוב, "
+    greeting += user.first_name
+
     context = {
         "user_type": user_type,
         "categories": categories,
         "requests_counter": requests_counter,
         "borrowings_counter": borrowings_counter,
-        "is_home_page": True
+        "is_home_page": True,
+        "greeting": greeting
     }
 
     if breakages_counter is not None:
