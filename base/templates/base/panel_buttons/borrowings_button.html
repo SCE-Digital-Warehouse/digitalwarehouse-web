@@ -10,6 +10,13 @@
             <path d="M9 13H15" stroke="#222222" stroke-linecap="round"/>
             <path d="M9 17H13" stroke="#222222" stroke-linecap="round"/>
         </svg>
+        <span class="digit-circle"
+              style="margin-left:305px;
+                     {% if borrowings_counter > 0 %} background-color:blue;
+                     {% else %} background-color:grey;
+                     {% endif %}">
+            {{ borrowings_counter }}
+        </span>
         השאלות
     </a>
 </div>

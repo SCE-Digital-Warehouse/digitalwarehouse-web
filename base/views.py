@@ -17,7 +17,29 @@ def index(request):
     user = request.user
     user_type = get_user_type(request)
     categories = Category.objects.all()
-    context = {"user_type": user_type, "categories": categories}
+
+    if user_type in ["admin", "moderator"]:
+        requests = Request.objects.all()
+        borrowings = Borrowing.objects.all()
+        breakages_counter = Breakage.objects.all().count()
+    else:
+        requests = Request.objects.all().filter(user_id=user.pk)
+        borrowings = Borrowing.objects.all().filter(user_id=user.pk)
+        breakages_counter = None
+
+    requests_counter = requests.count()
+    borrowings_counter = borrowings.count()
+
+    context = {
+        "user_type": user_type,
+        "categories": categories,
+        "requests_counter": requests_counter,
+        "borrowings_counter": borrowings_counter,
+    }
+
+    if breakages_counter is not None:
+        context["breakages_counter"] = breakages_counter
+
     if not user.is_first_login:
         if (user_type == "user"):
             return render(request, "base/panels/user_panel.html", context)

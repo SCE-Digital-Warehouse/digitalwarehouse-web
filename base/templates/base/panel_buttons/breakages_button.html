@@ -5,8 +5,18 @@
              viewBox="0 0 24 24"
              fill="none"
              xmlns="http://www.w3.org/2000/svg">
-            <img style="margin-right: 15px;" src="https://cdn-icons-png.flaticon.com/512/75/75668.png" width="50" height="50" />
+            <img style="margin-right: 15px"
+                 src="https://cdn-icons-png.flaticon.com/512/75/75668.png"
+                 width="50"
+                 height="50"/>
         </svg>
+        <span class="digit-circle"
+              style="margin-left:490px;
+                     {% if breakages_counter > 0 %} background-color:red;
+                     {% else %} background-color:green;
+                     {% endif %}">
+            {{ breakages_counter }}
+        </span>
         פריטים בתיקון
     </a>
 </div>

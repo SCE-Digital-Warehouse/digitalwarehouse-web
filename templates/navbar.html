@@ -21,15 +21,15 @@
             {% if user_type == "admin" %}
                 {% include "base/navbar_buttons/statistics_button.html" %}
             {% endif %}
+            {% if user_type == "admin" %}
+                {% include "base/navbar_buttons/moderators_button.html" %}
+                {% include "base/navbar_buttons/users_button.html" %}
+            {% endif %}
             {% if user_type == "admin" or user_type == "moderator" %}
                 {% include "base/navbar_buttons/breakages_button.html" %}
             {% endif %}
             {% include "base/navbar_buttons/borrowings_button.html" %}
             {% include "base/navbar_buttons/requests_button.html" %}
-            {% if user_type == "admin" %}
-                {% include "base/navbar_buttons/moderators_button.html" %}
-                {% include "base/navbar_buttons/users_button.html" %}
-            {% endif %}
             {% include "base/navbar_buttons/home_button.html" %}
         </ul>
     </div>
