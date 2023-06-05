@@ -89,7 +89,7 @@ tbody tr:last-of-type {
 caption {
     font-size: 40px;
     font-weight: 700;
-    margin: 20px;
+    margin-bottom: 25px;
 }
 
 caption .prod-buttons {
