@@ -39,6 +39,7 @@ class TestViews(TestCase):
         self.request = reverse("request", args=[1])
         self.requests_per_category = reverse("requests_per_category", args=[1])
         self.add_request = reverse("add_request", args=[1])
+        self.cancel_request = reverse("cancel_request", args=[1])
         self.accept_request = reverse("accept_request", args=[1])
         self.reject_request = reverse("reject_request", args=[1])
 
@@ -172,6 +173,10 @@ class TestViews(TestCase):
 
     def test_accept_request_GET(self):
         response = self.client.get(self.accept_request)
+        self.assertEquals(response.status_code, 302)
+
+    def test_cancel_request_GET(self):
+        response = self.client.get(self.cancel_request)
         self.assertEquals(response.status_code, 302)
 
     def test_reject_request_GET(self):

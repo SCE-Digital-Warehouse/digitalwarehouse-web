@@ -144,6 +144,11 @@ class TestUrls(SimpleTestCase):
         url = reverse("accept_request", args=[request_id])
         self.assertEquals(resolve(url).func, accept_request)
 
+    def test_cancel_request_is_resolved(self):
+        request_id = 1
+        url = reverse("cancel_request", args=[request_id])
+        self.assertEquals(resolve(url).func, cancel_request)
+
     def test_reject_request_url_is_resolved(self):
         request_id = 1
         url = reverse("reject_request", args=[request_id])
