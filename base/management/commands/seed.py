@@ -47,8 +47,8 @@ def create_users(self):
     User.objects.create_user(
         username="manager_dht",
         password="sce123456",
-        first_name="Shai",
-        last_name="Kohen",
+        first_name="שי",
+        last_name="כהן",
         email="manager_dht@mail.com",
         identity_num="000000000",
         mobile_num="0500000000",
@@ -63,8 +63,8 @@ def create_users(self):
     regular_user_that_will_be_promoted = User.objects.create_user(
         username="mod_dht",
         password="sce123456",
-        first_name="Lol",
-        last_name="Kek",
+        first_name="עידו",
+        last_name="מור",
         email="mod_dht@mail.com",
         identity_num="111111111",
         role="student",
@@ -80,8 +80,8 @@ def create_users(self):
     User.objects.create_user(
         username="regular_user",
         password="sce123456",
-        first_name="John",
-        last_name="Doe",
+        first_name="יאיר",
+        last_name="אליהו",
         email="regular_user@mail.com",
         identity_num="123456789",
         role="student",
