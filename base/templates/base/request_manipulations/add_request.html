@@ -34,6 +34,7 @@
             <input type="text" id="comments" name="comments">
             <div>
                 <input type="submit" value="שלח/י בקשה" id="submit">
+                <a href="{% url 'cancel_request' product.category.pk %}">בטל/י</a>
             </div>
         </form>
     </div>

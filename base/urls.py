@@ -45,6 +45,7 @@ urlpatterns = [
     path("requests/<int:category_id>/", requests_per_category, name="requests_per_category"),
     path("request/<int:request_id>/", request, name="request"),
     path("add-request/<int:product_id>/", add_request, name="add_request"),
+    path("cancel-request/<int:category_id>/", cancel_request, name="cancel_request"),
     path("accept_request/<int:request_id>/", accept_request, name="accept_request"),
     path("reject_request/<int:request_id>/", reject_request, name="reject_request"),
 
