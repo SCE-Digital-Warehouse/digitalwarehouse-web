@@ -11,8 +11,8 @@
         <table>
             <caption>
                 {% if user_type == "admin" or user_type == "moderator" %}
-                    {{category}} מידע על בקשות של סטודנטים/מרצים
-                    {% if category %} של קטגורית {% endif %}
+                    {{ category }} מידע על בקשות של סטודנטים/מרצים
+                    {% if category %}של קטגורית{% endif %}
                 {% else %}
                     בקשות שלי
                 {% endif %}
@@ -20,75 +20,97 @@
             <colgroup>
                 <col span="8">
             </colgroup>
-            <thead>
-                {% if user_type == "admin" or user_type == "moderator" %}
-                    <tr>
-                        <th>בקשת השאלה</th>
-                        <th>תאריך החזרה רצוי</th>
-                        <th>תאריך השאלה רצוי</th>
-                        <th>תאריך בקשה</th>
-                        <th>סטטוס</th>
-                        <th>מייל</th>
-                        <th>מס' טלפון</th>
-                        <th>שם משפחה</th>
-                        <th>שפ פרטי</th>
-                        <th>ת.ז</th>
-                        <th>שם הפריט</th>
-                        <th>מק''ט הפריט</th>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <th>תאריך החזרה רצוי</th>
-                        <th>תאריך השאלה רצוי</th>
-                        <th>תאריך בקשה</th>
-                        <th>שם הפריט</th>
-                        <th>מק''ט הפריט</th>
-                    </tr>
-                {% endif %}
-            </thead>
-            <tbody>
-                {% if user_type == "admin" or user_type == "moderator" %}
-                    {% for req in requests %}
-                        <tr style="background-color: {% if req.user.is_mod %} rgb(0, 116, 217) {% endif %}">
-                            <td>
-                                <div class="prod-buttons">
-                                    <a href="{% if req.user.pk != user.pk %}{% url 'request' req.id %}{% else %}#{% endif %}"
-                                       class="edit-btn">לצפות</a>
-                                </div>
-                            </td>
-                            <td>{{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>{{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>{{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>
-                                {% if req.user.role == "student" %}
-                                    סטודנט
-                                {% elif req.user.role == "lecturer" %}
-                                    מרצה
-                                {% else %}
-                                    אחר
-                                {% endif %}
-                            </td>
-                            <td>{{ req.user.email }}</td>
-                            <td>{{ req.user.mobile_num }}</td>
-                            <td>{{ req.user.last_name }}</td>
-                            <td>{{ req.user.first_name }}</td>
-                            <td>{{ req.user.identity_num }}</td>
-                            <td>{{ req.product.name }}</td>
-                            <td>{{ req.product.stock_num }}</td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    {% for req in requests %}
+            {% if not is_content %}
+                {% include "base/no_content.html" %}
+            {% else %}
+                <thead>
+                    {% if user_type == "admin" or user_type == "moderator" %}
                         <tr>
-                            <td>{{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>{{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>{{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}</td>
-                            <td>{{ req.product.name }}</td>
-                            <td>{{ req.product.stock_num }}</td>
+                            <th>בקשת השאלה</th>
+                            <th>תאריך החזרה רצוי</th>
+                            <th>תאריך השאלה רצוי</th>
+                            <th>תאריך בקשה</th>
+                            <th>סטטוס</th>
+                            <th>מייל</th>
+                            <th>מס' טלפון</th>
+                            <th>שם משפחה</th>
+                            <th>שפ פרטי</th>
+                            <th>ת.ז</th>
+                            <th>שם הפריט</th>
+                            <th>מק''ט הפריט</th>
                         </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
+                    {% else %}
+                        <tr>
+                            <th>תאריך החזרה רצוי</th>
+                            <th>תאריך השאלה רצוי</th>
+                            <th>תאריך בקשה</th>
+                            <th>שם הפריט</th>
+                            <th>מק''ט הפריט</th>
+                        </tr>
+                    {% endif %}
+                </thead>
+                <tbody>
+                    {% if user_type == "admin" or user_type == "moderator" %}
+                        {% for req in requests %}
+                            <tr style="background-color: {% if req.user.is_mod %} rgb(0, 116, 217){% endif %}">
+                                <td>
+                                    <div class="prod-buttons">
+                                        <a href="{% if req.user.pk != user.pk %}{% url 'request' req.id %}{% else %}#{% endif %}"
+                                           class="edit-btn">לצפות</a>
+                                    </div>
+                                </td>
+                                <td>{{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}</td>
+                                <td>{{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}</td>
+                                <td>{{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+                                <td>
+                                    {% if req.user.role == "student" %}
+                                        סטודנט
+                                    {% elif req.user.role == "lecturer" %}
+                                        מרצה
+                                    {% else %}
+                                        אחר
+                                    {% endif %}
+                                </td>
+                                <td>{{ req.user.email }}</td>
+                                <td>{{ req.user.mobile_num }}</td>
+                                <td>{{ req.user.last_name }}</td>
+                                <td>
+                                    {{ req.user.first_name }}
+                                </td>
+                                <td>
+                                    {{ req.user.identity_num }}
+                                </td>
+                                <td>
+                                    {{ req.product.name }}
+                                </td>
+                                <td>
+                                    {{ req.product.stock_num }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for req in requests %}
+                            <tr>
+                                <td>
+                                    {{ req.exp_date_to_return|date:"SHORT_DATETIME_FORMAT" }}
+                                </td>
+                                <td>
+                                    {{ req.exp_date_to_borrow|date:"SHORT_DATETIME_FORMAT" }}
+                                </td>
+                                <td>
+                                    {{ req.requested_at|date:"SHORT_DATETIME_FORMAT" }}
+                                </td>
+                                <td>
+                                    {{ req.product.name }}
+                                </td>
+                                <td>
+                                    {{ req.product.stock_num }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            {% endif %}
         </table>
     </div>
 {% endblock content %}

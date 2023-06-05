@@ -87,9 +87,9 @@ tbody tr:last-of-type {
 }
 
 caption {
-    font-size: 25px;
+    font-size: 40px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
 caption .prod-buttons {
@@ -473,6 +473,20 @@ REQUESTS PAGE | BORROWINGS PAGE | SPECIAL REQUESTS PAGE
     border-radius: 10px;
     margin: 170px 230px 200px 200px;
     box-shadow: 0px 4px 8px rgba(202, 202, 202, 0.25);
+}
+
+.no_content {
+    position: absolute;
+    margin: 200px 0px 0px 700px;
+    padding: 20px;
+    font-weight: 800;
+    font-size: 50px;
+    border-radius: 10px;
+    background-color: rgba(202, 202, 202, 0.25);
+}
+
+.no_content p {
+    margin: 0;
 }
 
 /*==================

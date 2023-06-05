@@ -137,10 +137,12 @@ def users(request):
     if user_type == "admin":
         categories = Category.objects.all()
         users = User.objects.filter(is_staff=False).exclude(pk=request.user.pk)
+        is_content = True if users.count() > 0 else False
         context = {
             "user_type": user_type,
             "users": users,
             "categories": categories,
+            "is_content": is_content
         }
         return render(request, "base/user_manipulations/users.html", context)
     return redirect("home")
@@ -322,10 +324,12 @@ def moderators(request):
         categories = Category.objects.all()
         moderators = Moderator.objects.all()
         users = User.objects.filter(moderator__in=moderators)
+        is_content = True if users.count() > 0 else False
         context = {
             "user_type": user_type,
             "moderators": users,
             "categories": categories,
+            "is_content": is_content
         }
         return render(request, "base/user_manipulations/moderators.html", context)
     return redirect("home")
@@ -463,11 +467,13 @@ def requests(request):
         requests = Request.objects.all()
     else:
         requests = Request.objects.all().filter(user_id=user.pk)
+    is_content = True if requests.count() > 0 else False
     context = {
         "user_type": user_type,
         "user": user,
         "categories": categories,
-        "requests": requests
+        "requests": requests,
+        "is_content": is_content
     }
     return render(request, "base/request_manipulations/requests.html", context)
 
@@ -483,12 +489,14 @@ def requests_per_category(request, category_id):
             return redirect("home")
         categories = Category.objects.all()
         requests = Request.objects.filter(product__category=category)
+        is_content = True if requests.count() > 0 else False
         context = {
             "categories": categories,
             "category": category,
             "user_type": user_type,
             "user": user,
-            "requests": requests
+            "requests": requests,
+            "is_content": is_content
         }
         return render(request, "base/request_manipulations/requests.html", context)
     return redirect("home")
@@ -537,7 +545,6 @@ def add_request(request, product_id):
         now = timezone.localtime(timezone.now())
         datetime_format = "%Y-%m-%dT%H:%M"
         init_value = now.strftime(datetime_format)
-        # init_value2 = (now + timedelta(hours=1)).strftime(datetime_format)
         max_value = (now + timedelta(days=14)).strftime(datetime_format)
 
         if request.method == "POST":
@@ -558,7 +565,6 @@ def add_request(request, product_id):
             "categories": categories,
             "product": product,
             "init_value": init_value,
-            # "init_value2": init_value2,
             "max_value": max_value,
             "user_role": user.role
         }
@@ -608,6 +614,7 @@ def borrowings(request):
         borrowings = Borrowing.objects.all()
     elif user_type == "user":
         borrowings = Borrowing.objects.all().filter(user_id=user.pk)
+    is_content = True if borrowings.count() > 0 else False
     if user_type == "admin":
         for borrowing in borrowings:
             borrowing.notify_user()
@@ -617,6 +624,7 @@ def borrowings(request):
         "mod_finish_borrowing": mod_finish_borrowing,
         "categories": categories,
         "borrowings": borrowings,
+        "is_content": is_content,
         "now": timezone.now()
     }
     return render(request, "base/borrowing_manipulations/borrowings.html", context)
@@ -633,6 +641,7 @@ def borrowings_per_category(request, cat_id):
         user = request.user
         categories = Category.objects.all()
         borrowings = Borrowing.objects.filter(product__category=category)
+        is_content = True if borrowings.count() > 0 else False
         for borrowing in borrowings:
             borrowing.notify_user()
         context = {
@@ -641,6 +650,7 @@ def borrowings_per_category(request, cat_id):
             "user_type": user_type,
             "user": user,
             "borrowings": borrowings,
+            "is_content": is_content,
             "now": timezone.now()
         }
         return render(request, "base/borrowing_manipulations/borrowings.html", context)
@@ -758,6 +768,7 @@ def category(request, cat_id):
         moderator is not None and moderator.delete_product
     categories = Category.objects.all()
     products = Product.objects.all().filter(category_id=cat_id)
+    is_content = True if products.count() > 0 else False
     context = {
         "categories": categories,
         "user_type": user_type,
@@ -766,7 +777,8 @@ def category(request, cat_id):
         "mod_edit_product": mod_edit_product,
         "mod_delete_product": mod_delete_product,
         "category": category,
-        "products": products
+        "products": products,
+        "is_content": is_content
     }
     return render(request, "base/category_manipulations/category.html", context)
 
@@ -924,6 +936,7 @@ def breakages(request):
     if user_type in ["admin", "moderator"]:
         categories = Category.objects.all()
         products_in_repair = Breakage.objects.all()
+        is_content = True if products_in_repair.count() > 0 else False
         moderator = getattr(user, "moderator", None)
         mod_mark_repaired = user_type == "moderator" and \
             moderator is not None and moderator.mark_repaired
@@ -932,7 +945,8 @@ def breakages(request):
             "user": user,
             "mod_mark_repaired": mod_mark_repaired,
             "categories": categories,
-            "products_in_repair": products_in_repair
+            "products_in_repair": products_in_repair,
+            "is_content": is_content
         }
     return render(request, "base/breakage_manipulations/breakages.html", context)
 
@@ -948,6 +962,7 @@ def breakages_per_category(request, category_id):
         user = request.user
         categories = Category.objects.all()
         products_in_repair = Breakage.objects.filter(product__category=category)
+        is_content = True if products_in_repair.count() > 0 else False
         moderator = getattr(user, "moderator", None)
         mod_mark_repaired = user_type == "moderator" and \
             moderator is not None and moderator.mark_repaired
@@ -957,7 +972,8 @@ def breakages_per_category(request, category_id):
             "user_type": user_type,
             "user": user,
             "mod_mark_repaired": mod_mark_repaired,
-            "products_in_repair": products_in_repair
+            "products_in_repair": products_in_repair,
+            "is_content": is_content
         }
         return render(request, "base/breakage_manipulations/breakages.html", context)
     return redirect("home")
