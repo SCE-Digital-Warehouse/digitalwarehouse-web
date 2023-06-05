@@ -573,6 +573,14 @@ def add_request(request, product_id):
 
 
 @login_required(login_url=LOGIN_URL)
+def cancel_request(request, category_id):
+    user_type = get_user_type(request)
+    if user_type != "admin":
+        return redirect("category", category_id)
+    return redirect("home")
+
+
+@login_required(login_url=LOGIN_URL)
 def accept_request(request, request_id):
     user_type = get_user_type(request)
     user = request.user

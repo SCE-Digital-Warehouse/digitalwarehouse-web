@@ -666,6 +666,17 @@ ADD CATEGORY PAGE
     font-size: 20px;
 }
 
+.borrowing_extention-form a {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    text-decoration: none;
+}
+
 .add-category-form input[type="file"] {
     font-size: 20px;
 }
