@@ -74,7 +74,16 @@
                                 {% if user_type == "admin" or mod_finish_borrowing %}
                                     <td>
                                         <div class="prod-buttons">
-                                            <a href="{% if borrowing.user.pk != user.pk %}{% url 'finish_borrowing' borrowing.pk %}{% else %}#{% endif %}" class="edit-btn">לסיים</a>
+                                            <a href="#" {% if borrowing.user.pk != user.pk %} onclick="openPopup()" {% endif %} class="edit-btn">לסיים</a>
+                                        </div>
+                                        <div id="popup" class="popup">
+                                          <div class="popup-content">
+                                            <h2>האם את/ה בטוח/ה שברצונך לסיים את ההשאלה?</h2>
+                                            <div class="button-container">
+                                              <button class="edit-btn" onclick="closePopup()">לא</button>
+                                              <a href="{% url 'finish_borrowing' borrowing.pk %}" class="edit-btn">כן</a>
+                                            </div>
+                                          </div>
                                         </div>
                                     </td>
                                 {% endif %}
@@ -160,4 +169,13 @@
             {% endif %}
         </table>
     </div>
+    <script>
+        function openPopup() {
+            document.getElementById("popup").style.display = "block";
+        }
+            
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
 {% endblock content %}
