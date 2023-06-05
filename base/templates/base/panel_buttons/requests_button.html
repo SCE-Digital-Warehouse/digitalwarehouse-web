@@ -17,6 +17,13 @@
             c0-2.2,1.8-4,4-4s4,1.8,4,4C68.8,72.4,67,74.2,64.8,74.2z"/>
             </g>
         </svg>
+        <span class="digit-circle"
+              style="margin-left:280px;
+                     {% if counter > 0 %} background-color:blue;
+                     {% else %} background-color:grey;
+                     {% endif %}">
+            {{ counter }}
+        </span>
         בקשות
     </a>
 </div>
