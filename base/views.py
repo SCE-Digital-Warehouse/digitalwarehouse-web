@@ -35,6 +35,7 @@ def index(request):
         "categories": categories,
         "requests_counter": requests_counter,
         "borrowings_counter": borrowings_counter,
+        "is_home_page": True
     }
 
     if breakages_counter is not None:

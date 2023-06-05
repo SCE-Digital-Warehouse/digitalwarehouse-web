@@ -315,9 +315,10 @@ NAVBAR
     justify-content: space-between;
 }
 
+.user-logo,
 .navigation {
     justify-content: space-evenly;
-    margin: 0 0 5px 0;
+    margin: 8px;
     padding: 0;
 }
 

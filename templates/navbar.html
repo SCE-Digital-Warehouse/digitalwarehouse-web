@@ -16,21 +16,30 @@
                 <a href="{% url 'logout' %}">יציאה</a>
             </li>
         </ul>
-        <ul class="navigation">
-            {% include "base/navbar_buttons/contact_us_button.html" %}
-            {% if user_type == "admin" %}
-                {% include "base/navbar_buttons/statistics_button.html" %}
-            {% endif %}
-            {% if user_type == "admin" %}
-                {% include "base/navbar_buttons/moderators_button.html" %}
-                {% include "base/navbar_buttons/users_button.html" %}
-            {% endif %}
-            {% if user_type == "admin" or user_type == "moderator" %}
-                {% include "base/navbar_buttons/breakages_button.html" %}
-            {% endif %}
-            {% include "base/navbar_buttons/borrowings_button.html" %}
-            {% include "base/navbar_buttons/requests_button.html" %}
-            {% include "base/navbar_buttons/home_button.html" %}
-        </ul>
+        {% if is_home_page %}
+            <ul class="navigation" style="position: absolute; top: 0px; margin-left: 590px;">
+                <li>
+                    <a style="font-size: 50px;">{{ PROJECT_NAME }}</a>
+                </li>
+            </ul>
+        {% endif %}
+        {% if not is_home_page %}
+            <ul class="navigation">
+                {% include "base/navbar_buttons/contact_us_button.html" %}
+                {% if user_type == "admin" %}
+                    {% include "base/navbar_buttons/statistics_button.html" %}
+                {% endif %}
+                {% if user_type == "admin" %}
+                    {% include "base/navbar_buttons/moderators_button.html" %}
+                    {% include "base/navbar_buttons/users_button.html" %}
+                {% endif %}
+                {% if user_type == "admin" or user_type == "moderator" %}
+                    {% include "base/navbar_buttons/breakages_button.html" %}
+                {% endif %}
+                {% include "base/navbar_buttons/borrowings_button.html" %}
+                {% include "base/navbar_buttons/requests_button.html" %}
+                {% include "base/navbar_buttons/home_button.html" %}
+            </ul>
+        {% endif %}
     </div>
 </header>

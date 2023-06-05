@@ -1,4 +1,4 @@
-# SCE DigitalWarehouse | DHT
+# SCE Digital Warehouse
 
 ## Requirements:
 - Python v3.11 (at least)

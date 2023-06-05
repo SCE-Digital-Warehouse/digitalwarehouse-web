@@ -176,5 +176,5 @@ LOGIN_URL = "/login/"
 
 # Global variables
 
-PROJECT_NAME = "DHT – SCE Digital Warehouse"
+PROJECT_NAME = "SCE Digital Warehouse"
 CURRENT_YEAR = datetime.now().year
