@@ -49,7 +49,7 @@
                                         {% endif %}
                                     {% elif mod_mark_repaired %}
                                         <div class="prod-buttons">
-                                            <a href="{% if breakage.product.in_repair and breakage.user.pk != user.pk %}{% url 'mark_repaired' breakage.pk %}{% else %}#{% endif %}"
+                                            <a href="{% if breakage.product.in_repair and breakage.user.pk != user.pk %}{% url 'mark_repaired' breakage.pk %}{% else %}javascript:void(0){% endif %}"
                                                class="edit-btn">לסמן כתוקן</a>
                                         </div>
                                     {% endif %}
@@ -57,7 +57,7 @@
                             {% endif %}
                             <td>
                                 <div class="prod-buttons">
-                                    <a href="{% if breakage.user.is_admin or breakage.user.pk != user.pk %}{% url 'breakage' breakage.pk %}{% else %}#{% endif %}"
+                                    <a href="{% if breakage.user.is_admin or breakage.user.pk != user.pk %}{% url 'breakage' breakage.pk %}{% else %}javascript:void(0){% endif %}"
                                        class="edit-btn">לצפות</a>
                                 </div>
                             </td>

@@ -55,7 +55,7 @@
                             <tr style="background-color: {% if req.user.is_mod %} rgb(0, 116, 217){% endif %}">
                                 <td>
                                     <div class="prod-buttons">
-                                        <a href="{% if req.user.pk != user.pk %}{% url 'request' req.id %}{% else %}#{% endif %}"
+                                        <a href="{% if req.user.pk != user.pk %}{% url 'request' req.id %}{% else %}javascript:void(0){% endif %}"
                                            class="edit-btn">לצפות</a>
                                     </div>
                                 </td>

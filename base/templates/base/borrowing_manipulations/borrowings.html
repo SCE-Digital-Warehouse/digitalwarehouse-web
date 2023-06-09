@@ -67,18 +67,18 @@
                                 {% if user_type == "moderator" %}
                                     <td>
                                         <div class="prod-buttons">
-                                            <a href="{% if borrowing.user.pk == user.pk and not borrowing.product.breakage_reported %}{% url 'report_breakage' borrowing.product.pk %}{% else %}#{% endif %}" class="edit-btn">לדווח תקלה</a>
+                                            <a href="{% if borrowing.user.pk == user.pk and not borrowing.product.breakage_reported %}{% url 'report_breakage' borrowing.product.pk %}{% else %}javascript:void(0){% endif %}" class="edit-btn">לדווח תקלה</a>
                                         </div>
                                     </td>
                                 {% endif %}
                                 {% if user_type == "admin" or mod_finish_borrowing %}
                                     <td>
                                         <div class="prod-buttons">
-                                            <a href="#" {% if borrowing.user.pk != user.pk %} onclick="openPopup()" {% endif %} class="edit-btn">לסיים</a>
+                                            <a href="javascript:void(0)" {% if borrowing.user.pk != user.pk %} onclick="openPopup()" {% endif %} class="edit-btn">לסיים</a>
                                         </div>
                                         <div id="popup" class="popup">
                                           <div class="popup-content">
-                                            <h2>האם את/ה בטוח/ה שברצונך לסיים את ההשאלה?</h2>
+                                            <h2 style="direction: rtl">האם את/ה בטוח/ה שברצונך לסיים את ההשאלה?</h2>
                                             <div class="button-container">
                                               <button class="edit-btn" onclick="closePopup()">לא</button>
                                               <a href="{% url 'finish_borrowing' borrowing.pk %}" class="edit-btn">כן</a>
@@ -90,7 +90,7 @@
                                 {% if user_type == "admin" %}
                                     <td>
                                         <div class="prod-buttons">
-                                            <a href="{% if borrowing.extension_requested %}{% url   'borrowing_extension' borrowing.pk %}{% else %}#{% endif %}"
+                                            <a href="{% if borrowing.extension_requested %}{% url 'borrowing_extension' borrowing.pk %}{% else %}javascript:void(0){% endif %}"
                                                class="edit-btn">לצפות בבקשת הארכה</a>
                                         </div>
                                     </td>
@@ -99,7 +99,7 @@
                                     <td>
                                         {% if not borrowing.extension_requested %}
                                             <div class="prod-buttons">
-                                                <a href="{% if borrowing.user.pk == user.pk and not borrowing.product.breakage_reported %}{% url 'add_borrowing_extension' borrowing.pk %}{% else %}#{% endif %}"
+                                                <a href="{% if borrowing.user.pk == user.pk and not borrowing.product.breakage_reported %}{% url 'add_borrowing_extension' borrowing.pk %}{% else %}javascript:void(0){% endif %}"
                                                    class="edit-btn">בקשה להארכה</a>
                                             </div>
                                         {% else %}
@@ -141,13 +141,13 @@
                                 {% endif %}">
                                 <td>
                                     <div class="prod-buttons">
-                                        <a href="{% if not borrowing.product.breakage_reported %}{% url 'report_breakage' borrowing.product.pk %}{% else %}#{% endif %}" class="edit-btn">לדווח תקלה</a>
+                                        <a href="{% if not borrowing.product.breakage_reported %}{% url 'report_breakage' borrowing.product.pk %}{% else %}javascript:void(0){% endif %}" class="edit-btn">לדווח תקלה</a>
                                     </div>
                                 </td>
                                 <td>
                                     {% if not borrowing.extension_requested %}
                                         <div class="prod-buttons">
-                                            <a href="{% if not borrowing.product.breakage_reported %}{% url 'add_borrowing_extension' borrowing.id %}{% else %}#{% endif %}" class="edit-btn">בקשה להארכה</a>
+                                            <a href="{% if not borrowing.product.breakage_reported %}{% url 'add_borrowing_extension' borrowing.id %}{% else %}javascript:void(0){% endif %}" class="edit-btn">בקשה להארכה</a>
                                         </div>
                                     {% else %}
                                         בקשת הארכה ל-{{ borrowing.additional_days }}
