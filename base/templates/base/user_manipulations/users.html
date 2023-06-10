@@ -25,71 +25,75 @@
             <colgroup>
                 <col span="8">
             </colgroup>
-            <thead>
-                <tr>
-                    <th>מחיקת משתמש</th>
-                    <th>עריכת פרטים</th>
-                    <th>מינוי/הדחה</th>
-                    <th>מנהל מחסן</th>
-                    <th>מודרטור</th>
-                    <th>סטטוס</th>
-                    <th>מייל</th>
-                    <th>מס' טלפון</th>
-                    <th>שם משפחה</th>
-                    <th>שם פרטי</th>
-                    <th>ת.ז</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
+            {% if not is_content %}
+                {% include "base/no_content.html" %}
+            {% else %}
+                <thead>
                     <tr>
-                        <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'delete_user' user.id %}" class="edit-btn">למחוק</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="prod-buttons">
-                                <a href="{% if user.is_mod %} {% url 'edit_moderator' user.pk %} {% else %} {% url 'edit_user' user.pk %} {% endif %}"
-                                   class="edit-btn">לערוך</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="prod-buttons">
-                                <a href="{% url 'prom_dem_user' user.id %}" class="edit-btn">למנות/להדיח</a>
-                            </div>
-                        </td>
-                        <td>
-                            {% if user.is_admin %}
-                                כן
-                            {% else %}
-                                לא
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user.is_mod %}
-                                כן
-                            {% else %}
-                                לא
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user.role == "student" %}
-                                סטודנט
-                            {% elif user.role == "lecturer" %}
-                                מרצה
-                            {% else %}
-                                אחר
-                            {% endif %}
-                        </td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.mobile_num }}</td>
-                        <td>{{ user.last_name }}</td>
-                        <td>{{ user.first_name }}</td>
-                        <td>{{ user.identity_num }}</td>
+                        <th>מחיקת משתמש</th>
+                        <th>עריכת פרטים</th>
+                        <th>מינוי/הדחה</th>
+                        <th>מנהל מחסן</th>
+                        <th>מודרטור</th>
+                        <th>סטטוס</th>
+                        <th>מייל</th>
+                        <th>מס' טלפון</th>
+                        <th>שם משפחה</th>
+                        <th>שם פרטי</th>
+                        <th>ת.ז</th>
                     </tr>
-                {% endfor %}
-            </tbody>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'delete_user' user.id %}" class="edit-btn">למחוק</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% if user.is_mod %} {% url 'edit_moderator' user.pk %} {% else %} {% url 'edit_user' user.pk %} {% endif %}"
+                                       class="edit-btn">לערוך</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="prod-buttons">
+                                    <a href="{% url 'prom_dem_user' user.id %}" class="edit-btn">למנות/להדיח</a>
+                                </div>
+                            </td>
+                            <td>
+                                {% if user.is_admin %}
+                                    כן
+                                {% else %}
+                                    לא
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_mod %}
+                                    כן
+                                {% else %}
+                                    לא
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.role == "student" %}
+                                    סטודנט
+                                {% elif user.role == "lecturer" %}
+                                    מרצה
+                                {% else %}
+                                    אחר
+                                {% endif %}
+                            </td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.mobile_num }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.identity_num }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            {% endif %}
         </table>
     </div>
     <script>
