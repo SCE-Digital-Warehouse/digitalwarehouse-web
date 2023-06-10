@@ -10,9 +10,9 @@
                 <div class="prod-buttons">
                     <form enctype="multipart/form-data" method="post">
                         {% csrf_token %}
-                        <a href="javascript:void(0)" onclick="openFileExplorer()" class="edit-btn">
-                            הוספת כמות משתמשים
-                        </a>
+                        <a href="javascript:void(0)"
+                           onclick="openFileExplorer()"
+                           class="edit-btn">הוספת כמות משתמשים</a>
                         <input type="file"
                                id="file_input"
                                name="file"
@@ -50,7 +50,8 @@
                         </td>
                         <td>
                             <div class="prod-buttons">
-                                <a href="{% url 'edit_user' user.id %}" class="edit-btn">לערוך</a>
+                                <a href="{% if user.is_mod %} {% url 'edit_moderator' user.pk %} {% else %} {% url 'edit_user' user.pk %} {% endif %}"
+                                   class="edit-btn">לערוך</a>
                             </div>
                         </td>
                         <td>
