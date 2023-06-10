@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from deprecated import deprecated
 import datetime
 from datetime import timedelta
 
@@ -301,6 +302,7 @@ def prom_dem_user(request, user_id):
     return redirect("home")
 
 
+@deprecated(reason="This function was used to test new functionality.")
 @login_required(login_url=LOGIN_URL)
 def user(request, user_id):
     user_type = get_user_type(request)
@@ -548,15 +550,20 @@ def add_request(request, product_id):
         max_value = (now + timedelta(days=14)).strftime(datetime_format)
 
         if request.method == "POST":
+            exp_date_to_borrow = request.POST.get("exp_date_to_borrow")
+            exp_date_to_return = request.POST.get("exp_date_to_return")
             try:
                 Request.objects.create(
                     user=user,
                     product=product,
-                    exp_date_to_borrow=request.POST.get("exp_date_to_borrow"),
-                    exp_date_to_return=request.POST.get("exp_date_to_return"),
+                    exp_date_to_borrow=exp_date_to_borrow,
+                    exp_date_to_return=exp_date_to_return,
                     comments=request.POST.get("comments")
                 )
             except Exception:
+                product.change_availability()
+                return redirect("add_request", product_id)
+            if exp_date_to_return <= exp_date_to_borrow:
                 product.change_availability()
                 return redirect("add_request", product_id)
             return redirect("requests")
@@ -1020,16 +1027,16 @@ def report_breakage(request, product_id):
     if (product.breakage_reported or product.in_repair) or \
             (not product.is_available and user_type == "admin"):
         return redirect("home")
-    try:
-        borrowing = Borrowing.objects.get(product=product, user=user)
-    except Exception:
-        pass
-    else:
-        if borrowing.extension_requested:
-            borrowing.reject_extension()
     categories = Category.objects.all()
-    user = request.user
     if request.method == "POST":
+        user = request.user
+        try:
+            borrowing = Borrowing.objects.get(product=product, user=user)
+        except Exception:
+            pass
+        else:
+            if borrowing.extension_requested:
+                borrowing.reject_extension()
         breakage = Breakage.objects.create(
             user=user,
             product=product,

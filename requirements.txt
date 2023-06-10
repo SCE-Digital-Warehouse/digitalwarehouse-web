@@ -3,3 +3,4 @@ django_debug_toolbar==3.8.1
 django-cprofile-middleware==1.0.5
 selenium==4.9.1
 Pillow==9.5.0
+Deprecated==1.2.14
