@@ -502,7 +502,6 @@ PERSONAL INFO PAGE
     border-radius: 5px;
     background-color: #fff;
     float: right;
-
 }
 
 .personal-info-form {
@@ -515,6 +514,11 @@ PERSONAL INFO PAGE
     font-size: 2em;
     margin: 20px 20px 20px 10px;
     width: 170px;
+    direction: rtl;
+}
+
+.personal-info-form input {
+    text-align: center;
 }
 
 #name-personal,

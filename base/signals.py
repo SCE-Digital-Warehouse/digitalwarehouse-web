@@ -19,6 +19,6 @@ def user_pre_delete_handler(sender, instance, **kwargs):
             try:
                 repairs = Breakage.objects.filter(user=instance)
                 for repair in repairs:
-                    repair.product.change_availability()
+                    repair.product.change_condition()
             except Exception:
                 pass
