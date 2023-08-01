@@ -10,8 +10,8 @@
 
 1. Install the latest version of Python on your environment ([instructions](https://docs.python.org/3/using/windows.html))
 2. Open *Git Bash* and run the commands (you have to have permissions):
-   - `git clone git@github.com:BS-PMC-2023/BS-PMC-2023-Team8.git`
-   - `cd BS-PMC-2023-Team8`
+   - `git clone git@github.com:SCE-Digital-Warehouse/digitalwarehouse-web.git`
+   - `cd digitalwarehouse-web`
    - `explorer .`
 3. Now open a terminal inside the opened folder and run the commands:
    - `pip install --upgrade pip`
@@ -52,17 +52,17 @@
     - **identity_num** is a 9-digit string
     - **first_name**, **last_name** are strings consisting of letters only
     - **mobile_num** is a 10-digit string that starts with `05`
-    - **email** is a string where after the `@` it can only have `sce.ac.il` or `ac.sce.ac.il`
+    - **email** is a regular email string
     - **role** is a string with one of these values: `student`, `lecturer`
 
     ##### Example of the `.csv` file:
 
     `"identity_num","first_name","last_name","mobile_num","email","role"
-    "372047254","John","Kek","0547382956","kek@ac.sce.ac.il","student"
-    "235513229","Rar","Sas","0532145219","lol@ac.sce.ac.il","student"
-    "925345765","Ch","Zh","0521245563","fp@sce.ac.il","lecturer"
-    "284760485","Avh","Droc","0591537859","rey@ac.sce.ac.il","student"
-    "865612168","Irvin","Rer","0591235497","yhk@ac.sce.ac.il","student"`
+    "372047254","John","Kek","0547382956","kek@fakemail.com","student"
+    "235513229","Rar","Sas","0532145219","lol@fakemail.com","student"
+    "925345765","Ch","Zh","0521245563","fp@fakemail.com","lecturer"
+    "284760485","Avh","Droc","0591537859","rey@fakemail.com","student"
+    "865612168","Irvin","Rer","0591235497","yhk@fakemail.com","student"`
 
 2. Go to the [users](http://localhost:8000/users/) page and click on the `הוספת כמות משתמשים` button
 3. Then choose your `.csv` file
